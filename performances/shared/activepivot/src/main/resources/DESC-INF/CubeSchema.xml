@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<schemaDescription xmlns="http://www.quartetfs.com"
+                   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
+
+    <!-- Selection of fields from the datastore -->
+    <datastoreSelection baseStore="BaseStore">
+        <fields>
+
+            <!--Your fields here-->
+            <field name="SampleField"/>
+
+        </fields>
+    </datastoreSelection>
+
+    <!-- List of the ActivePivot instances within that ActivePivot Schema -->
+    <activePivots>
+
+        <activePivot id="PerformanceAttributionCube">
+            <pivotDescription resource="DESC-INF/PerformanceAttributionCube.xml"/>
+        </activePivot>
+
+    </activePivots>
+
+</schemaDescription>

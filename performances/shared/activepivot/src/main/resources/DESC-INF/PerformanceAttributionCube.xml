@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pivotDescription xmlns="http://www.quartetfs.com"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://www.quartetfs.com activepivot-types.xsd">
+
+    <!-- Selection of the aggregate provider -->
+    <aggregateProvider pluginKey="BITMAP"/>
+
+    <!-- true: Activation of factless hierarchies, across all dimensions -->
+    <autoFactlessHierarchies>true</autoFactlessHierarchies>
+
+    <!-- Definition of the dimensions -->
+    <dimensions>
+        <import resource="DESC-INF/Dimensions.xml"/>
+    </dimensions>
+
+
+    <!-- Definition of the measures -->
+    <measures>
+        <import resource="DESC-INF/Measures.xml"/>
+    </measures>
+
+    <sharedContexts>
+        <!-- Query maximum execution time (before timeout cancellation) -->
+        <queriesTimeLimit seconds="60"/>
+
+        <!-- Contextual configuration of the MDX engine -->
+        <mdxContext>
+            <formatters>
+
+            </formatters>
+        </mdxContext>
+    </sharedContexts>
+
+</pivotDescription>
