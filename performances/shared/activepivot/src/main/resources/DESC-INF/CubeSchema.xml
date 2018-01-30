@@ -4,11 +4,27 @@
                    xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
     <!-- Selection of fields from the datastore -->
-    <datastoreSelection baseStore="BaseStore">
+    <datastoreSelection baseStore="PortfolioStore">
         <fields>
 
             <!--Your fields here-->
-            <field name="SampleField"/>
+            <field name="Date"/>
+            <field name="PortfolioType"/>
+            <field name="Quantity"/>
+            <field name="PositionType"/>
+            <field name="StockSymbol"/>
+
+
+            <field name="OpenPrice" expression="PortfolioStoreToHistoryStore/OpenPrice" />
+            <field name="HighPrice" expression="PortfolioStoreToHistoryStore/HighPrice"/>
+            <field name="LowPrice" expression="PortfolioStoreToHistoryStore/LowPrice"/>
+            <field name="ClosePrice" expression="PortfolioStoreToHistoryStore/ClosePrice"/>
+            <field name="Volume" expression="PortfolioStoreToHistoryStore/Volume"/>
+
+            <field name="Sector" expression="PortfolioStoreToHistoryStore/HistoryStoreToSectorStore/Sector"/>
+            <field name="Industry" expression="PortfolioStoreToHistoryStore/HistoryStoreToSectorStore/Industry"/>
+            <field name="Company" expression="PortfolioStoreToHistoryStore/HistoryStoreToSectorStore/Company"/>
+
 
         </fields>
     </datastoreSelection>

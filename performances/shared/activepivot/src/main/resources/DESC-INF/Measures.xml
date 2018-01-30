@@ -4,5 +4,55 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 	
 	<!--Your measures and postprocessors here-->
+	<measure name="Quantity" field="Quantity" folder="quantities" aggregationFunctions="SUM" />
+	<measure name="Volume.Sum" field="Volume" folder="quantities" aggregationFunctions="SUM" />
+
+	<measure name="OpenPrice" field="OpenPrice" folder="Price" aggregationFunctions="AVG" />
+	<measure name="HighPrice" field="HighPrice" folder="Price" aggregationFunctions="AVG" />
+	<measure name="LowPrice" field="LowPrice" folder="Price" aggregationFunctions="AVG" />
+	<measure name="ClosePrice" field="ClosePrice" folder="Price" aggregationFunctions="AVG" />
+
+
+	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIOS" underlyingMeasures="Quantity,ClosePrice">
+		<properties>
+			<entry key="leafLevels" value="PortfolioType@PortfolioType@PortfolioType,StockSymbol@StockSymbol@StockSymbol," />
+			<entry key="aggregationFunction" value="SUM" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="TotalPortfolioValue" pluginKey="SHIFT_VALUE" underlyingMeasures="PortfolioValue" visible="false">
+		<properties>
+			<entry key="hierarchyToShift" value="SectorClassification@SectorClassification,StockSymbol@StockSymbol"/>
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="RelativeWeight" pluginKey="WEIGHT" underlyingMeasures="TotalPortfolioValue,PortfolioValue">
+	</postProcessor>
+
+	<postProcessor name="PreviousDateValue" pluginKey="PreviousValue" visible="false">
+		<properties>
+			<entry key="streamMeasureName" value="PortfolioValue" />
+			<entry key="timeHierarchyName" value="Date@Date@Time" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousDateValue,PortfolioValue" visible="true">
+	</postProcessor>
+
+	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" visible="true">
+		<properties>
+			<entry key="streamMeasureName" value="PortfolioValue" />
+			<entry key="timeHierarchyName" value="Date@Date@Time" />
+			<entry key="positionType" value="CURRENT_STREAM" />
+		</properties>
+	</postProcessor>
+
+
+	<postProcessor name="Performance" pluginKey="PERFORMANCE" underlyingMeasures="PeriodReturn">
+		<properties>
+			<entry key="portfolioHierarchy" value="PortfolioType@PortfolioType" />
+		</properties>
+	</postProcessor>
+
 
 </measures>

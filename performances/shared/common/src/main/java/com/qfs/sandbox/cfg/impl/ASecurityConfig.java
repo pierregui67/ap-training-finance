@@ -78,7 +78,7 @@ public class ASecurityConfig {
 	public static final String ROLE_KPI = "ROLE_KPI";
 
 	public static final String PIVOT_USER = "pivot";
-	public static final String[] PIVOT_USER_ROLES = { ROLE_TECH, ROLE_CS_ROOT };
+	private static final String[] PIVOT_USER_ROLES = new String[] { ROLE_TECH, ROLE_CS_ROOT };
 
 	protected static final AuthenticationEntryPoint authenticationEntryPoint = new HttpStatusEntryPoint(
 			HttpStatus.UNAUTHORIZED);

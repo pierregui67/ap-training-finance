@@ -7,6 +7,7 @@
 package com.qfs.sandbox.cfg.impl;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
+import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.IWatcherService;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
@@ -15,6 +16,7 @@ import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
+import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
@@ -30,9 +32,12 @@ import org.springframework.core.env.Environment;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Properties;
+import java.util.*;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
 
 /**
  * Spring configuration of the Sandbox ActivePivot server.<br>
@@ -43,6 +48,13 @@ import java.util.Properties;
  */
 @Configuration
 public class SourceConfig {
+
+    private static final Logger LOGGER = Logger.getLogger(SourceConfig.class.getSimpleName());
+
+    public static final String PORTFOLIO_TOPIC = "PortfolioTopic";
+    public static final String HISTORY_TOPIC = "HistoryTopic";
+    public static final String INDEX_TOPIC = "IndexTopic";
+    public static final String SECTOR_TOPIC = "SectorTopic";
 
     @Autowired
     protected Environment env;
@@ -58,29 +70,86 @@ public class SourceConfig {
 
     @Bean
     public CSVSource csvSource() {
+        //define the csv source
         CSVSource csvSource = new CSVSource();
 
-        // Add topics here, eg.
-//		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
-//		history.getParserConfiguration().setSeparator(',');
-//		csvSource.addTopic(history);
+        // define and ad topics to the source
+        DirectoryCSVTopic  history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 8, "**PriceHistory_*.csv", true);
+        history.getParserConfiguration().setSeparator(',');
+        csvSource.addTopic(history);
 
+        DirectoryCSVTopic portfolio = createDirectoryTopic(PORTFOLIO_TOPIC, env.getProperty("dir.portfolio"), 6, "**.csv", false);
+        portfolio.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(portfolio);
+
+        DirectoryCSVTopic sector = createDirectoryTopic(SECTOR_TOPIC, env.getProperty("dir.sector"), 4, "**.csv", true);
+        sector.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(sector);
+
+        DirectoryCSVTopic index = createDirectoryTopic(INDEX_TOPIC, env.getProperty("dir.index"), 8, "**.csv", true);
+        index.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(index);
+
+        //dfine csv source properties
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
         csvSource.configure(sourceProps);
+
         return csvSource;
     }
 
     @Bean
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
+        //create channel factory
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
 
-        // Add calculated columns here
-
-// 		channelFactory.setCalculatedColumns(topic, store, calculatedColumns);
+        // create and CSV calculated columns
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumns = new ArrayList<IColumnCalculator<ILineReader>>();
+        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>(STOCK_SYMBOL) {
+            @Override
+            public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
+                //get stock symbol from file name in ColumnCalculationContext
+                String filename = iColumnCalculationContext.getContext().getCurrentFile().getName();
+                String stockSymbol = filename
+                                        .replace("PriceHistory_","")
+                                        .replace(".csv","")
+                                        .replace("-",".");
+                return stockSymbol;
+            }
+        });
+        channelFactory.setCalculatedColumns(HISTORY_TOPIC, HISTORY_STORE, csvCalculatedColumns);
 
         return channelFactory;
+    }
+
+    @Bean
+    @DependsOn(value = "startManager")
+    public Void initialLoad() throws Exception {
+        //create csv channel
+        Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
+        csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE));
+        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIO_TOPIC, PORTFOLIOS_STORE));
+        csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTORS_STORE));
+        csvChannels.add(csvChannelFactory().createChannel(INDEX_TOPIC, INDEX_STORE));
+
+        long before = System.nanoTime();
+        if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
+            ITransactionManager transactionManager = datastore.getTransactionManager();
+            transactionManager.startTransaction();
+            //fetch tHE sources and perform a bulk transaction
+            csvSource().fetch(csvChannels);
+            transactionManager.commitTransaction();
+        } else {
+            // read data files without sending anything to the datastore (that data is already loaded by the log replayer): those files won't then be considered as new files when enabling real time
+        }
+
+        long elapsed = System.nanoTime() - before;
+        LOGGER.info("All sources fetched in " + elapsed + " ms");
+
+        printStoreSizes();
+
+        return null;
     }
 
     /**
@@ -99,30 +168,6 @@ public class SourceConfig {
         }
         String baseDir = env.getProperty("dir.base");
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
-    }
-
-    @Bean
-    @DependsOn(value = "startManager")
-    public Void initialLoad() throws Exception {
-        //csv
-        Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-//		csvChannels.add(csvChannelFactory().createChannel(topic, datastore));
-
-        long before = System.nanoTime();
-        if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
-            ITransactionManager transactionManager = datastore.getTransactionManager();
-            transactionManager.startTransaction();
-            //fetch the 2 sources and perform a bulk transaction
-            csvSource().fetch(csvChannels);
-            transactionManager.commitTransaction();
-        } else {
-            // read data files without sending anything to the datastore (that data is already loaded by the log replayer): those files won't then be considered as new files when enabling real time
-        }
-
-        long elapsed = System.nanoTime() - before; // log that somewhere
-        printStoreSizes();
-
-        return null;
     }
 
     private void printStoreSizes() {

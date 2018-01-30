@@ -51,7 +51,7 @@ import static com.quartetfs.fwk.types.impl.ExtendedPluginInjector.inject;
  *
  * @author Quartet FS
  */
-@PropertySource(value = { "classpath:jwt.properties" })
+@PropertySource(value = { "classpath:jwt.properties", "classpath:performance-cube.properties" })
 @Configuration
 @Import(
 value = {

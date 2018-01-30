@@ -6,4 +6,9 @@ content_service.mv.db
 *.trace.db
 *.lock.db
 
+/.idea
+**/target
+
+*.iml
+
 shared/activepivot/src/main/resources/activepivot-types.xsd

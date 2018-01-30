@@ -4,9 +4,36 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 	
 	<!--Your dimensions here-->
-	<dimension name="SampleDimension">
-		<hierarchy name="SampleHierarchy">
-			<level name="SampleLevel" property="SampleField"/>
+	<dimension name="Time"  type="TIME">
+		<hierarchy name="Date" allMember="false" >
+			<level name="Date" type="TIME" formatter="DATE[yyyy-MM-dd]"/>
 		</hierarchy>
 	</dimension>
+
+	<dimension name="PositionType">
+		<hierarchy name="PositionType">
+			<level name="PositionType"/>
+		</hierarchy>
+	</dimension>
+
+	<dimension name="StockSymbol">
+		<hierarchy name="StockSymbol">
+			<level name="StockSymbol" />
+		</hierarchy>
+	</dimension>
+
+	<dimension name="PortfolioType">
+		<hierarchy name="PortfolioType">
+			<level name="PortfolioType" property="PortfolioType"/>
+		</hierarchy>
+	</dimension>
+
+	<dimension name="SectorClassification">
+		<hierarchy name="SectorClassification">
+			<level name="Sector"/>
+			<level name="Industry"/>
+			<level name="Company" />
+		</hierarchy>
+	</dimension>
+
 </dimensions>
