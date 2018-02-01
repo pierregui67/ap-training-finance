@@ -22,7 +22,7 @@ public class ShiftTotalValuePostProcessor extends ALocationShiftPostProcessor {
 
     public static final String PLUGIN_KEY = "SHIFT_VALUE";
 
-    protected List<IHierarchyInfo> hierarchiesInfo = new ArrayList<>();
+    private List<IHierarchyInfo> hierarchiesInfo = new ArrayList<>();
 
     public ShiftTotalValuePostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
@@ -49,21 +49,6 @@ public class ShiftTotalValuePostProcessor extends ALocationShiftPostProcessor {
 
     @Override
     public ILocation shiftLocation(ILocation evaluationLocation) {
-
-
-//        if (LocationUtil.getDepth(evaluationLocation, hierarchyInfo) == 0) {        }
-        /*
-        //The level is being asked for, check the location doesn't have null
-        if(LocationUtil.hasDepth(evaluationLocation, levelToShift)) {
-            //If the location has null then we are prefetching and the location is returned
-            Object day = LocationUtil.getCoordinate(evaluationLocation, levelToShift);
-            if(day == null)
-                return evaluationLocation;
-            //If the day is 'Yesterday' then no aggregate should be retrieved, create an invalid location
-            if(day == "Yesterday")
-                return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[] {ILevel.ALLMEMBER, "MISSING_MEMBER"});
-        }
-*/
         //Return the Location asking for Yesterday
         return LocationUtil.createModifiedLocation(evaluationLocation, hierarchiesInfo, new Object[][] {{ILevel.ALLMEMBER},{ILevel.ALLMEMBER}});
     }

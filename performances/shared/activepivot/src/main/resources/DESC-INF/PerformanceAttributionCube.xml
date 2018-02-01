@@ -27,7 +27,17 @@
         <!-- Contextual configuration of the MDX engine -->
         <mdxContext>
             <formatters>
-
+                <formatter uniqueName="[Measures].[CumulativeReturn]"   format="DOUBLE[#,###.00]"/>
+                <formatter uniqueName="[Measures].[PeriodReturn]"       format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[ClosePrice]"         format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[OpenPrice]"          format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[HighPrice]"          format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[LowPrice]"           format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[Volume.Sum]"         format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[Quantity]"           format="DOUBLE[#,###]"/>
+                <formatter uniqueName="[Measures].[RelativeWeight]"     format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[PortfolioValue]"     format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[Performance]"        format="DOUBLE[#,###.00]" />
             </formatters>
         </mdxContext>
     </sharedContexts>

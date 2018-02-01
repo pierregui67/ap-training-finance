@@ -30,7 +30,7 @@ public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProce
 
     public static final String PLUGIN_KEY = "PERFORMANCE";
 
-    protected IHierarchyInfo portfolioHierarchyInfo = null;
+    private IHierarchyInfo portfolioHierarchyInfo = null;
 
     public PerformanceAgainstBenchmarkPostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
@@ -62,8 +62,7 @@ public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProce
 
             @Override
             protected Collection<String> computeMeasures(Collection<ILocation> locations) {
-                List<String> measures = Arrays.asList(underlyingMeasures);
-                return measures;
+                return Arrays.asList(underlyingMeasures);
             }
         };
         prefetchers.add(performancePrefetcher);
@@ -82,11 +81,11 @@ public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProce
         int bMeasureId = b.getMeasureId(underlyingMeasures[0]);
 
         //get benchmark value for each date in location scope
-        Map<String,Double> benchmarkDateMap = new HashMap<>();
+        Map<Date,Double> benchmarkDateMap = new HashMap<>();
         b.forEachPoint(new IPointProcedure() {
             @Override
             public boolean execute(IPointLocationReader bReader, int bPointId) {
-                String bDate = b.getPoint(bPointId).arrayCopy()[0][0].toString();
+                Date bDate = (Date) b.getCoordinate(bPointId,0,0);
                 Double benchmarkValue = (Double) b.read(bPointId, bMeasureId);
                 benchmarkDateMap.put(bDate,benchmarkValue);
                 return true;
@@ -99,7 +98,7 @@ public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProce
             public boolean execute(IPointLocationReader reader, int pointId) {
                 int outgoingPoint = retriever.addPoint(reader);
                 Double portfolioValue = (Double) r.read(pointId, rMeasureId);
-                String date = r.getPoint(pointId).arrayCopy()[0][0].toString();
+                Date date = (Date) r.getCoordinate(pointId,0,0);
                 Double benchmark = benchmarkDateMap.get(date);
                 if (portfolioValue == null) {
                     retriever.write(outgoingPoint, benchmark);
