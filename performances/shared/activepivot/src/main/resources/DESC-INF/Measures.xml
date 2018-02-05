@@ -7,13 +7,38 @@
 	<measure name="Quantity" field="Quantity" folder="quantities" aggregationFunctions="SUM" />
 	<measure name="Volume.Sum" field="Volume" folder="quantities" aggregationFunctions="SUM" />
 
-	<measure name="OpenPrice" field="OpenPrice" folder="Price" aggregationFunctions="AVG" />
-	<measure name="HighPrice" field="HighPrice" folder="Price" aggregationFunctions="AVG" />
-	<measure name="LowPrice" field="LowPrice" folder="Price" aggregationFunctions="AVG" />
-	<measure name="ClosePrice" field="ClosePrice" folder="Price" aggregationFunctions="AVG" />
+	<measure name="OpenPrice.Avg" field="OpenPrice" aggregationFunctions="AVG" visible="false" />
+	<measure name="HighPrice.Avg" field="HighPrice" folder="Price" aggregationFunctions="AVG" visible="false" />
+	<measure name="LowPrice.Avg" field="LowPrice" folder="Price" aggregationFunctions="AVG" visible="false" />
+	<measure name="ClosePrice.Avg" field="ClosePrice" folder="Price" aggregationFunctions="AVG" visible="false" />
 
 
-	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIOS" underlyingMeasures="Quantity,ClosePrice">
+	<postProcessor name="ClosePrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePrice.Avg" folder="Price">
+		<properties>
+			<entry key="hierarchyName" value="StockSymbol"/>
+			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
+	<postProcessor name="OpenPrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenPrice.Avg" folder="Price">
+		<properties>
+			<entry key="hierarchyName" value="StockSymbol"/>
+			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
+	<postProcessor name="HighPrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="HighPrice.Avg" folder="Price">
+		<properties>
+			<entry key="hierarchyName" value="StockSymbol"/>
+			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
+	<postProcessor name="LowPrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="LowPrice.Avg" folder="Price">
+		<properties>
+			<entry key="hierarchyName" value="StockSymbol"/>
+			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIOS" underlyingMeasures="Quantity,ClosePrice.Avg" folder="Price">
 		<properties>
 			<entry key="leafLevels" value="PortfolioType@PortfolioType@PortfolioType,StockSymbol@StockSymbol@StockSymbol," />
 			<entry key="aggregationFunction" value="SUM" />
@@ -36,10 +61,10 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousDateValue,PortfolioValue" visible="true">
+	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousDateValue,PortfolioValue" folder="performance">
 	</postProcessor>
 
-	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" visible="true">
+	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" visible="true" folder="performance">
 		<properties>
 			<entry key="streamMeasureName" value="PortfolioValue" />
 			<entry key="timeHierarchyName" value="Date@Date@Time" />
@@ -48,11 +73,32 @@
 	</postProcessor>
 
 
-	<postProcessor name="Performance" pluginKey="PERFORMANCE" underlyingMeasures="PeriodReturn">
+	<postProcessor name="BenchmarkReturn" pluginKey="SHIFT_VALUE" underlyingMeasures="PeriodReturn" visible="false">
+		<properties>
+			<entry key="hierarchyToShift" value="PortfolioType@PortfolioType"/>
+			<entry key="shiftedValue" value="benchmark" />
+		</properties>
+	</postProcessor>
+	<postProcessor name="PerformanceDiff1" pluginKey="FORMULA" folder="performance">
+		<properties>
+			<entry key="formula" value="aggregatedValue[PeriodReturn],aggregatedValue[BenchmarkReturn],-" />
+		</properties>
+	</postProcessor>
+	<postProcessor name="PerformanceRelative1" pluginKey="FORMULA" folder="performance" >
+		<properties>
+			<entry key="formula" value="aggregatedValue[PeriodReturn],aggregatedValue[BenchmarkReturn],-,aggregatedValue[BenchmarkReturn],double[0],div,double[100],*" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="PerformanceDiff2" pluginKey="DIFF_PERFORMANCE" underlyingMeasures="PeriodReturn" folder="performance">
 		<properties>
 			<entry key="portfolioHierarchy" value="PortfolioType@PortfolioType" />
 		</properties>
 	</postProcessor>
-
+	<postProcessor name="PerformanceRelative2" pluginKey="RELATIVE_PERFORMANCE" underlyingMeasures="PeriodReturn" folder="performance">
+		<properties>
+			<entry key="portfolioHierarchy" value="PortfolioType@PortfolioType" />
+		</properties>
+	</postProcessor>
 
 </measures>

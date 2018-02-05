@@ -4,7 +4,6 @@ import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.IHierarchy;
 import com.quartetfs.biz.pivot.cube.hierarchy.IHierarchyInfo;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevel;
-import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.cube.hierarchy.impl.HierarchiesUtil;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
 import com.quartetfs.biz.pivot.impl.LocationUtil;
@@ -23,6 +22,7 @@ public class ShiftTotalValuePostProcessor extends ALocationShiftPostProcessor {
     public static final String PLUGIN_KEY = "SHIFT_VALUE";
 
     private List<IHierarchyInfo> hierarchiesInfo = new ArrayList<>();
+    private String shiftedValue = null;
 
     public ShiftTotalValuePostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
@@ -31,26 +31,28 @@ public class ShiftTotalValuePostProcessor extends ALocationShiftPostProcessor {
     @Override
     public void init(Properties properties) throws QuartetException {
         super.init(properties);
+
+        shiftedValue = properties.getProperty("shiftedValue"); // if not null then only one hierarchy to shift and not all member
         String[] hierarchiesProp = properties.getProperty("hierarchyToShift").split(",");
 
         for (String h : hierarchiesProp) {
             IHierarchy hierarchy = HierarchiesUtil.getHierarchy(getActivePivot(), h);
-
             if(hierarchy == null) {
                 throw new QuartetException("Unable to find hierarchy for property levelToShift: " + h);
             }
-
             IHierarchyInfo hierarchyInfo = hierarchy.getHierarchyInfo();
             hierarchiesInfo.add(hierarchyInfo);
         }
-
 
     }
 
     @Override
     public ILocation shiftLocation(ILocation evaluationLocation) {
-        //Return the Location asking for Yesterday
-        return LocationUtil.createModifiedLocation(evaluationLocation, hierarchiesInfo, new Object[][] {{ILevel.ALLMEMBER},{ILevel.ALLMEMBER}});
+        if (hierarchiesInfo.size() == 1) {
+            return LocationUtil.createModifiedLocation(evaluationLocation, hierarchiesInfo.get(0), new Object[] {ILevel.ALLMEMBER,shiftedValue});
+        } else {
+            return LocationUtil.createModifiedLocation(evaluationLocation, hierarchiesInfo, new Object[][] {{ILevel.ALLMEMBER},{ILevel.ALLMEMBER}});
+        }
     }
 
     @Override

@@ -7,11 +7,10 @@
 package com.qfs.sandbox.cfg.impl;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
+import com.qfs.desc.IDatastoreSchemaDescriptionPostProcessor;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
-import com.qfs.desc.impl.DatastoreSchemaDescription;
-import com.qfs.desc.impl.ReferenceDescription;
-import com.qfs.desc.impl.StoreDescriptionBuilder;
+import com.qfs.desc.impl.*;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.impl.ActivePivotConfig;
 import com.qfs.store.IDatastore;
@@ -26,7 +25,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -170,8 +171,13 @@ public class DatastoreConfig implements IDatastoreConfig {
         String logFolder = System.getProperty("user.home");
         ILogConfiguration logConfiguration = new LogConfiguration(logFolder);//the transaction logs will sit in your home directory, feel free to change the folder
 
+        Map<String, String> partitionningStoreMap = new HashMap<>();
+
         IDatastoreWithReplay dwr = new DatastoreBuilder()
                 .setSchemaDescription(datastoreSchemaDescription())
+                .addSchemaDescriptionPostProcessors(new DictionarizeStringsPostProcessor())
+                .addSchemaDescriptionPostProcessors(new UpdateOnlyIfDifferentForReferencedStoresPostProcessor())
+                .addSchemaDescriptionPostProcessors(new PartitioningPostProcessor(partitionningStoreMap))
                 .setLogConfiguration(logConfiguration)
                 .withReplay()
                 .build();

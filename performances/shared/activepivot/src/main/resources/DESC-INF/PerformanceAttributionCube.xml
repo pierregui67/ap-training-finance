@@ -38,6 +38,10 @@
                 <formatter uniqueName="[Measures].[RelativeWeight]"     format="DOUBLE[#,###.00]" />
                 <formatter uniqueName="[Measures].[PortfolioValue]"     format="DOUBLE[#,###.00]" />
                 <formatter uniqueName="[Measures].[Performance]"        format="DOUBLE[#,###.00]" />
+                <formatter uniqueName="[Measures].[PerformanceRelative1]"        format="DOUBLE[#.00]" />
+                <formatter uniqueName="[Measures].[PerformanceRelative2]"        format="DOUBLE[#.00]" />
+                <formatter uniqueName="[Measures].[PerformanceDiff1]"        format="DOUBLE[#.00]" />
+                <formatter uniqueName="[Measures].[PerformanceDiff2]"        format="DOUBLE[#.00]" />
             </formatters>
         </mdxContext>
     </sharedContexts>

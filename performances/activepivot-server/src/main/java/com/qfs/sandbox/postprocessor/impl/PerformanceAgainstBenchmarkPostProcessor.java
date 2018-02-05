@@ -24,16 +24,19 @@ import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
-@QuartetExtendedPluginValue(intf = IPostProcessor.class, key = PerformanceAgainstBenchmarkPostProcessor.PLUGIN_KEY)
-public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProcessor<Double> {
+public abstract class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProcessor<Double> {
 
-    public static final String PLUGIN_KEY = "PERFORMANCE";
+    //to initialize
+    private BiFunction<Double, Double ,Double> performanceFunction;
+    protected abstract BiFunction<Double, Double ,Double> setPerformanceFunction();
 
     private IHierarchyInfo portfolioHierarchyInfo = null;
 
     public PerformanceAgainstBenchmarkPostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
+        performanceFunction = setPerformanceFunction();
     }
 
     @Override
@@ -101,11 +104,11 @@ public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProce
                 Date date = (Date) r.getCoordinate(pointId,0,0);
                 Double benchmark = benchmarkDateMap.get(date);
                 if (portfolioValue == null) {
-                    retriever.write(outgoingPoint, benchmark);
-                } else if (benchmark == null) {
+                    retriever.write(outgoingPoint, - benchmark);
+                } else if (benchmark == null || benchmark.equals(new Double(0))) {
                     retriever.write(outgoingPoint, portfolioValue);
                 } else {
-                    Double diff = benchmark - portfolioValue;
+                    Double diff = performanceFunction.apply(benchmark,portfolioValue);
                     retriever.write(outgoingPoint, diff);
                 }
                 return true;
@@ -113,8 +116,4 @@ public class PerformanceAgainstBenchmarkPostProcessor extends AAdvancedPostProce
         });
     }
 
-    @Override
-    public String getType() {
-        return PLUGIN_KEY;
-    }
 }
