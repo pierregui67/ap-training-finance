@@ -59,6 +59,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String HISTORY_STORE = "HistoryStore";
     public static final String INDEX_STORE = "IndexStore";
     public static final String SECTORS_STORE = "SectorStore";
+    public static final String CUSTOM_INDEX_DATA_STORE = "CustomIndexStore";
 
     //Fields name
     public static final String STOCK_SYMBOL = "StockSymbol";
@@ -72,7 +73,6 @@ public class DatastoreConfig implements IDatastoreConfig {
 
     public static final String INDEX_NAME = "IndexName";
     public static final String COMPANY = "Company";
-    public static final String PRICE = "Price";
     public static final String STOCK_TYPE = "StockType";
     public static final String IDENTIFIER = "Identifier";
 
@@ -95,8 +95,21 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(QUANTITY, INT)
                 .withField(STOCK_SYMBOL).asKeyField()
                 .withField(POSITION_TYPE).dictionarized()
+                .withModuloPartitioning(PORTFOLIO_TYPE,4)
                 .build();
     }
+
+    @Bean
+    public IStoreDescription customIndexData() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(CUSTOM_INDEX_DATA_STORE)
+                .withField(STOCK_SYMBOL).asKeyField()
+                .withField(COMPANY)
+                .withField(CLOSE_PRICE, DOUBLE)
+                .withField(IDENTIFIER)
+                .build();
+    }
+
 
     @Bean
     public IStoreDescription historyStore() {
@@ -124,7 +137,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build();
     }
 
-    @Bean
+ /*   @Bean
     public IStoreDescription indexStore() {
         return new StoreDescriptionBuilder()
                 .withStoreName(INDEX_STORE)
@@ -138,6 +151,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(QUANTITY, INT)
                 .build();
     }
+    */
 
     /*REFERENCES*/
     @Bean
@@ -157,10 +171,12 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build());
 
         references.add(ReferenceDescription.builder()
-                .fromStore(INDEX_STORE).toStore(HISTORY_STORE)
-                .withName(INDEX_STORE + "To" + HISTORY_STORE)
-                .withMapping(DATE,DATE).withMapping(STOCK_SYMBOL,STOCK_SYMBOL)
+                .fromStore(PORTFOLIOS_STORE).toStore(CUSTOM_INDEX_DATA_STORE)
+                .withName(PORTFOLIOS_STORE + "To" + CUSTOM_INDEX_DATA_STORE)
+                .withMapping(STOCK_SYMBOL,STOCK_SYMBOL)
                 .build());
+
+
 
         return references;
     }
@@ -170,14 +186,11 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IDatastore datastore() {
         String logFolder = System.getProperty("user.home");
         ILogConfiguration logConfiguration = new LogConfiguration(logFolder);//the transaction logs will sit in your home directory, feel free to change the folder
-
-        Map<String, String> partitionningStoreMap = new HashMap<>();
-
+        
         IDatastoreWithReplay dwr = new DatastoreBuilder()
                 .setSchemaDescription(datastoreSchemaDescription())
                 .addSchemaDescriptionPostProcessors(new DictionarizeStringsPostProcessor())
                 .addSchemaDescriptionPostProcessors(new UpdateOnlyIfDifferentForReferencedStoresPostProcessor())
-                .addSchemaDescriptionPostProcessors(new PartitioningPostProcessor(partitionningStoreMap))
                 .setLogConfiguration(logConfiguration)
                 .withReplay()
                 .build();
@@ -211,7 +224,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(portfolioStore());
         stores.add(sectorStore());
         stores.add(historyStore());
-        stores.add(indexStore());
+        stores.add(customIndexData());
         return new DatastoreSchemaDescription(stores, references());
     }
 }

@@ -36,4 +36,12 @@
 		</hierarchy>
 	</dimension>
 
+
+	<dimension name="Identifier(Index)">
+		<hierarchy name="Identifier(Index)"></hierarchy>
+	</dimension>
+
+	<dimension name="Company(Index)">
+		<hierarchy name="Company(Index)"></hierarchy>
+	</dimension>
 </dimensions>

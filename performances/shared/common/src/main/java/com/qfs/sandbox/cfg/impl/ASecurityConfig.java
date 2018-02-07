@@ -108,8 +108,8 @@ public class ASecurityConfig {
 	public UserDetailsService userDetailsService() {
 		InMemoryUserDetailsManagerBuilder b = new InMemoryUserDetailsManagerBuilder()
 				.withUser("admin").password("admin").authorities(ROLE_USER, ROLE_ADMIN, ROLE_KPI, ROLE_CS_ROOT).and()
-				.withUser("user1").password("user1").authorities(ROLE_USER, ROLE_KPI, "ROLE_DESK_A").and()
-				.withUser("user2").password("user2").authorities(ROLE_USER, "ROLE_EUR_USD").and()
+				.withUser("user1").password("user1").authorities(ROLE_USER, ROLE_KPI, "ROLE_USER1").and()
+				.withUser("user2").password("user2").authorities(ROLE_USER, "ROLE_USER2").and()
 				.withUser("manager1").password("manager1").authorities(ROLE_USER, ROLE_KPI).and()
 				.withUser("manager2").password("manager2").authorities(ROLE_USER, ROLE_KPI).and();
 

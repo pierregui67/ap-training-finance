@@ -4,7 +4,42 @@
                   xsi:schemaLocation="http://www.quartetfs.com activepivot-types.xsd">
 
     <!-- Selection of the aggregate provider -->
-    <aggregateProvider pluginKey="BITMAP"/>
+    <aggregateProvider pluginKey="JUST_IN_TIME">
+
+        <partialProvider pluginKey="BITMAP">
+            <hierarchies include="true">
+                <hierarchy name="PortfolioType" dimension="PortfolioType" level="PortfolioType"/>
+                <hierarchy name="Date" dimension="Time" level="Date"/>
+                <hierarchy name="PortfolioType" dimension="PortfolioType" level="PortfolioType"/>
+            </hierarchies>
+            <measures>
+                <measure name="PotfolioValue"/>
+                <measure name="PeriodReturn" />
+                <measure name="CumulativeReturn" />
+                <measure name="PerformanceDiff1" />
+                <measure name="PerformanceDiff2" />
+                <measure name="PerformanceRelative1" />
+                <measure name="PerformanceRelative2" />
+            </measures>
+        </partialProvider>
+
+        <partialProvider pluginKey="BITMAP">
+            <hierarchies include="false">
+                <hierarchy name="StockSymbol" dimension="StockSymbol" level="StockSymbol"/>
+                <hierarchy name="SectorClassification" dimension="SectorClassification" level="Company"/>
+                <hierarchy name="PositionType" dimension="PositionType" level="PositionType"/>
+            </hierarchies>
+            <measures>
+                <measure name="PeriodReturn" />
+                <measure name="CumulativeReturn" />
+                <measure name="PerformanceDiff1" />
+                <measure name="PerformanceDiff2" />
+                <measure name="PerformanceRelative1" />
+                <measure name="PerformanceRelative2" />
+            </measures>
+        </partialProvider>
+
+    </aggregateProvider>
 
     <!-- true: Activation of factless hierarchies, across all dimensions -->
     <autoFactlessHierarchies>true</autoFactlessHierarchies>

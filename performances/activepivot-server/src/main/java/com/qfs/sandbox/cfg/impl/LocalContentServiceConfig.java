@@ -55,7 +55,7 @@ public class LocalContentServiceConfig extends AContentServiceConfig implements 
 				// Push the manager description from DESC-INF
 				.withXmlDescription()
 				// Push the context values stored in ROLE-INF
-//				.withContextValues("ROLE-INF")
+				.withContextValues("ROLE-INF")
 				.build();
 	}
 

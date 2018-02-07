@@ -12,6 +12,13 @@
 	<measure name="LowPrice.Avg" field="LowPrice" folder="Price" aggregationFunctions="AVG" visible="false" />
 	<measure name="ClosePrice.Avg" field="ClosePrice" folder="Price" aggregationFunctions="AVG" visible="false" />
 
+    <measure name="ClosePriceCustomData" field="ClosePrice(Index)" aggregationFunctions="AVG" visible="false"/>
+	<postProcessor name="ClosePrice_CustomData" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePriceCustomData">
+		<properties>
+			<entry key="hierarchyName" value="StockSymbol"/>
+			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
 
 	<postProcessor name="ClosePrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePrice.Avg" folder="Price">
 		<properties>

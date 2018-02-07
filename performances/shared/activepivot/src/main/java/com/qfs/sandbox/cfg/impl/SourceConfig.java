@@ -14,10 +14,13 @@ import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
+import com.qfs.msg.csv.filesystem.impl.SingleFileCSVTopic;
+import com.qfs.msg.csv.impl.CSVColumnParser;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.sandbox.publisher.impl.IndexTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
@@ -27,16 +30,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static com.qfs.literal.ILiteralType.DOUBLE;
+import static com.qfs.literal.ILiteralType.STRING;
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
 
 /**
@@ -86,9 +88,9 @@ public class SourceConfig {
         sector.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(sector);
 
-        DirectoryCSVTopic index = createDirectoryTopic(INDEX_TOPIC, env.getProperty("dir.index"), 8, "**.csv", true);
-        index.getParserConfiguration().setSeparator('|');
-        csvSource.addTopic(index);
+        SingleFileCSVTopic indexSingle = creatEeSingleFileIndexTopic(INDEX_TOPIC, env.getProperty("file.index"), true);
+        indexSingle.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(indexSingle);
 
         //dfine csv source properties
         Properties sourceProps = new Properties();
@@ -119,7 +121,6 @@ public class SourceConfig {
             }
         });
         channelFactory.setCalculatedColumns(HISTORY_TOPIC, HISTORY_STORE, csvCalculatedColumns);
-
         return channelFactory;
     }
 
@@ -131,7 +132,16 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE));
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIO_TOPIC, PORTFOLIOS_STORE));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTORS_STORE));
-        csvChannels.add(csvChannelFactory().createChannel(INDEX_TOPIC, INDEX_STORE));
+
+        List<IColumnCalculator> indexColumnCalulators = Arrays.asList(
+                new CSVColumnParser(COMPANY, STRING,1),
+                new CSVColumnParser(CLOSE_PRICE, DOUBLE,2),
+                new CSVColumnParser(IDENTIFIER, STRING,4)
+        );
+
+
+        csvChannels.add(csvChannelFactory().createChannel(INDEX_TOPIC, PORTFOLIOS_STORE,
+                            new IndexTuplePublisher(datastore, Arrays.asList(PORTFOLIOS_STORE, CUSTOM_INDEX_DATA_STORE)), indexColumnCalulators));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
@@ -168,6 +178,31 @@ public class SourceConfig {
         }
         String baseDir = env.getProperty("dir.base");
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
+    }
+
+    private SingleFileCSVTopic creatEeSingleFileIndexTopic(String topic, String file, boolean skipFirstLine) {
+  /*      CSVParserConfiguration cfg = new CSVParserConfiguration(
+//                Arrays.asList("INDEX","COMPANY","PRICE","SYMBOL","IDENTIFIER","TYPE","DATE","VOLUME")
+                Arrays.asList(PORTFOLIO_TYPE, COMPANY, CLOSE_PRICE, STOCK_SYMBOL, IDENTIFIER, STOCK_TYPE, DATE, QUANTITY)
+        );*/
+        Map<Integer,String> indexName = new HashMap<>();
+        indexName.put(0,PORTFOLIO_TYPE);
+        indexName.put(1,COMPANY);
+        indexName.put(2,CLOSE_PRICE);
+        indexName.put(3,STOCK_SYMBOL);
+        indexName.put(4,IDENTIFIER);
+        indexName.put(5,POSITION_TYPE);
+        indexName.put(6,DATE);
+        indexName.put(7,QUANTITY);
+
+        CSVParserConfiguration cfg = new CSVParserConfiguration(8);
+        cfg.setColumns(indexName);
+
+        if (skipFirstLine) {
+            cfg.setNumberSkippedLines(1);//skip the first line
+        }
+        String baseDir = env.getProperty("dir.base");
+        return new SingleFileCSVTopic(topic, cfg, Paths.get(baseDir,file),watcherService());
     }
 
     private void printStoreSizes() {

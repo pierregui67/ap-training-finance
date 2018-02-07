@@ -15,6 +15,11 @@
             <field name="StockSymbol"/>
 
 
+            <field name="ClosePrice(Index)" expression="PortfolioStoreToCustomIndexStore/ClosePrice" />
+            <field name="Identifier(Index)" expression="PortfolioStoreToCustomIndexStore/Identifier" />
+            <field name="Company(Index)" expression="PortfolioStoreToCustomIndexStore/Company" />
+
+
             <field name="OpenPrice" expression="PortfolioStoreToHistoryStore/OpenPrice" />
             <field name="HighPrice" expression="PortfolioStoreToHistoryStore/HighPrice"/>
             <field name="LowPrice" expression="PortfolioStoreToHistoryStore/LowPrice"/>
