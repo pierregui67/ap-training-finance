@@ -4,6 +4,12 @@
 	<!-- Namespace declaration -->
 	<XmlSchema namespace="http://www.quartetfs.com" elementFormDefault="QUALIFIED" />
 
-
+	<Class name="com.qfs.sandbox.contextvalue.impl.CurrencyContextValue">
+		<XmlRootElement name="CurrencyContextValue" />
+		<XmlType />
+		<Method name="getCurrency">
+			<XmlAttribute name="currency" required="true" />
+		</Method>
+	</Class>
 	
 </jaxb-intros>

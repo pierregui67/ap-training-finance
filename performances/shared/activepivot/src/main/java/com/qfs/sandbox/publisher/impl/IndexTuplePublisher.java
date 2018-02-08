@@ -18,8 +18,15 @@ public class IndexTuplePublisher extends TuplePublisher<IFileInfo<String>>{
 
     private static final Logger LOGGER = Logger.getLogger(IndexTuplePublisher.class.getSimpleName());
 
+    private boolean autocommit = false;
+
     public IndexTuplePublisher(IDatastore datastore, Collection<String> stores) {
         super(datastore, stores);
+    }
+
+    public IndexTuplePublisher(IDatastore datastore, Collection<String> stores, boolean autocommit) {
+        super(datastore, stores);
+        this.autocommit = autocommit;
     }
 
     @Override
@@ -40,19 +47,38 @@ public class IndexTuplePublisher extends TuplePublisher<IFileInfo<String>>{
             customData.add(new Object[] {symbol, company, price, id});
         }
 
-        //try {
-            //getDatastore().getTransactionManager().startTransaction();
-            getDatastore().getTransactionManager().addAll(PORTFOLIOS_STORE, indexTuples);
-            getDatastore().getTransactionManager().addAll(CUSTOM_INDEX_DATA_STORE, customData);
-            /*getDatastore().getTransactionManager().commitTransaction();
+        //start transcation if needed
+        if (autocommit) {
+            startTransaction();
+        }
+        //push data to the cube
+        getDatastore().getTransactionManager().addAll(PORTFOLIOS_STORE, indexTuples);
+        getDatastore().getTransactionManager().addAll(CUSTOM_INDEX_DATA_STORE, customData);
+        //commit transaction if needed
+        if (autocommit) {
+            commitTransaction();
+        }
+    }
+
+    private void startTransaction() {
+        try {
+            getDatastore().getTransactionManager().startTransaction();
         } catch (DatastoreTransactionException e) {
-            LOGGER.warning("An error occured while publishing Index with publisher, will roll back");
+            LOGGER.warning("An error occured while publishing Index with publisher, will roll back " +  e.getMessage());
+        }
+    }
+
+    private  void commitTransaction() {
+        try{
+            getDatastore().getTransactionManager().commitTransaction();
+        } catch (DatastoreTransactionException e) {
+            LOGGER.warning("An error occured while publishing Index with publisher, will roll back" + e.getMessage());
             try {
                 getDatastore().getTransactionManager().rollbackTransaction();
             } catch (DatastoreTransactionException e1) {
-                LOGGER.severe("An error occured while rolling back current transaction for Index with publisher");
+                LOGGER.severe("An error occured while rolling back current transaction for Index with publisher" +e.getMessage());
             }
-        }*/
-
+        }
     }
+
 }

@@ -20,28 +20,51 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="ClosePrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePrice.Avg" folder="Price">
+	<postProcessor name="ClosePriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePrice.Avg" visible="false">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="OpenPrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenPrice.Avg" folder="Price">
+	<postProcessor name="ClosePrice" pluginKey="FOREX" underlyingMeasures="ClosePriceEur" folder="Price">
+		<properties>
+			<entry key="dateLevel" value="Date@Date@Time"/>
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="OpenPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenPrice.Avg" folder="Price">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="HighPrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="HighPrice.Avg" folder="Price">
+	<postProcessor name="OpenPrice" pluginKey="FOREX" underlyingMeasures="OpenPriceEur" folder="Price">
+		<properties>
+			<entry key="dateLevel" value="Date@Date@Time"/>
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="HighPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="HighPrice.Avg" folder="Price">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="LowPrice" pluginKey="MINIMUM_DEPTH" underlyingMeasures="LowPrice.Avg" folder="Price">
+	<postProcessor name="HighPrice" pluginKey="FOREX" underlyingMeasures="HighPriceEur" folder="Price">
+		<properties>
+			<entry key="dateLevel" value="Date@Date@Time"/>
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="LowPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="LowPrice.Avg" folder="Price">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
+	<postProcessor name="LowPrice" pluginKey="FOREX" underlyingMeasures="LowPriceEur" folder="Price">
+		<properties>
+			<entry key="dateLevel" value="Date@Date@Time"/>
 		</properties>
 	</postProcessor>
 

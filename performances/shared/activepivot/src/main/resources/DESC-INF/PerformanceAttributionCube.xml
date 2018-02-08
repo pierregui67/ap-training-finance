@@ -56,6 +56,9 @@
     </measures>
 
     <sharedContexts>
+        <!-- my custom default context value for currency -->
+        <CurrencyContextValue currency="EUR" />
+
         <!-- Query maximum execution time (before timeout cancellation) -->
         <queriesTimeLimit seconds="60"/>
 
