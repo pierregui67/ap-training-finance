@@ -1,8 +1,7 @@
 package com.qfs.sandbox.postprocessor.impl;
 
-import com.qfs.sandbox.contextvalue.ACurrencyContextValue;
+import com.qfs.sandbox.contextvalue.ICurrencyContextValue;
 import com.qfs.sandbox.contextvalue.impl.Currencies;
-import com.qfs.sandbox.contextvalue.impl.CurrencyContextValue;
 import com.qfs.store.IDatastoreVersion;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
@@ -20,7 +19,6 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import com.quartetfs.fwk.QuartetRuntimeException;
 import com.quartetfs.fwk.impl.Pair;
 
-import javax.xml.stream.Location;
 import java.util.Date;
 import java.util.Properties;
 
@@ -49,11 +47,11 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor<Double>
         }
         dateLevelInfo = dateLevel.getLevelInfo();
 
-        addContextDependency(ACurrencyContextValue.class);
+        addContextDependency(ICurrencyContextValue.class);
     }
 
     String getCurrency() {
-        ACurrencyContextValue currencyContext = getActivePivot().getContext().get(ACurrencyContextValue.class);
+        ICurrencyContextValue currencyContext = getActivePivot().getContext().get(ICurrencyContextValue.class);
         if (currencyContext == null) {
             throw new QuartetRuntimeException("Cannot retrieve the currency context from post-processor " + getType());
         }

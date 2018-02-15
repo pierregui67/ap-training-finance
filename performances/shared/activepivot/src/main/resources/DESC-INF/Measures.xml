@@ -2,7 +2,11 @@
 <measures xmlns="http://www.quartetfs.com"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
-	
+
+
+	<nativeMeasure name="contributors.COUNT" alias="Count" formatter="INT[#,###]" />
+	<nativeMeasure name="update.TIMESTAMP" alias="Timestamp" formatter="DATE[HH:mm:ss]" />
+
 	<!--Your measures and postprocessors here-->
 	<measure name="Quantity" field="Quantity" folder="quantities" aggregationFunctions="SUM" />
 	<measure name="Volume.Sum" field="Volume" folder="quantities" aggregationFunctions="SUM" />
@@ -20,81 +24,95 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="ClosePriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePrice.Avg" visible="false">
+	<postProcessor name="ClosePriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="ClosePrice.Avg" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="ClosePrice" pluginKey="FOREX" underlyingMeasures="ClosePriceEur" folder="Price">
+	<postProcessor name="ClosePrice" pluginKey="FOREX" underlyingMeasures="ClosePriceEur" folder="Price"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="dateLevel" value="Date@Date@Time"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="OpenPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenPrice.Avg" folder="Price">
+	<postProcessor name="OpenPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenPrice.Avg" visible="false"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="OpenPrice" pluginKey="FOREX" underlyingMeasures="OpenPriceEur" folder="Price">
+	<postProcessor name="OpenPrice" pluginKey="FOREX" underlyingMeasures="OpenPriceEur" folder="Price"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="dateLevel" value="Date@Date@Time"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="HighPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="HighPrice.Avg" folder="Price">
+	<postProcessor name="HighPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="HighPrice.Avg" visible="false"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="HighPrice" pluginKey="FOREX" underlyingMeasures="HighPriceEur" folder="Price">
+	<postProcessor name="HighPrice" pluginKey="FOREX" underlyingMeasures="HighPriceEur" folder="Price"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="dateLevel" value="Date@Date@Time"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="LowPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="LowPrice.Avg" folder="Price">
+	<postProcessor name="LowPriceEur" pluginKey="MINIMUM_DEPTH" underlyingMeasures="LowPrice.Avg" visible="false"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbol"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
-	<postProcessor name="LowPrice" pluginKey="FOREX" underlyingMeasures="LowPriceEur" folder="Price">
+	<postProcessor name="LowPrice" pluginKey="FOREX" underlyingMeasures="LowPriceEur" folder="Price"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="dateLevel" value="Date@Date@Time"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIOS" underlyingMeasures="Quantity,ClosePrice.Avg" folder="Price">
+	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIOS" underlyingMeasures="Quantity,ClosePrice.Avg" folder="Price"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="leafLevels" value="PortfolioType@PortfolioType@PortfolioType,StockSymbol@StockSymbol@StockSymbol," />
 			<entry key="aggregationFunction" value="SUM" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="TotalPortfolioValue" pluginKey="SHIFT_VALUE" underlyingMeasures="PortfolioValue" visible="false">
+	<postProcessor name="TotalPortfolioValue" pluginKey="SHIFT_VALUE" underlyingMeasures="PortfolioValue" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyToShift" value="SectorClassification@SectorClassification,StockSymbol@StockSymbol"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="RelativeWeight" pluginKey="WEIGHT" underlyingMeasures="TotalPortfolioValue,PortfolioValue">
+	<postProcessor name="RelativeWeight" pluginKey="WEIGHT" underlyingMeasures="TotalPortfolioValue,PortfolioValue"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 	</postProcessor>
 
-	<postProcessor name="PreviousDateValue" pluginKey="PreviousValue" visible="false">
+	<postProcessor name="PreviousDateValue" pluginKey="PreviousValue" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="streamMeasureName" value="PortfolioValue" />
 			<entry key="timeHierarchyName" value="Date@Date@Time" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousDateValue,PortfolioValue" folder="performance">
+	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousDateValue,PortfolioValue" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 	</postProcessor>
 
-	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" visible="true" folder="performance">
+	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" visible="true" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="streamMeasureName" value="PortfolioValue" />
 			<entry key="timeHierarchyName" value="Date@Date@Time" />
@@ -103,31 +121,46 @@
 	</postProcessor>
 
 
-	<postProcessor name="BenchmarkReturn" pluginKey="SHIFT_VALUE" underlyingMeasures="PeriodReturn" visible="false">
+	<postProcessor name="BenchmarkReturn" pluginKey="SHIFT_VALUE" underlyingMeasures="PeriodReturn" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyToShift" value="PortfolioType@PortfolioType"/>
 			<entry key="shiftedValue" value="benchmark" />
 		</properties>
 	</postProcessor>
-	<postProcessor name="PerformanceDiff1" pluginKey="FORMULA" folder="performance">
+	<postProcessor name="PerformanceDiff1" pluginKey="FORMULA" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="formula" value="aggregatedValue[PeriodReturn],aggregatedValue[BenchmarkReturn],-" />
 		</properties>
 	</postProcessor>
-	<postProcessor name="PerformanceRelative1" pluginKey="FORMULA" folder="performance" >
+	<postProcessor name="PerformanceRelative1" pluginKey="FORMULA" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="formula" value="aggregatedValue[PeriodReturn],aggregatedValue[BenchmarkReturn],-,aggregatedValue[BenchmarkReturn],double[0],div,double[100],*" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PerformanceDiff2" pluginKey="DIFF_PERFORMANCE" underlyingMeasures="PeriodReturn" folder="performance">
+	<postProcessor name="PerformanceDiff2" pluginKey="DIFF_PERFORMANCE" underlyingMeasures="PeriodReturn" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="portfolioHierarchy" value="PortfolioType@PortfolioType" />
 		</properties>
 	</postProcessor>
-	<postProcessor name="PerformanceRelative2" pluginKey="RELATIVE_PERFORMANCE" underlyingMeasures="PeriodReturn" folder="performance">
+	<postProcessor name="PerformanceRelative2" pluginKey="RELATIVE_PERFORMANCE" underlyingMeasures="PeriodReturn" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="portfolioHierarchy" value="PortfolioType@PortfolioType" />
+		</properties>
+	</postProcessor>
+
+	<!-- This post processor works together with the currency pair analysis hierarchy-->
+	<postProcessor name="ForexRate" pluginKey="FOREX_RATE" folder="Forex" formatter="DOUBLE[#,###.0000]"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
+		<properties>
+			<entry key="underlyingMeasures" value="contributors.COUNT"/>
+			<entry key="level" value="CurrencyPair@Forex@Forex" />
+			<entry key="dateLevel" value="Date@Date@Time" />
 		</properties>
 	</postProcessor>
 

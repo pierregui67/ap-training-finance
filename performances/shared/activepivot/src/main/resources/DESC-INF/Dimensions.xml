@@ -44,4 +44,18 @@
 	<dimension name="Company(Index)">
 		<hierarchy name="Company(Index)"></hierarchy>
 	</dimension>
+
+	<dimension name="Forex">
+		<hierarchy name="Forex" allMember="false" factless="true">
+			<properties>
+				<entry key="storeName" value="ForexStore"/>
+			</properties>
+			<level name="CurrencyPair" >
+				<properties>
+					<entry key="fieldName" value="CurrencyPair"/>
+				</properties>
+			</level>
+		</hierarchy>
+	</dimension>
+
 </dimensions>

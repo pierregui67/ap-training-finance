@@ -195,6 +195,9 @@ public class SourceConfig {
             topicsToListen.put(PORTFOLIO_TOPIC,PORTFOLIOS_STORE);
             topicsToListen.put(HISTORY_TOPIC,HISTORY_STORE);
             topicsToListen.put(SECTOR_TOPIC,SECTORS_STORE);
+
+            topicsToListen.put(FOREX_TOPIC,FOREX_STORE);
+
 //            topicsToListen.put(INDEX_TOPIC,PORTFOLIOS_STORE);
             Map<String, ITuplePublisher<IFileInfo<String>>> tuplePublisherToUse = new HashMap<>();
             //tuplePublisherToUse.put(INDEX_TOPIC, new IndexTuplePublisher(datastore, Arrays.asList(PORTFOLIOS_STORE, CUSTOM_INDEX_DATA_STORE),true));

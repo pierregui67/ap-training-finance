@@ -1,12 +1,12 @@
 package com.qfs.sandbox.contextvalue.impl;
 
-import com.qfs.sandbox.contextvalue.ACurrencyContextValue;
+import com.qfs.sandbox.contextvalue.ICurrencyContextValue;
 import com.quartetfs.biz.pivot.context.IContextValue;
 import com.quartetfs.biz.pivot.context.impl.AContextValue;
 
 import java.util.Objects;
 
-public final class CurrencyContextValue extends AContextValue implements ACurrencyContextValue{
+public final class CurrencyContextValue extends AContextValue implements ICurrencyContextValue {
 
     private String currency;
 
@@ -41,6 +41,6 @@ public final class CurrencyContextValue extends AContextValue implements ACurren
 
     @Override
     public Class<? extends IContextValue> getContextInterface() {
-        return ACurrencyContextValue.class;
+        return ICurrencyContextValue.class;
     }
 }
