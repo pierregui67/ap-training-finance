@@ -4,11 +4,15 @@
                    xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
     <!-- Selection of fields from the datastore -->
-    <datastoreSelection baseStore="BaseStore">
+    <datastoreSelection baseStore="Company">
         <fields>
 
-            <!--Your fields here-->
-            <field name="SampleField"/>
+            <!--Portfolio Fields-->
+            <field name="Name"/>
+            <field name="Sector"/>
+            <field name="Industry"/>
+            <field name="StockSymbol"/>
+
 
         </fields>
     </datastoreSelection>

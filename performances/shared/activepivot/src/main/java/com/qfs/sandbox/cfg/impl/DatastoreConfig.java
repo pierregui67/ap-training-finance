@@ -6,10 +6,17 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
+import static com.qfs.literal.ILiteralType.DOUBLE;
+import static com.qfs.literal.ILiteralType.INT;
+import static com.qfs.literal.ILiteralType.LONG;
+import static com.qfs.literal.ILiteralType.OBJECT;
+import static com.qfs.literal.ILiteralType.STRING;
+
 import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
+import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.literal.ILiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -46,28 +53,116 @@ public class DatastoreConfig implements IDatastoreConfig {
 
     private static final Logger LOGGER = Logger.getLogger(DatastoreConfig.class.getSimpleName());
 
-    // Define you datastores here:
+    // ///////////////////////////////////////////////
+    // Datastores definition :
 
+    /** Name of the Stock Price History store */
+    public static final String STOCK_PRICE_HISTORY_NAME = "Stock Price History";
+
+    /** Name of the Portfolio store */
+    public static final String PORTFOLIO_NAME = "Portfolio";
+
+    /** Name of the Company's informations store */
+    public static final String COMPANY_INFORMATIONS_NAME = "Company";
+
+    // Should not be defined here but in model.impl.Trade.java. Cf Sandbox.
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
+
+    // ///////////////////////////////////////////////
+    // History store fields
+
+    public static final String HISTORY_STOCK_SYMBOL = "StockSymbol";
+    public static final String HISTORY_DATE = "Date";
+    public static final String HISTORY_OPEN = "Open";
+    public static final String HISTORY_HIGH = "High";
+    public static final String HISTORY_LOW = "Low";
+    public static final String HISTORY_CLOSE = "Close";
+    public static final String HISTORY_VOLUME = "Volume";
+    public static final String HISTORY_ADJ_CLOSE = "AdjClose";
+
+    // ///////////////////////////////////////////////
+    // Portfolio store fields
+
+    public static final String PORTFOLIO_DATE = "Date";
+    public static final String PORTFOLIO_TYPE = "Type";
+    public static final String PORTFOLIO_NUMBER_STOCKS = "NumberStocks";
+    public static final String PORTFOLIO_STOCK_SYMBOL = "StockSymbol";
+    public static final String PORTFOLIO_POSITION_TYPE = "PositionType";
+
+    // ///////////////////////////////////////////////
+    // Company Informations store fields
+
+    public static final String COMPANY_STOCK_SYMBOL = "StockSymbol";
+    public static final String COMPANY_NAME = "Name";
+    public static final String COMPANY_SECTOR = "Sector";
+    public static final String COMPANY_INDUSTRY = "Industry";
+
+    // ////////////////////////////////////////////////
+    // Stores
+
+    /** @return the description of the stock price history store */
     @Bean
-    public IStoreDescription baseStore() {
-        return new StoreDescriptionBuilder().withStoreName("BaseStore")
-                .withField(SAMPLE_FIELD, ILiteralType.STRING).asKeyField()
+    public IStoreDescription historyStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(STOCK_PRICE_HISTORY_NAME)
+                .withField(HISTORY_STOCK_SYMBOL, STRING).asKeyField()
+                .withField(HISTORY_DATE, "date[" + DATE_PATTERN + "]")
+                .withField(HISTORY_OPEN, DOUBLE)
+                .withField(HISTORY_HIGH, DOUBLE)
+                .withField(HISTORY_LOW, DOUBLE)
+                .withField(HISTORY_CLOSE, DOUBLE)
+                .withField(HISTORY_VOLUME,DOUBLE) // TODO : Is it really useful to use DOUBLE instead of INT ?
+                .withField(HISTORY_ADJ_CLOSE, DOUBLE)
                 .updateOnlyIfDifferent()
                 .build();
     }
 
-    // Define your references here:
+    /** @return the description of the portfolio store */
+    @Bean
+    public IStoreDescription portfolioStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(PORTFOLIO_NAME)
+                .withField(PORTFOLIO_DATE, "date[" + DATE_PATTERN + "]")
+                .withField(PORTFOLIO_TYPE, STRING).asKeyField()
+                .withField(PORTFOLIO_NUMBER_STOCKS, DOUBLE) // TODO : Is it really useful to use DOUBLE instead of INT ?
+                .withField(PORTFOLIO_STOCK_SYMBOL, STRING).asKeyField()
+                .withField(PORTFOLIO_POSITION_TYPE, STRING)
+                .updateOnlyIfDifferent()
+                .build();
+    }
 
+    /** @return the description of the company informations store */
+    @Bean
+    public IStoreDescription companyInformationsStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(COMPANY_INFORMATIONS_NAME)
+                .withField(COMPANY_STOCK_SYMBOL, STRING).asKeyField()
+                .withField(COMPANY_NAME, STRING).asKeyField()
+                .withField(COMPANY_SECTOR, STRING)
+                .withField(COMPANY_INDUSTRY, STRING)
+                .updateOnlyIfDifferent()
+                .build();
+    }
+
+    // ////////////////////////////////////////////////
+    // References
+
+    /** @return the references between stores */
     @Bean
     public Collection<IReferenceDescription> references() {
         final Collection<IReferenceDescription> references = new LinkedList<>();
-
-//        references.add(ReferenceDescription.builder()
-//                .fromStore(...)
-//                .toStore(...)
-//                .withName(...)
-//                .withMapping(...)
-//                .build());
+        references.add(ReferenceDescription.builder() // TODO : Automatic importation of ReferenceDescription.builder(). Correct ? From where ?
+                .fromStore(STOCK_PRICE_HISTORY_NAME)
+                .toStore(PORTFOLIO_NAME)
+                .withName("StockPriceHistoryToPortfolio")
+                .withMapping(HISTORY_STOCK_SYMBOL, PORTFOLIO_STOCK_SYMBOL)
+                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore(STOCK_PRICE_HISTORY_NAME)
+                .toStore(COMPANY_INFORMATIONS_NAME)
+                .withName("StockPriceHistoryToCompanyInformations")
+                .withMapping(HISTORY_STOCK_SYMBOL, COMPANY_STOCK_SYMBOL)
+                .build());
 
         return references;
     }
@@ -111,10 +206,9 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IDatastoreSchemaDescription datastoreSchemaDescription() {
         final Collection<IStoreDescription> stores = new LinkedList<>();
 
-//      Add all you stores here
-
-        stores.add(baseStore());
-
+        stores.add(historyStoreDescription());
+        stores.add(portfolioStoreDescription());
+        stores.add(companyInformationsStoreDescription());
         return new DatastoreSchemaDescription(stores, references());
     }
 }
