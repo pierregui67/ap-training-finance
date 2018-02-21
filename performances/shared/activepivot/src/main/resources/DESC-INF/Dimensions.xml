@@ -10,4 +10,9 @@
 			<level name="Industry"/>
 		</hierarchy>
 	</dimension>
+
+	<dimension name="Date" />
+    <dimension name="StockSymbol" />
+    <dimension name="Type" />
+
 </dimensions>
