@@ -26,9 +26,17 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,SumClose">
+    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,SumClose" folder="postProc">
         <properties>
             <entry key="DimensionName" value="StockSymbol" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="PV" pluginKey="PV" folder="postProc" underlyingMeasures="NumberStocks,SumClose" >
+        <properties>
+            <entry key="leaflevels" value="CurrencyLevel" />
+            <entry key="aggregationFunction" value="SUM" />
+            <entry key="outputType" value="double" />
         </properties>
     </postProcessor>
 

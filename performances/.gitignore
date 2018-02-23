@@ -1,9 +1,0 @@
-/bin
-content_service.mv.db
-
-# Database temporary files
-*.mv.db
-*.trace.db
-*.lock.db
-
-shared/activepivot/src/main/resources/activepivot-types.xsd
