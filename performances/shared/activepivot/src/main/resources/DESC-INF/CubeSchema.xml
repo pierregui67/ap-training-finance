@@ -28,9 +28,6 @@
             <field name="Sector" expression="PortfoliosToCompanyInformations/Sector"/>
             <field name="Industry" expression="PortfoliosToCompanyInformations/Industry"/>
 
-
-
-
         </fields>
     </datastoreSelection>
 

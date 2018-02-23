@@ -8,11 +8,22 @@
 		<hierarchy name="CompaniesRegroupement">
 			<level name="Sector"/>
 			<level name="Industry"/>
+            <level name="Name"/>
 		</hierarchy>
 	</dimension>
 
-	<dimension name="Date" />
+    <dimension name="Time" type="TIME">
+        <hierarchy name="HistoricalDates" allMember="false">
+
+            <level name="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
+                <!-- add comparator -->
+                <comparator pluginKey="ReverseOrder" />
+            </level>
+        </hierarchy>
+    </dimension>
+
     <dimension name="StockSymbol" />
+
     <dimension name="Type" />
 
 </dimensions>

@@ -2,7 +2,35 @@
 <measures xmlns="http://www.quartetfs.com"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
-	
+
+	<!--Measures-->
+    <measure name="SumOpen" field="Open" folder="data" aggregationFunctions="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="AvgOpen" field="Open" folder="data" aggregationFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="SumHigh" field="High" folder="data" aggregationFunctions="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="AvgHigh" field="High" folder="data" aggregationFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="SumLow" field="Low" folder="data" aggregatedFunctions="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="AvgLow" field="Low" folder="data" aggregatedFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="SumClose" field="Close" folder="data" aggregatedFunctions="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="AvgClose" field="Close" folder="data" aggregatedFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure field="Volume" folder="data" aggregatedFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="SumAdjClose" field="AdjClose" folder="data" aggregatedFunctions="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="AvgAdjClose" field="AdjClose" folder="data" aggregatedFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="NumberStocks" field="NumberStocks" folder="data" aggregatedFunctions="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" />
+
+
 	<!--Your measures and postprocessors here-->
+    <postProcessor name="minDepth" pluginKey="MINIMUM_DEPTH" underlyingMeasures="SumOpen" folder="postProc" >
+        <properties>
+            <entry key="hierarchyName" value="StockSymbol" />
+            <entry key="minimumDepth" value="1" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,SumClose">
+        <properties>
+            <entry key="DimensionName" value="StockSymbol" />
+        </properties>
+    </postProcessor>
+
 
 </measures>

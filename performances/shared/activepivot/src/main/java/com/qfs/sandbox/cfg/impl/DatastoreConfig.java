@@ -7,6 +7,7 @@
 package com.qfs.sandbox.cfg.impl;
 
 import static com.qfs.literal.ILiteralType.DOUBLE;
+import static com.qfs.literal.ILiteralType.INT;
 import static com.qfs.literal.ILiteralType.STRING;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
@@ -16,12 +17,14 @@ import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.server.cfg.IDatastoreConfig;
+import com.qfs.server.cfg.impl.ActivePivotConfig;
 import com.qfs.store.IDatastore;
 import com.qfs.store.build.impl.DatastoreBuilder;
 import com.qfs.store.log.ILogConfiguration;
 import com.qfs.store.log.ReplayException;
 import com.qfs.store.log.impl.LogConfiguration;
 import com.qfs.store.transaction.IDatastoreWithReplay;
+import com.quartetfs.biz.pivot.definitions.impl.ActivePivotDatastorePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,12 +43,15 @@ import java.util.logging.Logger;
 @Configuration
 public class DatastoreConfig implements IDatastoreConfig {
 
-    private static final String SAMPLE_FIELD = "SampleField";
     /**
      * Spring environment, automatically wired
      */
     @Autowired
     private Environment env;
+
+    /** {@link ActivePivotConfig} spring configuration */
+    @Autowired
+    protected ActivePivotConfig apConfig;
 
     private static final Logger LOGGER = Logger.getLogger(DatastoreConfig.class.getSimpleName());
 
@@ -107,7 +113,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(HISTORY_HIGH, DOUBLE)
                 .withField(HISTORY_LOW, DOUBLE)
                 .withField(HISTORY_CLOSE, DOUBLE)
-                .withField(HISTORY_VOLUME,DOUBLE) // TODO : Is it really useful to use DOUBLE instead of INT ?
+                .withField(HISTORY_VOLUME, INT) // TODO : Is it really useful to use DOUBLE instead of INT ?
                 .withField(HISTORY_ADJ_CLOSE, DOUBLE)
                 .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
@@ -175,6 +181,7 @@ public class DatastoreConfig implements IDatastoreConfig {
 
         IDatastoreWithReplay dwr = new DatastoreBuilder()
                 .setSchemaDescription(datastoreSchemaDescription())
+                .addSchemaDescriptionPostProcessors(ActivePivotDatastorePostProcessor.createFrom(apConfig.activePivotManagerDescription()))
                 .setLogConfiguration(logConfiguration)
                 .withReplay()
                 .build();

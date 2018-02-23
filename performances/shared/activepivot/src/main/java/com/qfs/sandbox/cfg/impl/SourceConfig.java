@@ -6,6 +6,7 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
+import com.qfs.condition.impl.BaseConditions;
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
@@ -21,6 +22,9 @@ import com.qfs.msg.impl.WatcherService;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
+import com.qfs.store.query.ICursor;
+import com.qfs.store.query.condition.impl.RecordQuery;
+import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
+import static org.jgroups.util.Util.assertEquals;
 
 @PropertySource(value = { "classpath:perf.properties" })
 
@@ -99,7 +104,7 @@ public class SourceConfig {
 
         // ////////////////////////////////////////////////
         // Add topics
-        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**.csv", false, mapPortfolios);
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**Initial**.csv", false, mapPortfolios);
         portfolios.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(portfolios);
 
@@ -110,8 +115,6 @@ public class SourceConfig {
         DirectoryCSVTopic company = createDirectoryTopic(COMPAGNY_INFORMATIONS_TOPIC, env.getProperty("dir.company"), 4, "**.csv", true, mapCompany);
         company.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(company);
-
-
 
         // TODO : what are those properties ?
         Properties sourceProps = new Properties();
@@ -133,7 +136,7 @@ public class SourceConfig {
                                          String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
                                          symbol = symbol.replace("PriceHistory_","");
                                          symbol = symbol.replace(".csv","");
-
+                                         symbol = symbol.replace("-", ".");
                                          return symbol;
                                      }
                                  });
@@ -161,7 +164,6 @@ public class SourceConfig {
         String baseDir = env.getProperty("dir.data");
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
-
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
@@ -182,6 +184,11 @@ public class SourceConfig {
         } else {
             // read data files without sending anything to the datastore (that data is already loaded by the log replayer): those files won't then be considered as new files when enabling real time
         }
+        /*datastore.getTransactionManager().
+        // check that the data was successfully loaded into the datastore
+        ICursor cursor = datastore.getLatestVersion().execute(
+                new RecordQuery("StockPriceHistory", BaseConditions.TRUE, Arrays.asList("StockSymbol", "Date", "Open", "High", "Low", "Close", "Volume", "AdjClose")));
+        assertEquals(8, DatastoreQueryHelper.getCursorSize(cursor));*/
 
         long elapsed = System.nanoTime() - before; // log that somewhere
         printStoreSizes();
