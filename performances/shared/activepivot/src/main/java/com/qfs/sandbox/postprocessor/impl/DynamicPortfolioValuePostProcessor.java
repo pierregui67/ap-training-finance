@@ -12,9 +12,7 @@ import java.util.Properties;
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = DynamicPortfolioValuePostProcessor.PLUGIN_KEY)
 public class DynamicPortfolioValuePostProcessor extends ADynamicAggregationPostProcessor<Double> {
 
-    public static final String PLUGIN_KEY = "PV";
-
-    private static final long serialVersionUID = 201410221517L;
+    public static final String PLUGIN_KEY = "PORTFOLIO_VALUE";
 
     /**
      * Constructor
@@ -28,13 +26,10 @@ public class DynamicPortfolioValuePostProcessor extends ADynamicAggregationPostP
 
     @Override
     protected Double evaluateLeaf(ILocation leafLocation, Object[] underlyingMeasures) {
-        return (double) underlyingMeasures[0] * (double) underlyingMeasures[1];
-    }
-
-    @Override
-    public void init(final Properties properties) throws QuartetException {
-        super.init(properties);
-        // addContextDependency(IReferenceCurrencyContext.class);
+        Double qty = (Double) underlyingMeasures[0];
+        Double price = (Double) underlyingMeasures[1];
+        Double pv = qty * price;
+        return pv;
     }
 
     @Override
