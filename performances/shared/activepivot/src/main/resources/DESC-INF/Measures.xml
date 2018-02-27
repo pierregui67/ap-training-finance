@@ -11,7 +11,7 @@
     <measure field="Volume" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]" />
     <measure name="NumberStocks" field="NumberStocks" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]" />
 
-	<!--Data formating : the prices should not be added when corresponding to different products-->
+	<!--The prices should not be added when corresponding to different products-->
     <!--However, one accepts to average price of different products-->
     <postProcessor name="Open.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OPEN.SUM" folder="data" >
         <properties>
@@ -30,7 +30,6 @@
     <!--One accepts to aggregate the stock number-->
 
     <!--Computing the portfolio value-->
-
     <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks,Close.AVG" >
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
@@ -40,35 +39,64 @@
     </postProcessor>
 
     <!--Computing the weight of the portfolio components-->
-    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" underlyingMeasures="PortfolioValue">
+    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden" underlyingMeasures="PortfolioValue">
         <properties>
-            <entry key="levelToShift" value="Type" />
+            <entry key="levelToShift" value="Name@CompaniesRegroupment@CompaniesRegroupment" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="Weights" pluginKey="FORMULA" folder="postProc">
+    <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc">
         <properties>
-            <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[TotalPortfolioValue],/" />
+            <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[TotalPortfolioValue],int[0],div" />
         </properties>
     </postProcessor>
 
-    <!--Computing the period performances-->
-    <postProcessor name="ShiftedPortfolioValue" pluginKey="SHIFTED_PORTFOLIO_VALUE" folder="Hidden" underlyingMeasures="PortfolioValue">
+    <!--Computing the period return-->
+    <postProcessor name="PeriodReturn" folder="postProc" pluginKey="FORMULA">
+        <properties>
+            <entry key="formula" value="((aggregatedValue[PortfolioValue],aggregatedValue[PreviousPortfolioValue],-),aggregatedValue[PreviousPortfolioValue],int[0],div),int[100],*" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="PreviousPortfolioValue" pluginKey="NeighborValue" folder="hidden">
+        <properties>
+            <entry key="timeHierarchyName" value="HistoricalDates" />
+            <entry key="streamMeasureName" value="PortfolioValue" />
+            <entry key="direction" value="previous" />
+            <entry key="memberToRemove" value="0" />
+            <entry key="reverseDimensionOrder" value="false" />
+        </properties>
+    </postProcessor>
+
+
+
+    <!--Computing the cumulative return-->
+    <postProcessor name="CumulativeReturn" pluginKey="FORMULA" folder="postProc">
+        <properties>
+            <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],/),int[100],*"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="InitialValue" pluginKey="INITIAL_VALUE" folder="hidden">
+        <properties>
+            <entry key="timeHierarchyName" value="HistoricalDates" />
+            <entry key="streamMeasureName" value="PortfolioValue" />
+            <entry key="reverseDimensionOrder" value="false" />
+            <entry key="memberToRemove" value="0" />
+        </properties>
+    </postProcessor>
+
+    <!-- Failed :( -->
+    <postProcessor name="TimeShiftedPortfolioValue" pluginKey="TIME_SHIFTED_PORTFOLIO_VALUE" folder="failed" underlyingMeasures="PortfolioValue">
         <properties>
             <entry key="levelToShift" value="Date@HistoricalDates@Time" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="ValuesVariation" folder="Hidden" pluginKey="FORMULA">
-        <properties>
-            <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[ShiftedPortfolioValue],-,aggregatedValue[ShiftedPortfolioValue],/" />
-        </properties>
-    </postProcessor>
-
-    <postProcessor name="PeriodPerformances" folder="postProc" pluginKey="Stream2Position">
+    <postProcessor name="PeriodPerformances" isIntrospectionMeasure="false" folder="failed" pluginKey="Stream2Position">
         <properties>
             <entry key="timeHierarchyName" value="HistoricalDates" />
-            <entry key="streamMeasureName" value="ValuesVariation" />
+            <entry key="streamMeasureName" value="PortfolioValue" />
             <entry key="positionType" value="CURRENT_STREAM" />
             <entry key="reverseDimensionOrder" value="false" />
         </properties>

@@ -4,8 +4,8 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 	
 	<!--Your dimensions here-->
-	<dimension name="CompaniesRegroupement">
-		<hierarchy name="CompaniesRegroupement">
+	<dimension name="CompaniesRegroupment">
+		<hierarchy name="CompaniesRegroupment">
 			<level name="Sector"/>
 			<level name="Industry"/>
             <level name="Name"/>
@@ -17,9 +17,10 @@
 
             <level name="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
                 <!-- add comparator -->
-                <comparator pluginKey="ReverseOrder" />
+                <!-- <comparator pluginKey="ReverseOrder" />-->
             </level>
         </hierarchy>
+
     </dimension>
 
     <dimension name="StockSymbol" />

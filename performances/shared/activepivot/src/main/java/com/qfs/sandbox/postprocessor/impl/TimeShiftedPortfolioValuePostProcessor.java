@@ -14,16 +14,19 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 import java.util.Properties;
 
-@QuartetExtendedPluginValue(intf= IPostProcessor.class, key=ShiftedPortfolioValuePostProcessor.PLUGIN_KEY)
-public class ShiftedPortfolioValuePostProcessor extends ALocationShiftPostProcessor<Double>{
+@QuartetExtendedPluginValue(intf=IPostProcessor.class, key=TimeShiftedPortfolioValuePostProcessor.PLUGIN_KEY)
+public class TimeShiftedPortfolioValuePostProcessor extends ALocationShiftPostProcessor<Double> {
 
-    public static final String PLUGIN_KEY="SHIFTED_PORTFOLIO_VALUE";
+    public static final String PLUGIN_KEY="TIME_SHIFTED_PORTFOLIO_VALUE";
+
+    public static int classic = 0;
 
     protected ILevelInfo levelToShift;
 
-    public ShiftedPortfolioValuePostProcessor (String name, IPostProcessorCreationContext creationContext) {
+    public TimeShiftedPortfolioValuePostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
     }
+
     @Override
     public void init(Properties properties) throws QuartetException {
         super.init(properties);
@@ -33,7 +36,9 @@ public class ShiftedPortfolioValuePostProcessor extends ALocationShiftPostProces
             throw new QuartetException("Unable to find level for property levelToShift: " + properties.getProperty("levelToShift"));
         }
         levelToShift = level.getLevelInfo();
+
     }
+
     @Override
     public ILocation shiftLocation(ILocation evaluationLocation) {
 
@@ -41,19 +46,32 @@ public class ShiftedPortfolioValuePostProcessor extends ALocationShiftPostProces
         if(LocationUtil.getDepth(evaluationLocation, levelToShift.getHierarchyInfo()) != 0) {
             //If the location has null then we are prefetching and the location is returned
             Object day = LocationUtil.getCoordinate(evaluationLocation, levelToShift);
-            if(day == null)
+            if (day == null) {
+                System.out.println("day == null");
                 return evaluationLocation;
+            }
             //If the day is 'Yesterday' then no aggregate should be retrieved, create an invalid location
-            if(day == "Yesterday")
-                return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[] {ILevel.ALLMEMBER, "MISSING_MEMBER"});
+            if (day == "Yesterday") {
+                System.out.println("day == \"Yesterday\"");
+                return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[]{ILevel.ALLMEMBER, "MISSING_MEMBER"});
+            }
         }
-
-        //Return the Location asking for Yesterday
+        System.out.println("Classic");
+        classic = classic + 1;
+        System.out.println(classic);
         return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[] {ILevel.ALLMEMBER, "Yesterday"});
     }
+
+    @Override
+    public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+        Double previousPV = (Double) underlyingMeasures[0];
+        System.out.println(previousPV);
+        return previousPV;
+    }
+
     @Override
     public String getType() {
         return this.PLUGIN_KEY;
     }
-
 }
+
