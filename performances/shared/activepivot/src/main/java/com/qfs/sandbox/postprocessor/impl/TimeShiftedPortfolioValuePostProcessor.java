@@ -50,16 +50,11 @@ public class TimeShiftedPortfolioValuePostProcessor extends ALocationShiftPostPr
                 System.out.println("day == null");
                 return evaluationLocation;
             }
-            //If the day is 'Yesterday' then no aggregate should be retrieved, create an invalid location
-            if (day == "Yesterday") {
-                System.out.println("day == \"Yesterday\"");
-                return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[]{ILevel.ALLMEMBER, "MISSING_MEMBER"});
-            }
         }
         System.out.println("Classic");
         classic = classic + 1;
         System.out.println(classic);
-        return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[] {ILevel.ALLMEMBER, "Yesterday"});
+        return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[] {"Yesterday"});
     }
 
     @Override

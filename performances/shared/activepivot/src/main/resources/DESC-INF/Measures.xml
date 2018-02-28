@@ -39,22 +39,28 @@
     </postProcessor>
 
     <!--Computing the weight of the portfolio components-->
-    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden" underlyingMeasures="PortfolioValue">
-        <properties>
-            <entry key="levelToShift" value="Name@CompaniesRegroupment@CompaniesRegroupment" />
-        </properties>
-    </postProcessor>
-
     <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc">
         <properties>
             <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[TotalPortfolioValue],int[0],div" />
         </properties>
     </postProcessor>
 
+    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden" underlyingMeasures="PortfolioValue">
+        <properties>
+            <entry key="levelToShift" value="Name@CompaniesRegroupment@CompaniesRegroupment" />
+        </properties>
+    </postProcessor>
+
     <!--Computing the period return-->
     <postProcessor name="PeriodReturn" folder="postProc" pluginKey="FORMULA">
         <properties>
-            <entry key="formula" value="((aggregatedValue[PortfolioValue],aggregatedValue[PreviousPortfolioValue],-),aggregatedValue[PreviousPortfolioValue],int[0],div),int[100],*" />
+            <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[PreviousPortfolioValue],-" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="PeriodReturnPercent" folder="postProc" pluginKey="FORMULA">
+        <properties>
+            <entry key="formula" value="(aggregatedValue[PeriodReturn],aggregatedValue[PreviousPortfolioValue],int[0],div),int[100],*" />
         </properties>
     </postProcessor>
 
@@ -68,10 +74,17 @@
         </properties>
     </postProcessor>
 
-
-
     <!--Computing the cumulative return-->
-    <postProcessor name="CumulativeReturn" pluginKey="FORMULA" folder="postProc">
+    <postProcessor name="CumulativeReturn" isIntrospectionMeasure="false" folder="postProc" pluginKey="Stream2Position">
+        <properties>
+            <entry key="timeHierarchyName" value="HistoricalDates" />
+            <entry key="streamMeasureName" value="PeriodReturn" />
+            <entry key="positionType" value="CURRENT_STREAM" />
+            <entry key="reverseDimensionOrder" value="false" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="CumulativeReturnPercent" pluginKey="FORMULA" folder="postProc">
         <properties>
             <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],/),int[100],*"/>
         </properties>
@@ -86,20 +99,41 @@
         </properties>
     </postProcessor>
 
-    <!-- Failed :( -->
-    <postProcessor name="TimeShiftedPortfolioValue" pluginKey="TIME_SHIFTED_PORTFOLIO_VALUE" folder="failed" underlyingMeasures="PortfolioValue">
+    <!--The difference in performance between portfolios-->
+    <postProcessor name="CompNDepth" pluginKey="MINIMUM_DEPTH" underlyingMeasures="CompareExample2Portfolio" folder="test" >
         <properties>
-            <entry key="levelToShift" value="Date@HistoricalDates@Time" />
+            <entry key="hierarchyName" value="Type" />
+            <entry key="minimumDepth" value="1" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="PeriodPerformances" isIntrospectionMeasure="false" folder="failed" pluginKey="Stream2Position">
+    <postProcessor name="CompareExample2Portfolio" pluginKey="FORMULA" folder="postProc">
         <properties>
-            <entry key="timeHierarchyName" value="HistoricalDates" />
-            <entry key="streamMeasureName" value="PortfolioValue" />
-            <entry key="positionType" value="CURRENT_STREAM" />
-            <entry key="reverseDimensionOrder" value="false" />
+            <entry key="formula" value="aggregatedValue[ExamplePV],aggregatedValue[BenchmarkPV],-"/>
         </properties>
     </postProcessor>
+
+    <postProcessor name="CompareExample2PortfolioPercent" pluginKey="FORMULA" folder="postProc">
+        <properties>
+            <entry key="formula" value="(aggregatedValue[CompareExample2Portfolio],aggregatedValue[BenchmarkPV],int[0],div),int[100],*"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="ExamplePV" folder="hidden" pluginKey="CHOOSE_PV_TYPE" underlyingMeasures="PortfolioValue">
+        <properties>
+            <entry key="levelToShift" value="Type@Type@Type" />
+            <entry key="hierarchyNameToForbid" value="Type" />
+            <entry key="portfolioType" value="exemple" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="BenchmarkPV" folder="hidden" pluginKey="CHOOSE_PV_TYPE" underlyingMeasures="PortfolioValue">
+        <properties>
+            <entry key="hierarchyNameToForbid" value="Type" />
+            <entry key="levelToShift" value="Type@Type@Type" />
+            <entry key="portfolioType" value="benchmark" />
+        </properties>
+    </postProcessor>
+
 
 </measures>
