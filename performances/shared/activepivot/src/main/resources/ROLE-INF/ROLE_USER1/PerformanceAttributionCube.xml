@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contexts xmlns="http://www.quartetfs.com"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.quartetfs.com ../../activepivot-types.xsd">
+
+    <subCubeProperties isAccessGranted="true">
+        <grantedMeasures />
+        <hierarchyRestrictions>
+            <hierarchy  dimension="CompaniesRegroupment" name="CompaniesRegroupment">
+                <allowedMember>
+                <memberPathPart xsi:type="xs:string" >AllMember</memberPathPart>
+                <memberPathPart xsi:type="xs:string" >Basic Materials</memberPathPart>
+                </allowedMember>
+                <allowedMember>
+                    <memberPathPart xsi:type="xs:string" >AllMember</memberPathPart>
+                    <memberPathPart xsi:type="xs:string" >Consumer Goods</memberPathPart>
+                </allowedMember>
+                <allowedMember>
+                    <memberPathPart xsi:type="xs:string" >AllMember</memberPathPart>
+                    <memberPathPart xsi:type="xs:string" >Industrial Goods</memberPathPart>
+                </allowedMember>
+            </hierarchy>
+        </hierarchyRestrictions>
+    </subCubeProperties>
+
+</contexts>
