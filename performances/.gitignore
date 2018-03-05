@@ -7,3 +7,7 @@ content_service.mv.db
 *.lock.db
 
 shared/activepivot/src/main/resources/activepivot-types.xsd
+
+# Data files
+#####################
+*.csv
