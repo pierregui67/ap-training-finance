@@ -3,8 +3,34 @@
                   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://www.quartetfs.com activepivot-types.xsd">
 
+
+
     <!-- Selection of the aggregate provider -->
-    <aggregateProvider pluginKey="BITMAP"/>
+    <aggregateProvider pluginKey="JUST_IN_TIME">
+        <properties>
+            <entry key="rangeSharing" value="true" />
+        </properties>
+
+        <partialProvider pluginKey="BITMAP">
+            <hierarchies>
+                <hierarchy name="Type"/>
+                <hierarchy name="HistoricalDates" />
+            </hierarchies>
+            <measures>
+                <measure name="Close.SUM"/>
+                <measure name="Volume.SUM" />
+                <measure name="NumberStocks.SUM" />
+                <measure name="PortfolioValue" />
+                <measure name="CumulativeReturn" />
+                <measure name="CumulativeReturnPercent" />
+                <measure name="PeriodReturn" />
+                <measure name="PeriodReturnPercent" />
+                <measure name="CompareExample2Portfolio" />
+                <measure name="CompareExample2PortfolioPercent" />
+            </measures>
+        </partialProvider>
+
+    </aggregateProvider>
 
     <!-- true: Activation of factless hierarchies, across all dimensions -->
     <autoFactlessHierarchies>true</autoFactlessHierarchies>
@@ -27,9 +53,11 @@
         <!-- Contextual configuration of the MDX engine -->
         <mdxContext>
             <formatters>
-
+                <formatter uniqueName="Volume.SUM" format="DOUBLE[#,###.00;-#,###.00]" />
             </formatters>
         </mdxContext>
+
+
     </sharedContexts>
 
 </pivotDescription>
