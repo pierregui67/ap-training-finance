@@ -4,23 +4,24 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
 	<!--Measures-->
-    <measure name="OPEN.SUM" field="Open" visible="false" formatter="DOUBLE[#,###.00;-#,###.00]" />
-    <measure name="Open.AVG" field="Open" visible="false" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
-    <measure name="CLOSE.SUM" field="Close" visible="false" formatter="DOUBLE[#,###.00;-#,###.00]" />
-    <measure name="Close.AVG" field="Close" visible="false" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
-    <measure field="Volume" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]" />
-    <measure name="NumberStocks" field="NumberStocks" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]" />
+    <measure name="OPEN.SUM" field="Open" visible="false" />
+    <measure name="Open.AVG" field="Open" visible="false" aggregation="AVG" />
+    <measure name="CLOSE.SUM" field="Close" visible="false" />
+    <measure name="Close.AVG" field="Close" visible="false" aggregation="AVG" />
+
+    <measure field="Volume" folder="data" formatter="DOUBLE[#,###;-#,###]" />
+    <measure field="NumberStocks" folder="data" formatter="DOUBLE[#,###;-#,###]" />
 
 	<!--The prices should not be added when corresponding to different products-->
     <!--However, one accepts to average price of different products-->
-    <postProcessor name="Open.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OPEN.SUM" folder="data" >
+    <postProcessor name="Open.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OPEN.SUM" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="hierarchyName" value="StockSymbol" />
             <entry key="minimumDepth" value="1" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="Close.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="CLOSE.SUM" folder="data" >
+    <postProcessor name="Close.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="CLOSE.SUM" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="hierarchyName" value="StockSymbol" />
             <entry key="minimumDepth" value="1" />
@@ -30,7 +31,7 @@
     <!--One accepts to aggregate the stock number-->
 
     <!--Computing the portfolio value-->
-    <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks,Close.AVG" >
+    <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks.SUM,Close.AVG" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="aggregatedFunctions" value="SUM" />
@@ -39,7 +40,7 @@
     </postProcessor>
 
     <!--Computing the weight of the portfolio components-->
-    <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc">
+    <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
         <properties>
             <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[TotalPortfolioValue],int[0],div" />
         </properties>
@@ -52,15 +53,15 @@
     </postProcessor>
 
     <!--Computing the period return-->
-    <postProcessor name="PeriodReturn" folder="postProc" pluginKey="FORMULA">
+    <postProcessor name="PeriodReturn" folder="postProc" pluginKey="FORMULA" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[PreviousPortfolioValue],-" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="PeriodReturnPercent" folder="postProc" pluginKey="FORMULA">
+    <postProcessor name="PeriodReturnPercent" folder="postProc" pluginKey="FORMULA" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
         <properties>
-            <entry key="formula" value="(aggregatedValue[PeriodReturn],aggregatedValue[PreviousPortfolioValue],int[0],div),int[100],*" />
+            <entry key="formula" value="(aggregatedValue[PeriodReturn],aggregatedValue[PreviousPortfolioValue],int[0],div)" />
         </properties>
     </postProcessor>
 
@@ -75,7 +76,7 @@
     </postProcessor>
 
     <!--Computing the cumulative return-->
-    <postProcessor name="CumulativeReturn" isIntrospectionMeasure="false" folder="postProc" pluginKey="Stream2Position">
+    <postProcessor name="CumulativeReturn" isIntrospectionMeasure="false" folder="postProc" pluginKey="Stream2Position" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="timeHierarchyName" value="HistoricalDates" />
             <entry key="streamMeasureName" value="PeriodReturn" />
@@ -84,9 +85,9 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="CumulativeReturnPercent" pluginKey="FORMULA" folder="postProc">
+    <postProcessor name="CumulativeReturnPercent" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
         <properties>
-            <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],/),int[100],*"/>
+            <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],/)"/>
         </properties>
     </postProcessor>
 
@@ -100,22 +101,15 @@
     </postProcessor>
 
     <!--The difference in performance between portfolios-->
-    <postProcessor name="CompNDepth" pluginKey="MINIMUM_DEPTH" underlyingMeasures="CompareExample2Portfolio" folder="test" >
-        <properties>
-            <entry key="hierarchyName" value="Type" />
-            <entry key="minimumDepth" value="1" />
-        </properties>
-    </postProcessor>
-
-    <postProcessor name="CompareExample2Portfolio" pluginKey="FORMULA" folder="postProc">
+    <postProcessor name="CompareExample2Portfolio" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="formula" value="aggregatedValue[ExamplePV],aggregatedValue[BenchmarkPV],-"/>
         </properties>
     </postProcessor>
 
-    <postProcessor name="CompareExample2PortfolioPercent" pluginKey="FORMULA" folder="postProc">
+    <postProcessor name="CompareExample2PortfolioPercent" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
         <properties>
-            <entry key="formula" value="(aggregatedValue[CompareExample2Portfolio],aggregatedValue[BenchmarkPV],int[0],div),int[100],*"/>
+            <entry key="formula" value="(aggregatedValue[CompareExample2Portfolio],aggregatedValue[BenchmarkPV],int[0],div)"/>
         </properties>
     </postProcessor>
 
@@ -134,6 +128,5 @@
             <entry key="portfolioType" value="benchmark" />
         </properties>
     </postProcessor>
-
 
 </measures>

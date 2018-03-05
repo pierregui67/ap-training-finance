@@ -65,6 +65,7 @@ public class SourceConfig {
     public static final String STOCK_PRICE_HISTORY_TOPIC = STOCK_PRICE_HISTORY_NAME;
     public static final String COMPAGNY_INFORMATIONS_TOPIC = COMPANY_INFORMATIONS_NAME;
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_NAME;
+    public static final String GDAXI_TOPIC = GDAXI_NAME;
 
     // CSV Load
     @Bean
@@ -100,8 +101,6 @@ public class SourceConfig {
         mapCompany.put(2, COMPANY_SECTOR);
         mapCompany.put(3, COMPANY_INDUSTRY);
 
-
-
         // ////////////////////////////////////////////////
         // Add topics
         DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**Initial**.csv", false, mapPortfolios);
@@ -116,21 +115,18 @@ public class SourceConfig {
         company.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(company);
 
-        // TODO : what are those properties ?
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
         csvSource.configure(sourceProps);
         return csvSource;
-
     }
 
     @Bean
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
 
-        List<IColumnCalculator<ILineReader>> csvCalculatedColumns = new ArrayList<IColumnCalculator<ILineReader>>();
-
-        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>("StockSymbol") {
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsStockS = new ArrayList<IColumnCalculator<ILineReader>>();
+        csvCalculatedColumnsStockS.add(new AColumnCalculator<ILineReader>("StockSymbol") {
                                      @Override
                                      public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                                          String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
@@ -142,7 +138,8 @@ public class SourceConfig {
                                  });
 
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
- 		channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_NAME, csvCalculatedColumns);
+        channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_NAME, csvCalculatedColumnsStockS);
+
         return channelFactory;
     }
 
@@ -184,17 +181,14 @@ public class SourceConfig {
         } else {
             // read data files without sending anything to the datastore (that data is already loaded by the log replayer): those files won't then be considered as new files when enabling real time
         }
-        /*datastore.getTransactionManager().
-        // check that the data was successfully loaded into the datastore
-        ICursor cursor = datastore.getLatestVersion().execute(
-                new RecordQuery("StockPriceHistory", BaseConditions.TRUE, Arrays.asList("StockSymbol", "Date", "Open", "High", "Low", "Close", "Volume", "AdjClose")));
-        assertEquals(8, DatastoreQueryHelper.getCursorSize(cursor));*/
 
         long elapsed = System.nanoTime() - before; // log that somewhere
         printStoreSizes();
 
         return null;
     }
+
+
 
     private void printStoreSizes() {
         //add some logging
