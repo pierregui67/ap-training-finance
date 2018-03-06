@@ -6,7 +6,6 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
-import com.qfs.condition.impl.BaseConditions;
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
@@ -15,16 +14,18 @@ import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
+import com.qfs.msg.csv.impl.CSVColumnParser;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
+import com.qfs.source.ITuplePublisher;
+import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
-import com.qfs.store.query.ICursor;
-import com.qfs.store.query.condition.impl.RecordQuery;
-import com.qfs.store.query.impl.DatastoreQueryHelper;
+import com.qfs.store.log.impl.LogWriteException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,10 +63,11 @@ public class SourceConfig {
     public static final char COMMA_SEPARATOR = ',';
     public static final char BAR_SEPARATOR = '|';
 
-    public static final String STOCK_PRICE_HISTORY_TOPIC = STOCK_PRICE_HISTORY_NAME;
-    public static final String COMPAGNY_INFORMATIONS_TOPIC = COMPANY_INFORMATIONS_NAME;
-    public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_NAME;
-    public static final String GDAXI_TOPIC = GDAXI_NAME;
+    public static final String STOCK_PRICE_HISTORY_TOPIC = STOCK_PRICE_HISTORY_STORE_NAME;
+    public static final String COMPAGNY_INFORMATIONS_TOPIC = COMPANY_INFORMATIONS_STORE_NAME;
+    public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
+    public static final String INDICES_TOPIC = INDICES_STORE_NAME;
+    public static final String FOREX_TOPIC = FOREX_STORE_NAME;
 
     // CSV Load
     @Bean
@@ -81,7 +83,7 @@ public class SourceConfig {
         // Create Maps
         Map <Integer, String> mapPortfolios = new HashMap<Integer, String>();
         mapPortfolios.put(0, PORTFOLIOS_DATE);
-        mapPortfolios.put(1, PORTFOLIOS_TYPE);
+        mapPortfolios.put(1, PORTFOLIOS_INDEX_NAME);
         mapPortfolios.put(2, PORTFOLIOS_NUMBER_STOCKS);
         mapPortfolios.put(3, PORTFOLIOS_STOCK_SYMBOL);
         mapPortfolios.put(4, PORTFOLIOS_POSITION_TYPE);
@@ -101,6 +103,19 @@ public class SourceConfig {
         mapCompany.put(2, COMPANY_SECTOR);
         mapCompany.put(3, COMPANY_INDUSTRY);
 
+        Map <Integer, String> mapGDAXI = new HashMap<Integer, String>();
+        mapGDAXI.put(0, INDICES_INDEX_NAME);  //
+        mapGDAXI.put(1, INDICES_NAME_COMPANY);  //
+        mapGDAXI.put(2, INDICES_CLOSE_VALUE);   //
+        mapGDAXI.put(3, INDICES_STOCK_SYMBOL);  //
+        mapGDAXI.put(4, INDICES_IDENTIFIER);    //
+        mapGDAXI.put(6, INDICES_DATE);          //
+
+        Map <Integer, String> mapForex = new HashMap<Integer, String>();
+        mapForex.put(0, FOREX_INITIAL_CURRENCY);
+        mapForex.put(1, FOREX_TARGET_CURRENCY);
+        mapForex.put(2, FOREX_RATE);
+
         // ////////////////////////////////////////////////
         // Add topics
         DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**Initial**.csv", false, mapPortfolios);
@@ -115,9 +130,18 @@ public class SourceConfig {
         company.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(company);
 
+        DirectoryCSVTopic gdaxi = createDirectoryTopic(INDICES_TOPIC, env.getProperty("dir.index"), 8, "**GDAXI.csv", false, mapGDAXI);
+        gdaxi.getParserConfiguration().setSeparator(BAR_SEPARATOR);
+        csvSource.addTopic(gdaxi);
+
+        DirectoryCSVTopic forex = createDirectoryTopic(FOREX_TOPIC,"", 3, "**forex.csv", false, mapForex);
+        forex.getParserConfiguration().setSeparator(BAR_SEPARATOR);
+        csvSource.addTopic(forex);
+
         Properties sourceProps = new Properties();
-        sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
+        sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, Integer.toString(Runtime.getRuntime().availableProcessors()) );
         csvSource.configure(sourceProps);
+
         return csvSource;
     }
 
@@ -125,8 +149,9 @@ public class SourceConfig {
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
 
+        // We retrieve the stock symbol of the file being parsing (concerns the Stock Price History)
         List<IColumnCalculator<ILineReader>> csvCalculatedColumnsStockS = new ArrayList<IColumnCalculator<ILineReader>>();
-        csvCalculatedColumnsStockS.add(new AColumnCalculator<ILineReader>("StockSymbol") {
+        csvCalculatedColumnsStockS.add(new AColumnCalculator<ILineReader>(HISTORY_STOCK_SYMBOL) {
                                      @Override
                                      public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                                          String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
@@ -137,8 +162,15 @@ public class SourceConfig {
                                      }
                                  });
 
+        // We retrieve the fields of the Indices files which will be included in the Portfolio store, that means which
+        // will not be contains in the custom Indices stores.
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsIndices = new ArrayList<IColumnCalculator<ILineReader>>();
+        csvCalculatedColumnsIndices.add( new CSVColumnParser(PORTFOLIOS_POSITION_TYPE, "String", 5) );
+        csvCalculatedColumnsIndices.add( new CSVColumnParser(PORTFOLIOS_NUMBER_STOCKS, "Integer", 7) );
+
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
-        channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_NAME, csvCalculatedColumnsStockS);
+        channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumnsStockS);
+        channelFactory.setCalculatedColumns(INDICES_TOPIC, INDICES_STORE_NAME, csvCalculatedColumnsIndices);
 
         return channelFactory;
     }
@@ -161,21 +193,25 @@ public class SourceConfig {
         String baseDir = env.getProperty("dir.data");
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
+
+
+
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
-        //csv
+
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
 		csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(COMPAGNY_INFORMATIONS_TOPIC));
+        csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
 
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
             ITransactionManager transactionManager = datastore.getTransactionManager();
             transactionManager.startTransaction();
-            //fetch the 2 sources and perform a bulk transaction
+            //fetch the sources and perform a bulk transaction
             csvSource().fetch(csvChannels);
             transactionManager.commitTransaction();
         } else {
@@ -183,12 +219,35 @@ public class SourceConfig {
         }
 
         long elapsed = System.nanoTime() - before; // log that somewhere
-        printStoreSizes();
 
         return null;
     }
 
+    @Bean
+    public IMessageChannel<String, Object> gdaxiChannel() {
+        Collection<String> stores = new ArrayList();
+        stores.add(PORTFOLIOS_STORE_NAME);
+        stores.add(INDICES_STORE_NAME);
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new IndicesTuplePublisher<String>(datastore, stores));
+        return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, publisher);
+    }
 
+
+    /**
+     * Real time updates task: once the initial load is done,
+     * we start a task to create/update trades
+     * @return Void
+     * @throws LogWriteException if it fails to listen to csv files.
+     */
+    @Bean
+    @DependsOn(value = { "initialLoad", "gdaxiChannel" })
+    public Void gdaxiRealTime() throws LogWriteException {
+        // Start real time time update
+        csvSource().listen(gdaxiChannel());
+        printStoreSizes();
+
+        return null;
+    }
 
     private void printStoreSizes() {
         //add some logging

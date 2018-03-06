@@ -59,19 +59,19 @@ public class DatastoreConfig implements IDatastoreConfig {
     // Datastores definition :
 
     /** Name of the Stock Price History store */
-    public static final String STOCK_PRICE_HISTORY_NAME = "StockPriceHistory";
+    public static final String STOCK_PRICE_HISTORY_STORE_NAME = "StockPriceHistory";
 
     /** Name of the Portfolio store */
-    public static final String PORTFOLIOS_NAME = "Portfolios";
+    public static final String PORTFOLIOS_STORE_NAME = "Portfolios";
 
     /** Name of the Company's informations store */
-    public static final String COMPANY_INFORMATIONS_NAME = "Company";
+    public static final String COMPANY_INFORMATIONS_STORE_NAME = "Company";
 
     /** Name of the GDAXI store */
-    public static final String GDAXI_NAME = "GDAXI";
+    public static final String INDICES_STORE_NAME = "Indices";
 
     /** Name of the Forex store */
-    public static final String FOREX_NAME = "Forex";
+    public static final String FOREX_STORE_NAME = "Forex";
 
     // Should not be defined here but in model.impl.Trade.java. Cf Sandbox.
     public static final String DATE_PATTERN = "yyyy-MM-dd";
@@ -92,7 +92,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     // Portfolio store fields
 
     public static final String PORTFOLIOS_DATE = "Date";
-    public static final String PORTFOLIOS_TYPE = "Type";
+    public static final String PORTFOLIOS_INDEX_NAME = "IndexName";
     public static final String PORTFOLIOS_NUMBER_STOCKS = "NumberStocks";
     public static final String PORTFOLIOS_STOCK_SYMBOL = "StockSymbol";
     public static final String PORTFOLIOS_POSITION_TYPE = "PositionType";
@@ -108,14 +108,14 @@ public class DatastoreConfig implements IDatastoreConfig {
     // ///////////////////////////////////////////////
     // GDAXI store fields
 
-    public static final String GDAXI_GDAXI = "GDAXI";
-    public static final String GDAXI_NAME_COMPANY = "Name";
-    public static final String GDAXI_CLOSE_VALUE = "Close";
-    public static final String GDAXI_STOCK_SYMBOL = "StockSymbol";
-    public static final String GDAXI_NUMBERX = "NumberX";
-    public static final String GDAXI_EQUITY = "Equity";
-    public static final String GDAXI_DATE = "Date";
-    public static final String GDAXI_VOLUME = "Volume";
+    public static final String INDICES_INDEX_NAME = "IndexName";
+    public static final String INDICES_NAME_COMPANY = "Name";
+    public static final String INDICES_CLOSE_VALUE = "Close";
+    public static final String INDICES_STOCK_SYMBOL = "StockSymbol";
+    public static final String INDICES_IDENTIFIER = "Identifier";
+    //public static final String INDICES_POSITION_TYPE = "PositionType";
+    public static final String INDICES_DATE = "Date";
+    //public static final String INDICES_VOLUME = "Volume";
 
     // ///////////////////////////////////////////////
     // Forex store fields
@@ -130,18 +130,18 @@ public class DatastoreConfig implements IDatastoreConfig {
     @Bean
     public IStoreDescription historyStoreDescription() {
         return new StoreDescriptionBuilder()
-                .withStoreName(STOCK_PRICE_HISTORY_NAME)
+                .withStoreName(STOCK_PRICE_HISTORY_STORE_NAME)
                 .withField(HISTORY_STOCK_SYMBOL, STRING).asKeyField()
                 .withField(HISTORY_DATE, "date[" + DATE_PATTERN + "]").asKeyField()
                 .withField(HISTORY_OPEN, DOUBLE)
                 .withField(HISTORY_HIGH, DOUBLE)
                 .withField(HISTORY_LOW, DOUBLE)
                 .withField(HISTORY_CLOSE, DOUBLE)
-                .withField(HISTORY_VOLUME, INT) // TODO : Is it really useful to use DOUBLE instead of INT ?
+                .withField(HISTORY_VOLUME, INT)
                 .withField(HISTORY_ADJ_CLOSE, DOUBLE)
                 .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
-                .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL,8)
+                .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL, Runtime.getRuntime().availableProcessors())
                 .build();
     }
 
@@ -149,15 +149,15 @@ public class DatastoreConfig implements IDatastoreConfig {
     @Bean
     public IStoreDescription portfolioStoreDescription() {
         return new StoreDescriptionBuilder()
-                .withStoreName(PORTFOLIOS_NAME)
+                .withStoreName(PORTFOLIOS_STORE_NAME)
                 .withField(PORTFOLIOS_DATE, "date[" + DATE_PATTERN + "]").asKeyField()
-                .withField(PORTFOLIOS_TYPE, STRING).asKeyField()
+                .withField(PORTFOLIOS_INDEX_NAME, STRING).asKeyField()
                 .withField(PORTFOLIOS_NUMBER_STOCKS, DOUBLE)
                 .withField(PORTFOLIOS_STOCK_SYMBOL, STRING).asKeyField()
                 .withField(PORTFOLIOS_POSITION_TYPE, STRING)
                 .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
-                .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL,8)
+                .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL, Runtime.getRuntime().availableProcessors())
                 .build();
     }
 
@@ -165,30 +165,29 @@ public class DatastoreConfig implements IDatastoreConfig {
     @Bean
     public IStoreDescription companyInformationsStoreDescription() {
         return new StoreDescriptionBuilder()
-                .withStoreName(COMPANY_INFORMATIONS_NAME)
+                .withStoreName(COMPANY_INFORMATIONS_STORE_NAME)
                 .withField(COMPANY_STOCK_SYMBOL, STRING).asKeyField()
                 .withField(COMPANY_NAME, STRING)
                 .withField(COMPANY_SECTOR, STRING)
                 .withField(COMPANY_INDUSTRY, STRING)
                 .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
-                .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL,8)
+                .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL, Runtime.getRuntime().availableProcessors())
                 .build();
     }
 
+    // TODO : select the truelly useful fields in this section
     /** @return the description of the GDAXI store */
     @Bean
-    public IStoreDescription GDAXIStoreDescription() {
+    public IStoreDescription IndicesStoreDescription() {
         return new StoreDescriptionBuilder()
-                .withStoreName(GDAXI_NAME)
-                .withField(GDAXI_GDAXI, STRING)
-                .withField(GDAXI_NAME_COMPANY, STRING)
-                .withField(GDAXI_STOCK_SYMBOL, STRING).asKeyField()
-                .withField(GDAXI_CLOSE_VALUE, DOUBLE)
-                .withField(GDAXI_DATE, "date[" + DATE_PATTERN + "]").asKeyField()
-                .withField(GDAXI_EQUITY, STRING)
-                .withField(GDAXI_VOLUME, DOUBLE)
-                .withField(GDAXI_NUMBERX, DOUBLE)
+                .withStoreName(INDICES_STORE_NAME)
+                .withField(INDICES_INDEX_NAME, STRING).dictionarized().asKeyField()
+                .withField(INDICES_NAME_COMPANY, STRING)
+                .withField(INDICES_CLOSE_VALUE, DOUBLE)
+                .withField(INDICES_STOCK_SYMBOL, STRING).asKeyField()
+                .withField(INDICES_IDENTIFIER, DOUBLE)
+                .withField(INDICES_DATE, "date[" + DATE_PATTERN + "]").asKeyField()
                 .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
                 .build();
@@ -196,9 +195,9 @@ public class DatastoreConfig implements IDatastoreConfig {
 
     /** @return the description of the Forex store */
     @Bean
-    public IStoreDescription ForexStoreDescription() {
+    public IStoreDescription forexStoreDescription() {
         return new StoreDescriptionBuilder()
-                .withStoreName(FOREX_NAME)
+                .withStoreName(FOREX_STORE_NAME)
                 .withField(FOREX_INITIAL_CURRENCY, STRING).asKeyField()
                 .withField(FOREX_TARGET_CURRENCY, STRING).asKeyField()
                 .withField(FOREX_RATE, DOUBLE)
@@ -215,23 +214,23 @@ public class DatastoreConfig implements IDatastoreConfig {
     public Collection<IReferenceDescription> references() {
         final Collection<IReferenceDescription> references = new LinkedList<>();
         references.add(ReferenceDescription.builder()
-                .fromStore(PORTFOLIOS_NAME)
-                .toStore(STOCK_PRICE_HISTORY_NAME)
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(STOCK_PRICE_HISTORY_STORE_NAME)
                 .withName("PortfoliosToStockPriceHistory")
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
                 .withMapping(PORTFOLIOS_DATE, HISTORY_DATE)
                 .build());
         references.add(ReferenceDescription.builder()
-                .fromStore(PORTFOLIOS_NAME)
-                .toStore(COMPANY_INFORMATIONS_NAME)
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(COMPANY_INFORMATIONS_STORE_NAME)
                 .withName("PortfoliosToCompanyInformations")
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, COMPANY_STOCK_SYMBOL)
                 .build());
         references.add(ReferenceDescription.builder()
-                .fromStore(PORTFOLIOS_NAME)
-                .toStore(GDAXI_NAME)
-                .withName("PortfolioToGDXI")
-                .withMapping(PORTFOLIOS_STOCK_SYMBOL, GDAXI_STOCK_SYMBOL)
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(INDICES_STORE_NAME)
+                .withName("PortfolioToIndices")
+                .withMapping(PORTFOLIOS_STOCK_SYMBOL, INDICES_STOCK_SYMBOL)
                 .build());
 
         return references;
@@ -280,7 +279,8 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(historyStoreDescription());
         stores.add(portfolioStoreDescription());
         stores.add(companyInformationsStoreDescription());
-        stores.add(GDAXIStoreDescription());
+        stores.add(IndicesStoreDescription());
+        stores.add(forexStoreDescription());
         return new DatastoreSchemaDescription(stores, references());
     }
 }

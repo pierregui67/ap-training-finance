@@ -25,6 +25,6 @@
 
     <dimension name="StockSymbol" />
 
-    <dimension name="Type" />
+    <dimension name="IndexName" />
 
 </dimensions>

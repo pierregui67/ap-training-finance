@@ -13,7 +13,7 @@
 
         <partialProvider pluginKey="BITMAP">
             <hierarchies>
-                <hierarchy name="Type"/>
+                <hierarchy name="IndexName"/>
                 <hierarchy name="HistoricalDates" />
             </hierarchies>
             <measures>
@@ -31,6 +31,9 @@
         </partialProvider>
 
     </aggregateProvider>
+
+    <!--Sharing the computed data and using the cache-->
+    <aggregatesCacheDescription size="2" include="true" selectedMeasures="CompareExample2Portfolio, PeriodReturn, CumulativeReturn, PortfolioValue"/>
 
     <!-- true: Activation of factless hierarchies, across all dimensions -->
     <autoFactlessHierarchies>true</autoFactlessHierarchies>

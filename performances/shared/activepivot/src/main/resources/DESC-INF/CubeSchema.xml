@@ -9,7 +9,7 @@
 
             <!--Portfolios Fields-->
             <field name="Date" expression="Date"/>
-            <field name="Type" expression="Type"/>
+            <field name="IndexName" expression="IndexName"/>
             <field name="NumberStocks" expression="NumberStocks"/>
             <field name="StockSymbol" expression="StockSymbol"/>
             <field name="PositionType" expression="PositionType"/>
