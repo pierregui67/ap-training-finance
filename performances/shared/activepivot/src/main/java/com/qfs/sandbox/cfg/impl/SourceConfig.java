@@ -23,6 +23,7 @@ import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.log.impl.LogWriteException;
@@ -204,7 +205,7 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
 		csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(COMPAGNY_INFORMATIONS_TOPIC));
-        csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
+        //csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
 
 
         long before = System.nanoTime();
@@ -232,6 +233,10 @@ public class SourceConfig {
         return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, publisher);
     }
 
+    @Bean IMessageChannel<String, Object> forexChannel() {
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new TuplePublisher<String>(datastore, FOREX_STORE_NAME));
+        return csvChannelFactory().createChannel(FOREX_TOPIC, FOREX_STORE_NAME, publisher);
+    }
 
     /**
      * Real time updates task: once the initial load is done,
@@ -244,6 +249,7 @@ public class SourceConfig {
     public Void gdaxiRealTime() throws LogWriteException {
         // Start real time time update
         csvSource().listen(gdaxiChannel());
+        csvSource().listen(forexChannel());
         printStoreSizes();
 
         return null;
