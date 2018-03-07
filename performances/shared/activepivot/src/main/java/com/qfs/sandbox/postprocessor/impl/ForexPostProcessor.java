@@ -1,6 +1,5 @@
 package com.qfs.sandbox.postprocessor.impl;
 
-import com.qfs.sandbox.cfg.impl.DatastoreConfig;
 import com.qfs.sandbox.context.IReferenceCurrency;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
