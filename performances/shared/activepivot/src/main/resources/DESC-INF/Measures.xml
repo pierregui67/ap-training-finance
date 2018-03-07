@@ -3,25 +3,35 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
+
+
 	<!--Measures-->
-    <measure name="OPEN.SUM" field="Open" visible="false" />
-    <measure name="Open.AVG" field="Open" visible="false" aggregation="AVG" />
     <measure name="CLOSE.SUM" field="Close" visible="false" />
     <measure name="Close.AVG" field="Close" visible="false" aggregation="AVG" />
 
     <measure field="Volume" folder="data" formatter="DOUBLE[#,###;-#,###]" />
     <measure field="NumberStocks" folder="data" formatter="DOUBLE[#,###;-#,###]" />
 
-	<!--The prices should not be added when corresponding to different products-->
-    <!--However, one accepts to average price of different products-->
-    <postProcessor name="Open.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OPEN.SUM" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <!--Forex : we carry out the currency conversion of the basis value that is to mean the hidden one
+        Thus only the forex's values will have an impact on the following computation-->
+    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM">
         <properties>
-            <entry key="hierarchyName" value="StockSymbol" />
-            <entry key="minimumDepth" value="1" />
+            <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
+            <entry key="initialCurrency" value="EUR" />
+            <entry key="targetCurrency" value="JPY" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="Close.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="CLOSE.SUM" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG">
+        <properties>
+            <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
+            <entry key="initialCurrency" value="EUR" />
+        </properties>
+    </postProcessor>
+
+	<!--The prices should not be added when corresponding to different products
+        However, one accepts to average price of different products-->
+    <postProcessor name="Forex.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="FOREX.SUM" folder="forex" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="hierarchyName" value="StockSymbol" />
             <entry key="minimumDepth" value="1" />
@@ -31,7 +41,7 @@
     <!--One accepts to aggregate the stock number-->
 
     <!--Computing the portfolio value-->
-    <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks.SUM,Close.AVG" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks.SUM,Forex.AVG" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="aggregatedFunctions" value="SUM" />
@@ -46,7 +56,18 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden" underlyingMeasures="PortfolioValue">
+    <!--We compute the TotalPortfolioValue regarding to two dimensions : StockSymbol and CompaniesRegroupement
+        Thus we combine two TOTAL_PORTFOLIO_VALUE post-processor. That suit well.
+        However it is not optimized nor an intelligent design.
+        TODO : One should better recode the TOTAL_PORTFOLIO_VALUE post-processor so as to accept a
+        TODO : list of level to shift ! -->
+    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden" underlyingMeasures="TotalPortfolioValueIntermed">
+        <properties>
+            <entry key="levelToShift" value="StockSymbol@StockSymbol@StockSymbol" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="TotalPortfolioValueIntermed" pluginKey="TOTAL_PORTFOLIO_VALUE" visible="false" underlyingMeasures="PortfolioValue">
         <properties>
             <entry key="levelToShift" value="Name@CompaniesRegroupment@CompaniesRegroupment" />
         </properties>

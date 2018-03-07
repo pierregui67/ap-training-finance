@@ -60,6 +60,10 @@
             </formatters>
         </mdxContext>
 
+        <!--TODO : understand what does this line
+            TODO : Sure, the line is needed ! -->
+        <referenceCurrency referenceCurrency="GBP" />
+
 
     </sharedContexts>
 
