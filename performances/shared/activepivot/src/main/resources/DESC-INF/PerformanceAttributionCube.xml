@@ -33,7 +33,7 @@
     </aggregateProvider>
 
     <!--Sharing the computed data and using the cache-->
-    <aggregatesCacheDescription size="2" include="true" selectedMeasures="CompareExample2Portfolio, PeriodReturn, CumulativeReturn, PortfolioValue"/>
+    <aggregatesCacheDescription size="0" include="true" selectedMeasures="CompareExample2Portfolio, PeriodReturn, CumulativeReturn, PortfolioValue"/>
 
     <!-- true: Activation of factless hierarchies, across all dimensions -->
     <autoFactlessHierarchies>true</autoFactlessHierarchies>
@@ -60,9 +60,7 @@
             </formatters>
         </mdxContext>
 
-        <!--TODO : understand what does this line
-            TODO : Sure, the line is needed ! -->
-        <referenceCurrency />
+        <referenceCurrency currency="EUR"/>
 
 
     </sharedContexts>

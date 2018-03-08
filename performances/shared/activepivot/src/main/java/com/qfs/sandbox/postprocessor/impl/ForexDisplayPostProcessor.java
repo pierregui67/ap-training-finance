@@ -4,26 +4,34 @@ import com.qfs.logging.MessagesCore;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
 import com.quartetfs.biz.pivot.ILocation;
+import com.quartetfs.biz.pivot.cube.hierarchy.IHierarchy;
 import com.quartetfs.biz.pivot.cube.hierarchy.IHierarchyInfo;
+import com.quartetfs.biz.pivot.cube.hierarchy.impl.HierarchiesUtil;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
 import com.quartetfs.biz.pivot.impl.PointLocationListReader;
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
+import com.quartetfs.biz.pivot.postprocessing.PostProcessorInitializationException;
 import com.quartetfs.biz.pivot.postprocessing.impl.ABasicPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.impl.ADynamicAggregationPostProcessor;
 import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import com.quartetfs.fwk.util.MessageUtil;
 
-import java.util.Iterator;
 import java.util.Properties;
 
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_RATE;
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_STORE_NAME;
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key =ForexDisplayPostProcessor.PLUGIN_KEY)
-public class ForexDisplayPostProcessor extends ADynamicAggregationPostProcessor {
+public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
+//public class ForexDisplayPostProcessor extends ADynamicAggregationPostProcessor<Double> {
 
-    public static final String PLUGIN_KEY = "FOREX_DISPLAY";
+    public static final String PLUGIN_KEY = "DISPLAY";
+
+    public static final String HIER_NAME = "hierName";
+    protected String hierName;
+
+    protected int hierarchyOrdinal;
 
     /**
      * Constructor
@@ -36,50 +44,61 @@ public class ForexDisplayPostProcessor extends ADynamicAggregationPostProcessor 
     }
 
     @Override
-    protected Object evaluateLeaf(ILocation leafLocation, Object[] underlyingMeasures) {
-        Double rate;
-        //leafLocation.getCoordinate();
-        Iterator it = ((PointLocationListReader) leafLocation).getMapping().getHierarchies().iterator();
-        int cpt = 0;
-        IHierarchyInfo level;
-        boolean found = false;
-        while (it.hasNext() || !found){
-            level = (IHierarchyInfo) it.next();
-            // TODO : Should not be hard written.
-            // Either create a global variable
-            // Either add a key field in the PP which ask for the level to search.
-            if (level.getName().equals("ForexHier")) {
-                found = true;
-            }
-            else
-                cpt ++;
+    public void init(Properties properties) throws QuartetException {
+        super.init(properties);
+
+        if(evaluator == null) {
+            throw new IllegalStateException(MessageUtil.formMessage(MessagesCore.BUNDLE,
+                    MessagesCore.EXC_DEF_MISSING_EVALUATOR, getType(), EVALUATOR));
         }
-        if (!found)
-            return null;
-        // We must retrieve the first dimension which is Measure because it is not take into
-        // count in the level count.
-        String targetCurrency = (String) leafLocation.getCoordinate(cpt-1, 0);
+
+        if (properties.containsKey(HIER_NAME)) {
+            this.hierName = properties.getProperty(HIER_NAME);
+        } else {
+            throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + HIER_NAME);
+        }
+
+        // Getting the ordinal of the wished hierarchy.
+        final IHierarchy hier = HierarchiesUtil.getHierarchy(getActivePivot(), hierName);
+        if (hier == null) {
+            throw new PostProcessorInitializationException("Unable to find hierarchy " + hierName
+                    + " in cube "
+                    + getActivePivot().getId());
+        }
+        hierarchyOrdinal = hier.getOrdinal();
+        if (hierarchyOrdinal < 1)
+            throw new PostProcessorInitializationException("Impossible to find hierarchy: " + hierName);
+    }
+
+    @Override
+    public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+        // Forbiding other dimensions in the view.
+
+        Double rate;
+
+        String targetCurrency = (String) location.getCoordinate(hierarchyOrdinal-1, 0);
         IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
                 new Object[] {"EUR", targetCurrency}, FOREX_RATE);
         if (record != null) {
             rate = (Double) record.read(FOREX_RATE);
             return rate;
         }
-        return null;
-    }
+        throw new IllegalArgumentException("The query to the forex store does not return valid result. Check the currencies validity.");
 
-    @Override
-    public void init(Properties properties) throws QuartetException {
-        super.init(properties);
-        /*if(evaluator == null) {
-            throw new IllegalStateException(MessageUtil.formMessage(MessagesCore.BUNDLE,
-                    MessagesCore.EXC_DEF_MISSING_EVALUATOR, getType(), EVALUATOR));
-        }*/
     }
 
     /*@Override
-    public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+    protected Double evaluateLeaf(ILocation leafLocation, Object[] underlyingMeasures) {
+        Double rate;
 
+        String targetCurrency = (String) leafLocation.getCoordinate(hierarchyOrdinal-1, 0);
+        IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
+                new Object[] {"EUR", targetCurrency}, FOREX_RATE);
+        if (record != null) {
+            rate = (Double) record.read(FOREX_RATE);
+            return rate;
+        }
+        throw new IllegalArgumentException("The query to the forex store does not return valid result. Check the currencies validity.");
     }*/
 
     @Override

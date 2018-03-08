@@ -151,9 +151,11 @@
     </postProcessor>
 
     <!--Display Forex-->
-    <postProcessor name="ForexRate" folder="data" pluginKey="FOREX_DISPLAY">
+    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY">
         <properties>
             <entry key="leafLevel" value="Currency@ForexHier@ForexDim" />
+            <entry key="evaluator" value="UNDERLYING" />
+            <entry key="hierName" value="ForexHier" />
         </properties>
     </postProcessor>
 

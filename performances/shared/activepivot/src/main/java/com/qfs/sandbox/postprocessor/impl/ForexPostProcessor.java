@@ -69,9 +69,7 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
             rate = (Double) record.read(FOREX_RATE);
             return rate *  value;
         }
-        //TODO : default or null ?
-        // If the wished currency is not found in the forex store, then we return null (or default ?)
-        return null;
+        throw new IllegalArgumentException("The query to the forex store does not return valid result. Check the currency validity.");
     }
 
     @Override
