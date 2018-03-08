@@ -29,6 +29,7 @@ import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.log.impl.LogWriteException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
+import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,7 +42,6 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
-import static org.jgroups.util.Util.assertEquals;
 
 @PropertySource(value = { "classpath:perf.properties" })
 
@@ -82,14 +82,18 @@ public class SourceConfig {
 
         // ////////////////////////////////////////////////
         // Create Maps
-        Map <Integer, String> mapPortfolios = new HashMap<Integer, String>();
+        Map<Integer, String> mapPortfolios = new HashMap<Integer, String>();
+        Map <Integer, String> mapHistory = new HashMap<Integer, String>();
+        Map <Integer, String> mapCompany = new HashMap<Integer, String>();
+        Map <Integer, String> mapGDAXI = new HashMap<Integer, String>();
+        Map <Integer, String> mapForex = new HashMap<Integer, String>();
+
         mapPortfolios.put(0, PORTFOLIOS_DATE);
         mapPortfolios.put(1, PORTFOLIOS_INDEX_NAME);
         mapPortfolios.put(2, PORTFOLIOS_NUMBER_STOCKS);
         mapPortfolios.put(3, PORTFOLIOS_STOCK_SYMBOL);
         mapPortfolios.put(4, PORTFOLIOS_POSITION_TYPE);
 
-        Map <Integer, String> mapHistory = new HashMap<Integer, String>();
         mapHistory.put(0, HISTORY_DATE);
         mapHistory.put(1, HISTORY_OPEN);
         mapHistory.put(2, HISTORY_HIGH);
@@ -98,21 +102,18 @@ public class SourceConfig {
         mapHistory.put(5, HISTORY_VOLUME);
         mapHistory.put(6, HISTORY_ADJ_CLOSE);
 
-        Map <Integer, String> mapCompany = new HashMap<Integer, String>();
         mapCompany.put(0, COMPANY_STOCK_SYMBOL);
         mapCompany.put(1, COMPANY_NAME);
         mapCompany.put(2, COMPANY_SECTOR);
         mapCompany.put(3, COMPANY_INDUSTRY);
 
-        Map <Integer, String> mapGDAXI = new HashMap<Integer, String>();
-        mapGDAXI.put(0, INDICES_INDEX_NAME);  //
-        mapGDAXI.put(1, INDICES_NAME_COMPANY);  //
-        mapGDAXI.put(2, INDICES_CLOSE_VALUE);   //
-        mapGDAXI.put(3, INDICES_STOCK_SYMBOL);  //
-        mapGDAXI.put(4, INDICES_IDENTIFIER);    //
-        mapGDAXI.put(6, INDICES_DATE);          //
+        mapGDAXI.put(0, INDICES_INDEX_NAME);
+        mapGDAXI.put(1, INDICES_NAME_COMPANY);
+        mapGDAXI.put(2, INDICES_CLOSE_VALUE);
+        mapGDAXI.put(3, INDICES_STOCK_SYMBOL);
+        mapGDAXI.put(4, INDICES_IDENTIFIER);
+        mapGDAXI.put(6, INDICES_DATE);
 
-        Map <Integer, String> mapForex = new HashMap<Integer, String>();
         mapForex.put(0, FOREX_INITIAL_CURRENCY);
         mapForex.put(1, FOREX_TARGET_CURRENCY);
         mapForex.put(2, FOREX_RATE);
@@ -173,6 +174,8 @@ public class SourceConfig {
         channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumnsStockS);
         channelFactory.setCalculatedColumns(INDICES_TOPIC, INDICES_STORE_NAME, csvCalculatedColumnsIndices);
 
+
+
         return channelFactory;
     }
 
@@ -205,7 +208,6 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
 		csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(COMPAGNY_INFORMATIONS_TOPIC));
-        //csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
 
 
         long before = System.nanoTime();
@@ -229,7 +231,9 @@ public class SourceConfig {
         Collection<String> stores = new ArrayList();
         stores.add(PORTFOLIOS_STORE_NAME);
         stores.add(INDICES_STORE_NAME);
-        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new IndicesTuplePublisher<String>(datastore, stores));
+        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new IndicesTuplePublisher<String>(datastore, stores, nameToIndex));
         return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, publisher);
     }
 
@@ -246,7 +250,7 @@ public class SourceConfig {
      */
     @Bean
     @DependsOn(value = { "initialLoad", "gdaxiChannel" })
-    public Void gdaxiRealTime() throws LogWriteException {
+    public Void gdaxiRealTime() {
         // Start real time time update
         csvSource().listen(gdaxiChannel());
         csvSource().listen(forexChannel());

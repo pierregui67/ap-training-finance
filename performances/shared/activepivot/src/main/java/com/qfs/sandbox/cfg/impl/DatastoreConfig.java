@@ -113,9 +113,9 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String INDICES_CLOSE_VALUE = "Close";
     public static final String INDICES_STOCK_SYMBOL = "StockSymbol";
     public static final String INDICES_IDENTIFIER = "Identifier";
-    //public static final String INDICES_POSITION_TYPE = "PositionType";
+    public static final String INDICES_POSITION_TYPE = "PositionType";
     public static final String INDICES_DATE = "Date";
-    //public static final String INDICES_VOLUME = "Volume";
+    public static final String INDICES_VOLUME = "Volume";
 
     // ///////////////////////////////////////////////
     // Forex store fields
