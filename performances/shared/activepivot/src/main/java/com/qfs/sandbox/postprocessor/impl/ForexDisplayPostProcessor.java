@@ -72,10 +72,12 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
 
     @Override
     public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+        for (int i=0; i<location.getHierarchyCount(); i++) {
+            if (location.getLevelDepth(i) != 1)
+                throw new IllegalArgumentException("To display the ForexRate the only tolerate hierarchy in the view is the forex hierarchy");
+        }
         // Forbiding other dimensions in the view.
-
         Double rate;
-
         String targetCurrency = (String) location.getCoordinate(hierarchyOrdinal-1, 0);
         IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
                 new Object[] {"EUR", targetCurrency}, FOREX_RATE);
