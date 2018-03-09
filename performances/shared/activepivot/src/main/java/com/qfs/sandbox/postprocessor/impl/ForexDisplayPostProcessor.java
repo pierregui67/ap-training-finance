@@ -5,10 +5,8 @@ import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
 import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.IHierarchy;
-import com.quartetfs.biz.pivot.cube.hierarchy.IHierarchyInfo;
 import com.quartetfs.biz.pivot.cube.hierarchy.impl.HierarchiesUtil;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
-import com.quartetfs.biz.pivot.impl.PointLocationListReader;
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.PostProcessorInitializationException;
 import com.quartetfs.biz.pivot.postprocessing.impl.ABasicPostProcessor;
@@ -37,7 +35,8 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
      * Constructor
      *
      * @param name            The name of the post-processor
-     * @param creationContext The {@link IPostProcessorCreationContext creation context} of this post-processor.
+     * @param creationContext The {@link IPostProcessorCreationContext creation context} of this
+     *                        post-processor.
      */
     public ForexDisplayPostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
@@ -55,7 +54,8 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
         if (properties.containsKey(HIER_NAME)) {
             this.hierName = properties.getProperty(HIER_NAME);
         } else {
-            throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + HIER_NAME);
+            throw new PostProcessorInitializationException("Post processor " + getName() + " is " +
+                    "missing the mandatory property " + HIER_NAME);
         }
 
         // Getting the ordinal of the wished hierarchy.
@@ -72,11 +72,14 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
 
     @Override
     public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+
+        /* Forbidding other dimensions in the view. */
         for (int i=0; i<location.getHierarchyCount(); i++) {
             if (location.getLevelDepth(i) != 1)
-                throw new IllegalArgumentException("To display the ForexRate the only tolerate hierarchy in the view is the forex hierarchy");
+                throw new IllegalArgumentException("To display the ForexRate the only tolerate hierarchy" +
+                        " in the view is the forex hierarchy");
         }
-        // Forbiding other dimensions in the view.
+
         Double rate;
         String targetCurrency = (String) location.getCoordinate(hierarchyOrdinal-1, 0);
         IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
@@ -85,8 +88,8 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
             rate = (Double) record.read(FOREX_RATE);
             return rate;
         }
-        throw new IllegalArgumentException("The query to the forex store does not return valid result. Check the currencies validity.");
-
+        throw new IllegalArgumentException("The query to the forex store does not return valid result. " +
+                "Check the currencies validity.");
     }
 
     /*@Override

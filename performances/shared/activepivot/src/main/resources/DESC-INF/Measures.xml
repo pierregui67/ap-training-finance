@@ -14,7 +14,7 @@
 
     <!--Forex : we carry out the currency conversion of the basis value that is to mean the hidden one
         Thus only the forex's values will have an impact on the following computation-->
-    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM">
+    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM" continuousQueryhandlers="STORED, FOREX">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />
@@ -22,7 +22,7 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG">
+    <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG" continuousQueryhandlers="STORED, FOREX">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />
@@ -151,7 +151,7 @@
     </postProcessor>
 
     <!--Display Forex-->
-    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY">
+    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY" continuousQueryhandlers="STORED, DISPLAY_FOREX">
         <properties>
             <entry key="leafLevel" value="Currency@ForexHier@ForexDim" />
             <entry key="evaluator" value="UNDERLYING" />

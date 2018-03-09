@@ -10,6 +10,8 @@ import com.qfs.distribution.security.IDistributedSecurityManager;
 import com.qfs.messenger.IDistributedMessenger;
 import com.qfs.monitoring.HealthCheckAgent;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
+import com.qfs.sandbox.postprocessor.impl.ForexHandler;
+import com.qfs.sandbox.postprocessor.impl.ForexStream;
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -17,6 +19,8 @@ import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.server.cfg.impl.*;
 import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
 import com.quartetfs.biz.pivot.monitoring.impl.JMXEnabler;
+import com.quartetfs.biz.pivot.query.aggregates.IAggregatesContinuousHandler;
+import com.quartetfs.biz.pivot.query.aggregates.IStream;
 import com.quartetfs.fwk.Registry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -194,6 +198,10 @@ public class SandboxConfig {
 		for (Object key : Registry.getExtendedPlugin(IDistributedSecurityManager.class).keys()) {
 			inject(IDistributedSecurityManager.class, String.valueOf(key), securityConfig.qfsUserDetailsService());
 		}
+
+		// Custom injection
+        inject(IStream.class, ForexStream.PLUGIN_KEY, "datastore", datastoreConfig.datastore());
+        inject(IAggregatesContinuousHandler.class, ForexHandler.PLUGIN_KEY, "currencyLevel", "Currency");
 
 	}
 
