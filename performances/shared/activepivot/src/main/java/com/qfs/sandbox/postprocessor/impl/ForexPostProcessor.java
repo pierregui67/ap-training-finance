@@ -52,7 +52,7 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
     String getCurrency() {
         IReferenceCurrency referenceCurrencyContext = pivot.getContext().get(IReferenceCurrency.class);
         if (referenceCurrencyContext == null) {
-            throw new QuartetRuntimeException("Cannot retrieve the confidence level context from post-processor " + getType());
+            throw new QuartetRuntimeException("Cannot retrieve the currency context from post-processor " + getType());
         }
         return referenceCurrencyContext.getCurrency();
     }

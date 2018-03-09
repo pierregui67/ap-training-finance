@@ -14,7 +14,8 @@
 
     <!--Forex : we carry out the currency conversion of the basis value that is to mean the hidden one
         Thus only the forex's values will have an impact on the following computation-->
-    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM" continuousQueryhandlers="STORED, FOREX">
+    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM"
+                   continuousQueryhandlers="STORED">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />
@@ -22,7 +23,8 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG" continuousQueryhandlers="STORED, FOREX">
+    <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG"
+                   continuousQueryhandlers="STORED">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />
@@ -31,7 +33,8 @@
 
 	<!--The prices should not be added when corresponding to different products
         However, one accepts to average price of different products-->
-    <postProcessor name="Forex.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="FOREX.SUM" folder="forex" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="Forex.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="FOREX.SUM" folder="forex"
+                   formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="hierarchyName" value="StockSymbol" />
             <entry key="minimumDepth" value="1" />
@@ -41,7 +44,8 @@
     <!--One accepts to aggregate the stock number-->
 
     <!--Computing the portfolio value-->
-    <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks.SUM,Forex.AVG" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc"
+                   underlyingMeasures="NumberStocks.SUM,Forex.AVG" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="aggregatedFunctions" value="SUM" />
@@ -61,13 +65,15 @@
         However it is not optimized nor an intelligent design.
         TODO : One should better recode the TOTAL_PORTFOLIO_VALUE post-processor so as to accept a
         TODO : list of level to shift ! -->
-    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden" underlyingMeasures="TotalPortfolioValueIntermed">
+    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" folder="hidden"
+                   underlyingMeasures="TotalPortfolioValueIntermed">
         <properties>
             <entry key="levelToShift" value="StockSymbol@StockSymbol@StockSymbol" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="TotalPortfolioValueIntermed" pluginKey="TOTAL_PORTFOLIO_VALUE" visible="false" underlyingMeasures="PortfolioValue">
+    <postProcessor name="TotalPortfolioValueIntermed" pluginKey="TOTAL_PORTFOLIO_VALUE" visible="false"
+                   underlyingMeasures="PortfolioValue">
         <properties>
             <entry key="levelToShift" value="Name@CompaniesRegroupment@CompaniesRegroupment" />
         </properties>
@@ -97,7 +103,8 @@
     </postProcessor>
 
     <!--Computing the cumulative return-->
-    <postProcessor name="CumulativeReturn" isIntrospectionMeasure="false" folder="postProc" pluginKey="Stream2Position" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="CumulativeReturn" isIntrospectionMeasure="false" folder="postProc" pluginKey="Stream2Position"
+                   formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="timeHierarchyName" value="HistoricalDates" />
             <entry key="streamMeasureName" value="PeriodReturn" />
@@ -128,7 +135,8 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="CompareExample2PortfolioPercent" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
+    <postProcessor name="CompareExample2PortfolioPercent" pluginKey="FORMULA" folder="postProc"
+                   formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
         <properties>
             <entry key="formula" value="(aggregatedValue[CompareExample2Portfolio],aggregatedValue[BenchmarkPV],int[0],div)"/>
         </properties>
@@ -151,11 +159,15 @@
     </postProcessor>
 
     <!--Display Forex-->
-    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY" continuousQueryhandlers="STORED, DISPLAY_FOREX">
+    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY" continuousQueryhandlers="STORED, FOREX_HANDLER">
         <properties>
-            <entry key="leafLevel" value="Currency@ForexHier@ForexDim" />
-            <entry key="evaluator" value="UNDERLYING" />
-            <entry key="hierName" value="ForexHier" />
+            <entry key="hierForex" value="ForexHier" />
+            <!--This property is crucial to display the rate. Indeed, ForexHier is an analysis hierarchy with an allMember.
+                Without this add, the evaluate function will never be called if displaying the Forex Level.
+                And if one would wish to display the Forex Dimension, the currency would not be available but only
+                the allMember location.
+                Check : https://support.activeviam.com/confluence/pages/viewpage.action?spaceKey=AP5&title=Analysis+hierarchies -->
+            <entry key="analysisLevels" value="Currency@ForexHier@ForexDim" />
         </properties>
     </postProcessor>
 

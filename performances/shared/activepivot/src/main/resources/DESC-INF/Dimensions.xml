@@ -31,7 +31,7 @@
     <dimension name="ForexDim">
         <!--TODO : allMember="false" => No sense to keep it !
             The Context Value guaranty that a currency will al-->
-        <hierarchy name="ForexHier" allMember="false" factless="true">
+        <hierarchy name="ForexHier" allMember="true" factless="true">
             <properties>
                 <entry key="storeName" value="Forex"/>
             </properties>
