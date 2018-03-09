@@ -19,7 +19,7 @@ import java.util.Set;
 @QuartetExtendedPluginValue(intf=IAggregatesContinuousHandler.class, key = ForexHandler.PLUGIN_KEY)
 public class ForexHandler extends AAggregatesContinuousHandler<Object> {
 
-    public static final String PLUGIN_KEY = "DISPLAY_FOREX";
+    public static final String PLUGIN_KEY = "FOREX_HANDLER";
 
     public static final String FOREX_LEVEL = "Currency";
     protected ILevelInfo level;
@@ -31,6 +31,7 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
      * @param currencyLevel the name of the currency level
      */
     public void setCurrencyLevel(String currencyLevel) {
+        // TODO check that this variable is really setted.
         this.currencyLevel = currencyLevel;
     }
 
@@ -53,12 +54,16 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
 
         //compute the impacted locations
         Collection<ILocation> impactedLocs = null;
+        // When we display the store, all the cell of the impacted currency must be updated.
         for (String currency : updatedCurrencies) {
             ILocation loc = LocationUtil.createModifiedLocation(location, level.getHierarchyInfo(), new Object[] {currency});
             impactedLocs.add(loc);
         }
+        // TODO : what should we use ?
+        //Set<ILocation> locations = LocationUtil.expandAll(pivot.getHierarchies(), impactedLocs);
 
         // TODO : could be possible that a currency has been removed ?
+
         return new Impact(location, (Set<ILocation>) impactedLocs, null);
     }
 

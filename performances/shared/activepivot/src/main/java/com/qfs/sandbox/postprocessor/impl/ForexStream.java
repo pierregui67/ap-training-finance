@@ -11,10 +11,13 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_STORE_NAME;
+
 @QuartetExtendedPluginValue(intf = IStream.class, key = ForexStream.PLUGIN_KEY)
 public class ForexStream extends AStoreStream<Set<String>, Set<String>>{
+
     /** plugin key */
-    public static final String PLUGIN_KEY = "DISPLAY_FOREX";
+    public static final String PLUGIN_KEY = "FOREX_STREAM";
 
     /**
      * Constructor
@@ -25,11 +28,12 @@ public class ForexStream extends AStoreStream<Set<String>, Set<String>>{
      */
     public ForexStream(IAggregatesContinuousQueryEngine engine, IMultiVersionActivePivot pivot) {
         super(engine, pivot);
+        setStore(FOREX_STORE_NAME);
     }
 
     @Override
     protected Set<String> createNew() {
-        return null;
+        return new HashSet<String>();
     }
 
     @Override
@@ -43,9 +47,11 @@ public class ForexStream extends AStoreStream<Set<String>, Set<String>>{
         }
     }
 
-    private void addEvent(IRecordReader records, Set<String> collector) {
-        // TODO !
+    private void addEvent(IRecordReader record, Set<String> events) {
         System.out.println("Pierre qui roule n'amasse pas mousse !");
+        // TODO : understand what does the following lines ...
+        events.add((String) dictionaries.getDictionary(0).read(record.readInt(0)));
+        events.add((String) dictionaries.getDictionary(1).read(record.readInt(1)));
     }
 
     @Override
@@ -61,7 +67,11 @@ public class ForexStream extends AStoreStream<Set<String>, Set<String>>{
 
     @Override
     protected Set<String> toEvent(Set<String> collector) {
-        return null;
+        // TODO : understand !
+        Set<String> eventToBeSent = new HashSet<>();
+        for (String e : collector)
+            eventToBeSent.add(e);
+        return eventToBeSent;
     }
 
     @Override
