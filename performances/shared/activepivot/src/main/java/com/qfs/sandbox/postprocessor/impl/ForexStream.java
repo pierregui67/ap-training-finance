@@ -48,7 +48,6 @@ public class ForexStream extends AStoreStream<Set<String>, Set<String>>{
     }
 
     private void addEvent(IRecordReader record, Set<String> events) {
-        System.out.println("Pierre qui roule n'amasse pas mousse !");
         // TODO : understand what does the following lines ...
         events.add((String) dictionaries.getDictionary(0).read(record.readInt(0)));
         events.add((String) dictionaries.getDictionary(1).read(record.readInt(1)));

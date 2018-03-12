@@ -3,7 +3,8 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
-
+    <!--The two basis PP through which every PP works are FOREX.SUM (which is hidden, because it allows to meaningless
+        add price) and Forex.AVG (which is used in almost every PP)-->
 
 	<!--Measures-->
     <measure name="CLOSE.SUM" field="Close" visible="false" />
@@ -14,8 +15,7 @@
 
     <!--Forex : we carry out the currency conversion of the basis value that is to mean the hidden one
         Thus only the forex's values will have an impact on the following computation-->
-    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM"
-                   continuousQueryhandlers="STORED">
+    <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />
@@ -24,7 +24,7 @@
     </postProcessor>
 
     <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG"
-                   continuousQueryhandlers="STORED">
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />
@@ -34,7 +34,7 @@
 	<!--The prices should not be added when corresponding to different products
         However, one accepts to average price of different products-->
     <postProcessor name="Forex.SUM" pluginKey="MINIMUM_DEPTH" underlyingMeasures="FOREX.SUM" folder="forex"
-                   formatter="DOUBLE[#,###.00;-#,###.00]">
+                   formatter="DOUBLE[#,###.00;-#,###.00]" continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="hierarchyName" value="StockSymbol" />
             <entry key="minimumDepth" value="1" />
@@ -45,7 +45,8 @@
 
     <!--Computing the portfolio value-->
     <postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc"
-                   underlyingMeasures="NumberStocks.SUM,Forex.AVG" formatter="DOUBLE[#,###.00;-#,###.00]">
+                   underlyingMeasures="NumberStocks.SUM,Forex.AVG" formatter="DOUBLE[#,###.00;-#,###.00]"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER" >
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="aggregatedFunctions" value="SUM" />
@@ -54,7 +55,8 @@
     </postProcessor>
 
     <!--Computing the weight of the portfolio components-->
-    <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
+    <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[TotalPortfolioValue],int[0],div" />
         </properties>
@@ -73,20 +75,22 @@
     </postProcessor>
 
     <postProcessor name="TotalPortfolioValueIntermed" pluginKey="TOTAL_PORTFOLIO_VALUE" visible="false"
-                   underlyingMeasures="PortfolioValue">
+                   underlyingMeasures="PortfolioValue" >
         <properties>
             <entry key="levelToShift" value="Name@CompaniesRegroupment@CompaniesRegroupment" />
         </properties>
     </postProcessor>
 
     <!--Computing the period return-->
-    <postProcessor name="PeriodReturn" folder="postProc" pluginKey="FORMULA" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="PeriodReturn" folder="postProc" pluginKey="FORMULA" formatter="DOUBLE[#,###.00;-#,###.00]"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[PreviousPortfolioValue],-" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="PeriodReturnPercent" folder="postProc" pluginKey="FORMULA" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
+    <postProcessor name="PeriodReturnPercent" folder="postProc" pluginKey="FORMULA" formatter="DOUBLE[#,##0.00%;-#,##0.00%]"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="formula" value="(aggregatedValue[PeriodReturn],aggregatedValue[PreviousPortfolioValue],int[0],div)" />
         </properties>
@@ -104,7 +108,7 @@
 
     <!--Computing the cumulative return-->
     <postProcessor name="CumulativeReturn" isIntrospectionMeasure="false" folder="postProc" pluginKey="Stream2Position"
-                   formatter="DOUBLE[#,###.00;-#,###.00]">
+                   formatter="DOUBLE[#,###.00;-#,###.00]" continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="timeHierarchyName" value="HistoricalDates" />
             <entry key="streamMeasureName" value="PeriodReturn" />
@@ -113,7 +117,8 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="CumulativeReturnPercent" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
+    <postProcessor name="CumulativeReturnPercent" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],/)"/>
         </properties>
@@ -129,14 +134,15 @@
     </postProcessor>
 
     <!--The difference in performance between portfolios-->
-    <postProcessor name="CompareExample2Portfolio" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="CompareExample2Portfolio" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="formula" value="aggregatedValue[ExamplePV],aggregatedValue[BenchmarkPV],-"/>
         </properties>
     </postProcessor>
 
     <postProcessor name="CompareExample2PortfolioPercent" pluginKey="FORMULA" folder="postProc"
-                   formatter="DOUBLE[#,##0.00%;-#,##0.00%]">
+                   formatter="DOUBLE[#,##0.00%;-#,##0.00%]" continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="formula" value="(aggregatedValue[CompareExample2Portfolio],aggregatedValue[BenchmarkPV],int[0],div)"/>
         </properties>
@@ -159,7 +165,8 @@
     </postProcessor>
 
     <!--Display Forex-->
-    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY" continuousQueryhandlers="STORED, FOREX_HANDLER">
+    <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY"
+                   continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="hierForex" value="ForexHier" />
             <!--This property is crucial to display the rate. Indeed, ForexHier is an analysis hierarchy with an allMember.

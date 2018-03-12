@@ -13,6 +13,9 @@ import com.quartetfs.biz.pivot.query.aggregates.impl.Impact;
 import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
@@ -38,7 +41,7 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
     public ForexHandler(IActivePivotVersion pivot) throws QuartetException{
         super(pivot);
         final ILevel iLevel = HierarchiesUtil.getLevel(pivot, FOREX_LEVEL);
-        if(level == null) {
+        if(iLevel == null) {
             throw new QuartetException("Unable to find level :" + FOREX_LEVEL);
         }
         level = iLevel.getLevelInfo();
@@ -47,20 +50,20 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
     @Override
     public IImpact computeImpact(ILocation location, Object event) {
 
-        //get the updated currencies from the Forex Stream
+        /*//get the updated currencies from the Forex Stream
         if (!(event instanceof Set))
             return new Impact(location, null, null);
         Set<String> updatedCurrencies = (Set<String>) event; // != null
 
         //compute the impacted locations
-        Collection<ILocation> impactedLocs = null;
+        Collection<ILocation> impactedLocs = new ArrayList<ILocation>();
         // When we display the store, all the cell of the impacted currency must be updated.
         for (String currency : updatedCurrencies) {
             ILocation loc = LocationUtil.createModifiedLocation(location, level.getHierarchyInfo(), new Object[] {currency});
             impactedLocs.add(loc);
-        }
+        }*/
         // TODO : what should we use ?
-        //Set<ILocation> locations = LocationUtil.expandAll(pivot.getHierarchies(), impactedLocs);
+        Set<ILocation> impactedLocs = LocationUtil.expandAll(pivot.getHierarchies(), Arrays.asList(location));
 
         // TODO : could be possible that a currency has been removed ?
 

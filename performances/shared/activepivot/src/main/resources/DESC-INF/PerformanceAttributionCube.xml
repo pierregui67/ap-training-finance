@@ -49,6 +49,10 @@
         <import resource="DESC-INF/Measures.xml"/>
     </measures>
 
+    <!-- Selection of the continuous query engine -->
+    <!-- TODO : by default, is it conflate or synchronous ?
+    <aggregatesContinuousQueryEngine pluginKey="CONFLATE" />
+
     <sharedContexts>
         <!-- Query maximum execution time (before timeout cancellation) -->
         <queriesTimeLimit seconds="60"/>

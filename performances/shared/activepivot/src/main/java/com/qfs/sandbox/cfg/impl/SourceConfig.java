@@ -174,8 +174,6 @@ public class SourceConfig {
         channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumnsStockS);
         channelFactory.setCalculatedColumns(INDICES_TOPIC, INDICES_STORE_NAME, csvCalculatedColumnsIndices);
 
-
-
         return channelFactory;
     }
 
@@ -198,8 +196,6 @@ public class SourceConfig {
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
 
-
-
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
@@ -208,7 +204,6 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
 		csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(COMPAGNY_INFORMATIONS_TOPIC));
-
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
@@ -220,9 +215,7 @@ public class SourceConfig {
         } else {
             // read data files without sending anything to the datastore (that data is already loaded by the log replayer): those files won't then be considered as new files when enabling real time
         }
-
         long elapsed = System.nanoTime() - before; // log that somewhere
-
         return null;
     }
 

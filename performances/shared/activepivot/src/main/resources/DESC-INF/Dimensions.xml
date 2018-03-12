@@ -26,8 +26,6 @@
 
     <dimension name="IndexName" />
 
-
-
     <dimension name="ForexDim">
         <!--TODO : allMember="false" => No sense to keep it !
             The Context Value guaranty that a currency will al-->
