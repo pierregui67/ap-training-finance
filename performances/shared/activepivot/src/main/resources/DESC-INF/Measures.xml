@@ -18,13 +18,13 @@
     <postProcessor name="FOREX.SUM" visible="false" pluginKey="FOREX" underlyingMeasures="CLOSE.SUM">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
+            <!-- TODO : the default value is hard coded ! -->
             <entry key="initialCurrency" value="EUR" />
-            <entry key="targetCurrency" value="JPY" />
         </properties>
     </postProcessor>
 
     <postProcessor name="Forex.AVG" folder="forex" pluginKey="FOREX" underlyingMeasures="Close.AVG"
-                   continuousQueryHandlers="STORED, FOREX_HANDLER">
+                   formatter="DOUBLE[#,###.00;-#,###.00]" continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <entry key="initialCurrency" value="EUR" />

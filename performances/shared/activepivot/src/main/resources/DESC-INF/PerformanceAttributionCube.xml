@@ -50,7 +50,7 @@
     </measures>
 
     <!-- Selection of the continuous query engine -->
-    <!-- TODO : by default, is it conflate or synchronous ?
+    <!-- TODO : by default, is it conflate or synchronous ? -->
     <aggregatesContinuousQueryEngine pluginKey="CONFLATE" />
 
     <sharedContexts>
@@ -61,6 +61,7 @@
         <mdxContext>
             <formatters>
                 <formatter uniqueName="Volume.SUM" format="DOUBLE[#,###.00;-#,###.00]" />
+                <formatter uniqueName="Forex.AVG" formatter="DOUBLE[#,###.00;-#,###.00]" />
             </formatters>
         </mdxContext>
 

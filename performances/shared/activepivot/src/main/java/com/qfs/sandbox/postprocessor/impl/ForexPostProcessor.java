@@ -8,6 +8,7 @@ import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationCon
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.PostProcessorInitializationException;
 import com.quartetfs.biz.pivot.postprocessing.impl.ADynamicAggregationPostProcessor;
+import com.quartetfs.biz.pivot.query.IQueryCache;
 import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import com.quartetfs.fwk.QuartetRuntimeException;
@@ -60,14 +61,24 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
     @Override
     protected Object evaluateLeaf(ILocation leafLocation, Object[] underlyingMeasures) {
         Double value = (Double) underlyingMeasures[0];
-        if (getCurrency().equals(initialCurrency))
-            return value;
         Double rate;
+        IQueryCache queryCache = pivot.getContext().get(IQueryCache.class);
+        rate = (Double) queryCache.get(getCurrency());
+        if(rate == null) {
+            Double computed = getRateByLaunchingQuery();
+            Double concurrent = (Double) queryCache.putIfAbsent(getCurrency(), computed);
+            rate = concurrent == null ? computed : concurrent;
+        }
+        return rate *  value;
+    }
+
+    protected Double getRateByLaunchingQuery() {
+        if (getCurrency().equals(initialCurrency))
+            return 1.0;
         IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
                 new Object[] {initialCurrency, getCurrency()}, FOREX_RATE);
         if (record != null) {
-            rate = (Double) record.read(FOREX_RATE);
-            return rate *  value;
+            return (Double) record.read(FOREX_RATE);
         }
         throw new IllegalArgumentException("The query to the forex store does not return valid result. Check the currency validity.");
     }

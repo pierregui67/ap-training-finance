@@ -65,6 +65,7 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
     public Double evaluate(ILocation location, Object[] underlyingMeasures) {
 
         // Forbidding other dimensions in the view.
+        // TODO : is there some faster way ?
         for (int i=0; i<location.getHierarchyCount(); i++) {
             if (location.getLevelDepth(i) != 1 && i != hierarchyOrdinal-1)
                 throw new IllegalArgumentException("To display the ForexRate the only tolerate hierarchy" +

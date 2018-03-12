@@ -56,7 +56,6 @@ public class ForexStream extends AStoreStream<Set<String>, Set<String>>{
     @Override
     protected void collectDeleted(IRecordBlock<IRecordReader> records, Set<String> collector) {
         addEvent(records, collector);
-
     }
 
     @Override
