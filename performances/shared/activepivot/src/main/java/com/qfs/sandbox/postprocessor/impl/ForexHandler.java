@@ -34,7 +34,6 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
      * @param currencyLevel the name of the currency level
      */
     public void setCurrencyLevel(String currencyLevel) {
-        // TODO check that this variable is really setted.
         this.currencyLevel = currencyLevel;
     }
 
@@ -63,7 +62,8 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
             impactedLocs.add(loc);
         }*/
         // TODO : what should we use ?
-        Set<ILocation> impactedLocs = LocationUtil.expandAll(pivot.getHierarchies(), Arrays.asList(location));
+        Set<ILocation> impactedLocs = LocationUtil.expandAll(pivot.getHierarchies(),
+                Arrays.asList(location));
 
         // TODO : could be possible that a currency has been removed ?
 

@@ -1,6 +1,11 @@
 package com.qfs.sandbox.postprocessor.impl;
 
-import com.qfs.sandbox.context.IReferenceCurrency;
+import com.qfs.condition.ICondition;
+import com.qfs.condition.impl.BaseConditions;
+import com.qfs.sandbox.context.ICurrencyContextValue;
+import com.qfs.store.query.ICursor;
+import com.qfs.store.query.IRecordQuery;
+import com.qfs.store.query.condition.impl.RecordQuery;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
 import com.quartetfs.biz.pivot.ILocation;
@@ -46,16 +51,23 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
             throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + INITIAL_CURRENCY);
         }
 
+        /*ICursor cursor = getDatastoreVersion().getQueryRunner().forStore(FOREX_STORE_NAME).withoutCondition().withResultsLimit(1).selectingAllReachableFields().run();
+        if (cursor.hasNext()) {
+            cursor.next();
+            IRecordReader reader = cursor.getRecord();
+            this.initialCurrency = (String) reader.read(FOREX_INITIAL_CURRENCY);
+        }*/
+
         // Declaring the dependency to the context values
-        addContextDependency(IReferenceCurrency.class);
+        addContextDependency(ICurrencyContextValue.class);
     }
 
     String getCurrency() {
-        IReferenceCurrency referenceCurrencyContext = pivot.getContext().get(IReferenceCurrency.class);
-        if (referenceCurrencyContext == null) {
+        ICurrencyContextValue currencyContext = pivot.getContext().get(ICurrencyContextValue.class);
+        if (currencyContext == null) {
             throw new QuartetRuntimeException("Cannot retrieve the currency context from post-processor " + getType());
         }
-        return referenceCurrencyContext.getCurrency();
+        return currencyContext.getCurrency();
     }
 
     @Override

@@ -176,7 +176,6 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build();
     }
 
-    // TODO : select the truelly useful fields in this section
     /** @return the description of the GDAXI store */
     @Bean
     public IStoreDescription IndicesStoreDescription() {

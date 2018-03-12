@@ -4,8 +4,8 @@
     <!-- Namespace declaration -->
     <XmlSchema namespace="http://www.quartetfs.com" elementFormDefault="QUALIFIED" />
 
-    <!-- Mapping of the custom 'ReferenceCurrency' context value -->
-    <Class name="com.qfs.sandbox.context.impl.ReferenceCurrency">
+    <!-- Mapping of the custom 'CurrencyContextValue' context value -->
+    <Class name="com.qfs.sandbox.context.impl.CurrencyContextValue">
         <XmlRootElement name="referenceCurrency" />
         <Method name="getCurrency">
             <XmlAttribute name="currency" required="true" />

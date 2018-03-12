@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 
-import com.qfs.sandbox.context.IReferenceCurrency;
+import com.qfs.sandbox.context.ICurrencyContextValue;
 import com.quartetfs.biz.pivot.context.ContextValueTranslationException;
 import com.quartetfs.biz.pivot.context.IContextValueTranslator;
 import com.quartetfs.biz.pivot.context.impl.SimpleContextValueTranslator;
@@ -26,7 +26,7 @@ import com.quartetfs.fwk.QuartetPluginValue;
  *
  */
 @QuartetPluginValue(intf=IContextValueTranslator.class)
-public class ReferenceCurrencyTranslator extends SimpleContextValueTranslator<String, IReferenceCurrency> {
+public class CurrencyContextValueTranslator extends SimpleContextValueTranslator<String, ICurrencyContextValue> {
 
     /** serialVersionUID */
     private static final long serialVersionUID = -1129088664293462391L;
@@ -36,7 +36,7 @@ public class ReferenceCurrencyTranslator extends SimpleContextValueTranslator<St
     /** Translator key */
     public static final String KEY = "referenceCurrency";
 
-    public ReferenceCurrencyTranslator() {
+    public CurrencyContextValueTranslator() {
         super();
         currencies.add("EUR");
         currencies.add("USD");
@@ -47,14 +47,14 @@ public class ReferenceCurrencyTranslator extends SimpleContextValueTranslator<St
     }
 
     @Override
-    public Class<IReferenceCurrency> getContextInterface() { return IReferenceCurrency.class; }
+    public Class<ICurrencyContextValue> getContextInterface() { return ICurrencyContextValue.class; }
 
     @Override
     public String key() { return KEY; }
 
     @Override
-    protected IReferenceCurrency createInstance(String content) {
-        return new ReferenceCurrency(content);
+    protected ICurrencyContextValue createInstance(String content) {
+        return new CurrencyContextValue(content);
     }
 
 
@@ -84,13 +84,14 @@ public class ReferenceCurrencyTranslator extends SimpleContextValueTranslator<St
     protected String parse(String property) throws ContextValueTranslationException {
 
         if (!currencies.contains(property))
-            throw new ContextValueTranslationException("Currency nor present in ENUM", key(), property, null);
+            throw new ContextValueTranslationException("Currency not" +
+                    " present in ENUM", key(), property, null);
 
         return property;
     }
 
     @Override
-    protected String getContent(IReferenceCurrency instance) {
+    protected String getContent(ICurrencyContextValue instance) {
         return instance.getCurrency();
     }
 

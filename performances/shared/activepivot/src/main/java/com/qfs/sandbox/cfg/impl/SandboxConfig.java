@@ -201,7 +201,7 @@ public class SandboxConfig {
 
 		// Custom injection
         inject(IStream.class, ForexStream.PLUGIN_KEY, "datastore", datastoreConfig.datastore());
-        inject(IAggregatesContinuousHandler.class, ForexHandler.PLUGIN_KEY, "currencyLevel", "Currency");
+        inject(IAggregatesContinuousHandler.class, ForexHandler.PLUGIN_KEY, "currencyLevel", "CurrencyContextValue");
 
 	}
 

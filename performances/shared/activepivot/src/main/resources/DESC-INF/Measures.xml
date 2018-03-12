@@ -148,7 +148,8 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="ExamplePV" folder="hidden" pluginKey="CHOOSE_PV_TYPE" underlyingMeasures="PortfolioValue">
+    <postProcessor name="ExamplePV" folder="hidden" pluginKey="CHOOSE_PV_TYPE"
+                   underlyingMeasures="PortfolioValue">
         <properties>
             <entry key="levelToShift" value="IndexName@IndexName@IndexName" />
             <entry key="hierarchyNameToForbid" value="IndexName" />
@@ -156,7 +157,8 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="BenchmarkPV" folder="hidden" pluginKey="CHOOSE_PV_TYPE" underlyingMeasures="PortfolioValue">
+    <postProcessor name="BenchmarkPV" folder="hidden" pluginKey="CHOOSE_PV_TYPE"
+                   underlyingMeasures="PortfolioValue">
         <properties>
             <entry key="hierarchyNameToForbid" value="IndexName" />
             <entry key="levelToShift" value="IndexName@IndexName@IndexName" />

@@ -28,10 +28,6 @@ public class IndicesTuplePublisher<String> extends TuplePublisher {
         List<Object[]> portfolioTuples = new ArrayList<Object[]>();
         List<Object[]> gdaxiTuples = new ArrayList<Object[]>();
 
-        //int indIndexName = ((TupleTranslator) ((StoreMessage) message).messageHandler).columnIndex.get(PORTFOLIOS_INDEX_NAME);
-
-        // TODO : use the map !
-
         int indDate = nameToColumnIndex.get(PORTFOLIOS_DATE);
         int indIndName = nameToColumnIndex.get(PORTFOLIOS_INDEX_NAME);
         int indNumStock = nameToColumnIndex.get(PORTFOLIOS_NUMBER_STOCKS);

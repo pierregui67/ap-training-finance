@@ -1,20 +1,18 @@
 package com.qfs.sandbox.context.impl;
 
-import com.qfs.sandbox.context.IReferenceCurrency;
-import com.qfs.store.impl.DatastoreVersion;
+import com.qfs.sandbox.context.ICurrencyContextValue;
 import com.quartetfs.biz.pivot.context.IContextValue;
 import com.quartetfs.biz.pivot.context.impl.AContextValue;
-import com.quartetfs.biz.pivot.query.impl.QueryCache;
 
-final public class ReferenceCurrency extends AContextValue implements IReferenceCurrency {
+final public class CurrencyContextValue extends AContextValue implements ICurrencyContextValue {
 
     /* Can not be final. Must be setted during the initialization process */
     private String currency;
 
-    public ReferenceCurrency() {
+    public CurrencyContextValue() {
     }
 
-    public ReferenceCurrency(String currency) {
+    public CurrencyContextValue(String currency) {
         this.currency = currency;
     }
 
@@ -36,7 +34,7 @@ final public class ReferenceCurrency extends AContextValue implements IReference
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ReferenceCurrency other = (ReferenceCurrency) obj;
+        CurrencyContextValue other = (CurrencyContextValue) obj;
         if (currency == null) {
             if (other.currency != null)
                 return false;
@@ -52,7 +50,7 @@ final public class ReferenceCurrency extends AContextValue implements IReference
 
     @Override
     public Class<? extends IContextValue> getContextInterface() {
-        return IReferenceCurrency.class;
+        return ICurrencyContextValue.class;
     }
 
 
