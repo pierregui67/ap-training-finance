@@ -12,7 +12,7 @@ import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
  * First the portfolio store, secondly the gdaxi store.
  * @param <String>
  */
-public class IndicesTuplePublisher<String> extends TuplePublisher {
+public class IndicesTuplePublisher extends TuplePublisher {
 
     Map<String, Integer> nameToColumnIndex;
 
@@ -54,7 +54,9 @@ public class IndicesTuplePublisher<String> extends TuplePublisher {
 
         List storesList = (List) this.stores;
 
-        this.datastore.getTransactionManager().addAll((java.lang.String) storesList.get(0), processedPortfolio);
-        this.datastore.getTransactionManager().addAll((java.lang.String) storesList.get(1), processedGdaxi);
+        this.datastore.getTransactionManager().addAll((java.lang.String) storesList.get(0),
+                processedPortfolio);
+        this.datastore.getTransactionManager().addAll((java.lang.String) storesList.get(1),
+                processedGdaxi);
     }
 }

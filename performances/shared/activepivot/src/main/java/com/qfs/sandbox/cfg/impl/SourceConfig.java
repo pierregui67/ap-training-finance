@@ -19,6 +19,7 @@ import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.sandbox.tuplepublisher.impl.ForexTuplePublisher;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.AutoCommitTuplePublisher;
@@ -226,12 +227,12 @@ public class SourceConfig {
         stores.add(INDICES_STORE_NAME);
         Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
         nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
-        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new IndicesTuplePublisher<String>(datastore, stores, nameToIndex));
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new IndicesTuplePublisher(datastore, stores, nameToIndex));
         return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, publisher);
     }
 
     @Bean IMessageChannel<String, Object> forexChannel() {
-        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new TuplePublisher<String>(datastore, FOREX_STORE_NAME));
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher<>(new ForexTuplePublisher(datastore, FOREX_STORE_NAME));
         return csvChannelFactory().createChannel(FOREX_TOPIC, FOREX_STORE_NAME, publisher);
     }
 

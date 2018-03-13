@@ -25,6 +25,9 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
     public static final String HIER_FOREX = "hierForex";
     protected String hierForex="ForexHier";
 
+    public final static String REFERENCE_CURRENCY = "referenceCurrency";
+    protected String referenceCurrency;
+
     protected int hierarchyOrdinal;
 
     /**
@@ -47,6 +50,12 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
         } else {
             throw new PostProcessorInitializationException("Post processor " + getName() + " is " +
                     "missing the mandatory property " + HIER_FOREX);
+        }
+
+        if (properties.containsKey(REFERENCE_CURRENCY)) {
+            this.referenceCurrency = properties.getProperty(REFERENCE_CURRENCY);
+        } else {
+            throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + REFERENCE_CURRENCY);
         }
 
         // Getting the ordinal of the wished hierarchy.
@@ -78,7 +87,7 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
         Double rate;
         String targetCurrency = (String) location.getCoordinate(hierarchyOrdinal-1, 1);
         IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
-                new Object[] {"EUR", targetCurrency}, FOREX_RATE);
+                new Object[] {referenceCurrency, targetCurrency}, FOREX_RATE);
         if (record != null) {
             rate = (Double) record.read(FOREX_RATE);
             return rate;

@@ -1,11 +1,6 @@
 package com.qfs.sandbox.postprocessor.impl;
 
-import com.qfs.condition.ICondition;
-import com.qfs.condition.impl.BaseConditions;
 import com.qfs.sandbox.context.ICurrencyContextValue;
-import com.qfs.store.query.ICursor;
-import com.qfs.store.query.IRecordQuery;
-import com.qfs.store.query.condition.impl.RecordQuery;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
 import com.quartetfs.biz.pivot.ILocation;
@@ -27,8 +22,8 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
 
     public static final String PLUGIN_KEY="FOREX";
 
-    public final static String INITIAL_CURRENCY = "initialCurrency";
-    protected String initialCurrency;
+    public final static String REFERENCE_CURRENCY = "referenceCurrency";
+    protected String referenceCurrency;
 
     /**
      * Constructor.
@@ -45,17 +40,17 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
         super.init(properties);
 
         // Init the properties
-        if (properties.containsKey(INITIAL_CURRENCY)) {
-            this.initialCurrency = properties.getProperty(INITIAL_CURRENCY);
+        if (properties.containsKey(REFERENCE_CURRENCY)) {
+            this.referenceCurrency = properties.getProperty(REFERENCE_CURRENCY);
         } else {
-            throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + INITIAL_CURRENCY);
+            throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + REFERENCE_CURRENCY);
         }
 
         /*ICursor cursor = getDatastoreVersion().getQueryRunner().forStore(FOREX_STORE_NAME).withoutCondition().withResultsLimit(1).selectingAllReachableFields().run();
         if (cursor.hasNext()) {
             cursor.next();
             IRecordReader reader = cursor.getRecord();
-            this.initialCurrency = (String) reader.read(FOREX_INITIAL_CURRENCY);
+            this.referenceCurrency = (String) reader.read(FOREX_INITIAL_CURRENCY);
         }*/
 
         // Declaring the dependency to the context values
@@ -85,10 +80,10 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
     }
 
     protected Double getRateByLaunchingQuery() {
-        if (getCurrency().equals(initialCurrency))
+        if (getCurrency().equals(referenceCurrency))
             return 1.0;
         IRecordReader record = DatastoreQueryHelper.getByKey(getDatastoreVersion(), FOREX_STORE_NAME,
-                new Object[] {initialCurrency, getCurrency()}, FOREX_RATE);
+                new Object[] {referenceCurrency, getCurrency()}, FOREX_RATE);
         if (record != null) {
             return (Double) record.read(FOREX_RATE);
         }
