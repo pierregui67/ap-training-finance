@@ -1,4 +1,4 @@
-package com.qfs.training.rivolition.data.main;
+package com.qfs.training.rivolition.data.main.serializable;
 
 import java.io.Serializable;
 import java.util.ArrayList;

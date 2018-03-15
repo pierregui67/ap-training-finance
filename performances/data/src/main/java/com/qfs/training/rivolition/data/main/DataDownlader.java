@@ -1,14 +1,15 @@
 package com.qfs.training.rivolition.data.main;
 
+import com.qfs.training.rivolition.data.main.download.Downloader;
+import com.qfs.training.rivolition.data.main.download.IndexDownloader;
+import com.qfs.training.rivolition.data.main.download.IndicesHistoryDownloader;
+import com.qfs.training.rivolition.data.main.download.StockPriceHistoryDownloader;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.qfs.training.rivolition.data.history.HistoryDownloader;
-import com.qfs.training.rivolition.data.index.JsonIndexDownloader;
-import com.qfs.training.rivolition.data.sector.SectorsDownloader;
 
 /**
  * Class downloading all the data needed
@@ -46,8 +47,13 @@ public class DataDownlader {
 		if (argsList.contains(HISTORY_ARG)) {
 			//HistoryDownloader.main(BASE_FOLDER);
 		}
-		ArrayList<String> authorizedSymbols = IndexDownloader.main(BASE_FOLDER);
-		//StockPriceHistoryDownloader.main(BASE_FOLDER, new ArrayList<String>());
+		Downloader download;
+		/*download = new IndexDownloader(BASE_FOLDER);
+		download.main();*/
+		/*download = new StockPriceHistoryDownloader(BASE_FOLDER);
+		download.main();*/
+        download = new IndicesHistoryDownloader(BASE_FOLDER);
+		download.main();
 	}
 
 }

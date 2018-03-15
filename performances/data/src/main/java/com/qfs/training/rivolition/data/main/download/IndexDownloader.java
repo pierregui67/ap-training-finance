@@ -1,4 +1,5 @@
-package com.qfs.training.rivolition.data.main;
+package com.qfs.training.rivolition.data.main.download;
+
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -6,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.qfs.training.rivolition.data.main.serializable.Indices;
+import com.qfs.training.rivolition.data.main.serializable.Symbols;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
@@ -13,57 +16,49 @@ import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
 
 
-public class IndexDownloader {
+public class IndexDownloader extends Downloader {
 
     public static final String INDICES_LIST_URL = "https://finance.yahoo.com/world-indices";
 
     public static final String PREFIX_URL = "https://finance.yahoo.com/quote/";
     public static final String SUFFIX_URL = "/components?p=";
 
-    public static String path;
-    public static String baseFolder;
     public  final static String FOLDER = "Indices/";
-    private final static String FILE_EXTENSION = ".csv";
 
-    // All the reachable indices
-    private final ArrayList<String> indices;
 
-    // All the reachable stock symbol present in the different indices
-    private final ArrayList<String> stockSymbols;
-
-    public static ArrayList<String> main(String path) {
+    public void main() {
 
         try {
-            IndexDownloader indexDownloader = new IndexDownloader(path);
-            indexDownloader.parseURL(INDICES_LIST_URL);
+            this.parseURL(INDICES_LIST_URL);
 
             // Serialization of the stock symbols in order to get them whenever we want.
-            File file = new File(path + "authorizedSymbols.ser");
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
-            Symbols symbols = new Symbols(indexDownloader.getStockSymbols());
-            oos.writeObject(symbols);
+            File fileSym = new File(path + "authorizedSymbols.ser");
+            File fileInd = new File(path + "authorizedIndices.ser");
+            ObjectOutputStream oosSym = new ObjectOutputStream(new FileOutputStream(fileSym));
+            ObjectOutputStream oosInd = new ObjectOutputStream(new FileOutputStream(fileInd));
+            Symbols symbols = new Symbols(this.stockSymbols);
+            Indices indices = new Indices(this.indices);
+            oosSym.writeObject(symbols);
+            oosInd.writeObject(indices);
 
-            return indexDownloader.stockSymbols;
+            //indexDownloader.stockSymbols;
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
     }
 
     public IndexDownloader(String path) {
-        this.path = path;
-        baseFolder = path + FOLDER;
-        indices = new ArrayList<String>();
-        stockSymbols = new ArrayList<String>();
+        super(path);
     }
 
-    public ArrayList<String> getStockSymbols() {
-        return stockSymbols;
+    protected String getFolder() {
+        return FOLDER;
     }
 
-    private void parseURL(String url) throws IOException {
+
+    protected void parseURL(String url) throws IOException {
 
         // Connection to the URL
         Document doc = Jsoup.connect(url).timeout(1000000).get();
@@ -101,11 +96,10 @@ public class IndexDownloader {
 
         String indexNameClean = indexName.replace("^", "");
         indices.add(indexNameClean);
-        String record = "IndexName|Name Company|Last Price|Stock Symbol|Dump Number|Position Type|Date|Last Volume";
+        String record = "IndexName|Name Company|Last Price|Stock Symbol|Dump Number|" +
+                "Position Type|Date|Last Volume" + System.getProperty("line.separator");
 
-        File file = new File(baseFolder + indexNameClean + FILE_EXTENSION);
-        FileWriter fr = null;
-        BufferedWriter br = null;
+
         System.out.println(indexNameClean);
 
         // Getting all the components of the index. They are the only elements of the page having
@@ -119,8 +113,8 @@ public class IndexDownloader {
             // We retrieve the informations of the page.
             nameCompany = getInformation(childNodes, indNameCompany);
             stockSym = getInformation(childNodes.get(indStockSym).childNodes(), indStockSym);
-            lastPrice = getInformation(childNodes, indLastPrice);
-            volume = getInformation(childNodes, indVolume);
+            lastPrice = getInformation(childNodes, indLastPrice).replace(",","");
+            volume = getInformation(childNodes, indVolume).replace(",","");
 
             // We load the date
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -128,34 +122,12 @@ public class IndexDownloader {
 
             // We record the data in a CSV format.
             record = record + indexNameClean + "|" + nameCompany + "|" + lastPrice + "|" + stockSym
-                    + "|42422424|" + "|equity|" + dateString + "|" + volume + System.getProperty("line.separator");
+                    + "|42422424|equity|" + dateString + "|" + volume + System.getProperty("line.separator");
 
             stockSymbols.add(stockSym);
         }
-        try {
-            fr = new FileWriter(file);
-            br = new BufferedWriter(fr);
-            br.write(record);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally{
-            try {
-                br.close();
-                fr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        writter(record, indexNameClean);
         System.out.println(" : written.");
-    }
-
-    private String getInformation(List<Node> childNodes, int index) {
-        try {
-            return childNodes.get(index).childNodes().get(0).toString();
-        }
-        catch (IndexOutOfBoundsException e) {
-            return "null";
-        }
     }
 
 }
