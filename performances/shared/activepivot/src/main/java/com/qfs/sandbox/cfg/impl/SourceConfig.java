@@ -30,7 +30,6 @@ import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.log.impl.LogWriteException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
-import org.apache.commons.collections15.bidimap.DualHashBidiMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -86,7 +85,7 @@ public class SourceConfig {
         Map<Integer, String> mapPortfolios = new HashMap<Integer, String>();
         Map <Integer, String> mapHistory = new HashMap<Integer, String>();
         Map <Integer, String> mapCompany = new HashMap<Integer, String>();
-        Map <Integer, String> mapGDAXI = new HashMap<Integer, String>();
+        Map <Integer, String> mapIndices = new HashMap<Integer, String>();
         Map <Integer, String> mapForex = new HashMap<Integer, String>();
 
         mapPortfolios.put(0, PORTFOLIOS_DATE);
@@ -108,12 +107,12 @@ public class SourceConfig {
         mapCompany.put(2, COMPANY_SECTOR);
         mapCompany.put(3, COMPANY_INDUSTRY);
 
-        mapGDAXI.put(0, INDICES_INDEX_NAME);
-        mapGDAXI.put(1, INDICES_NAME_COMPANY);
-        mapGDAXI.put(2, INDICES_CLOSE_VALUE);
-        mapGDAXI.put(3, INDICES_STOCK_SYMBOL);
-        mapGDAXI.put(4, INDICES_IDENTIFIER);
-        mapGDAXI.put(6, INDICES_DATE);
+        mapIndices.put(0, INDICES_INDEX_NAME);
+        mapIndices.put(1, INDICES_NAME_COMPANY);
+        mapIndices.put(2, INDICES_CLOSE_VALUE);
+        mapIndices.put(3, INDICES_STOCK_SYMBOL);
+        mapIndices.put(4, INDICES_IDENTIFIER);
+        mapIndices.put(6, INDICES_DATE);
 
         mapForex.put(0, FOREX_INITIAL_CURRENCY);
         mapForex.put(1, FOREX_TARGET_CURRENCY);
@@ -133,7 +132,7 @@ public class SourceConfig {
         company.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(company);
 
-        DirectoryCSVTopic gdaxi = createDirectoryTopic(INDICES_TOPIC, env.getProperty("dir.index"), 8, "**GDAXI.csv", false, mapGDAXI);
+        DirectoryCSVTopic gdaxi = createDirectoryTopic(INDICES_TOPIC, env.getProperty("dir.index"), 8, "**.csv", true, mapIndices);
         gdaxi.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(gdaxi);
 
@@ -203,7 +202,6 @@ public class SourceConfig {
 
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
-		csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(COMPAGNY_INFORMATIONS_TOPIC));
 
         long before = System.nanoTime();
@@ -221,7 +219,16 @@ public class SourceConfig {
     }
 
     @Bean
-    public IMessageChannel<String, Object> gdaxiChannel() {
+    public IMessageChannel<String, Object> historyChannel() {
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher(new TuplePublisher<String>(
+                datastore,
+                STOCK_PRICE_HISTORY_STORE_NAME));
+
+        return csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, publisher);
+    }
+
+    @Bean
+    public IMessageChannel<String, Object> indicesChannel() {
         Collection<String> stores = new ArrayList();
         stores.add(PORTFOLIOS_STORE_NAME);
         stores.add(INDICES_STORE_NAME);
@@ -243,11 +250,12 @@ public class SourceConfig {
      * @throws LogWriteException if it fails to listen to csv files.
      */
     @Bean
-    @DependsOn(value = { "initialLoad", "gdaxiChannel" })
+    @DependsOn(value = { "initialLoad", "indicesChannel", "forexChannel" })
     public Void gdaxiRealTime() {
         // Start real time time update
-        csvSource().listen(gdaxiChannel());
+        csvSource().listen(indicesChannel());
         csvSource().listen(forexChannel());
+        csvSource().listen(historyChannel());
         printStoreSizes();
 
         return null;

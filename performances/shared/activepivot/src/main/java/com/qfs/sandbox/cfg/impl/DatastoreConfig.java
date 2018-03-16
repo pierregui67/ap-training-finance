@@ -176,7 +176,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build();
     }
 
-    /** @return the description of the GDAXI store */
+    /** @return the description of the indices store */
     @Bean
     public IStoreDescription IndicesStoreDescription() {
         return new StoreDescriptionBuilder()
@@ -230,6 +230,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .toStore(INDICES_STORE_NAME)
                 .withName("PortfolioToIndices")
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, INDICES_STOCK_SYMBOL)
+                .withMapping(PORTFOLIOS_INDEX_NAME, INDICES_INDEX_NAME)
                 .build());
 
         return references;

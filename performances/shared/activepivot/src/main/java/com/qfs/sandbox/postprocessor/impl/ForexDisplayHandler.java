@@ -1,6 +1,5 @@
 package com.qfs.sandbox.postprocessor.impl;
 
-import com.qfs.sandbox.context.ICurrencyContextValue;
 import com.quartetfs.biz.pivot.IActivePivotVersion;
 import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevel;
@@ -18,10 +17,10 @@ import java.util.*;
 
 import static com.quartetfs.biz.pivot.cube.hierarchy.ILevel.ALLMEMBER;
 
-@QuartetExtendedPluginValue(intf=IAggregatesContinuousHandler.class, key = ForexHandler.PLUGIN_KEY)
-public class ForexHandler extends AAggregatesContinuousHandler<Object> {
+@QuartetExtendedPluginValue(intf=IAggregatesContinuousHandler.class, key = ForexDisplayHandler.PLUGIN_KEY)
+public class ForexDisplayHandler extends AAggregatesContinuousHandler<Object> {
 
-    public static final String PLUGIN_KEY = "FOREX_HANDLER";
+    public static final String PLUGIN_KEY = "FOREX_DISPLAY_HANDLER";
 
     public static final String FOREX_LEVEL = "Currency";
     protected ILevelInfo level;
@@ -36,7 +35,7 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
         this.currencyLevel = currencyLevel;
     }
 
-    public ForexHandler(IActivePivotVersion pivot) throws QuartetException{
+    public ForexDisplayHandler(IActivePivotVersion pivot) throws QuartetException{
         super(pivot);
         final ILevel iLevel = HierarchiesUtil.getLevel(pivot, FOREX_LEVEL);
         if(iLevel == null) {
@@ -50,15 +49,18 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
 
         Set<ILocation> impactedLocs;
 
+        //get the updated currencies from the Forex Stream
         if (!(event instanceof Set))
             return new Impact(location, null, null);
-        Set<String> updatedCurrencies = (Set<String>) event;
+        Set<String> updatedCurrencies = (Set<String>) event; // != null
 
-
-        if (updatedCurrencies.contains(pivot.getContext().get(ICurrencyContextValue.class).getCurrency()))
-            impactedLocs = LocationUtil.expandAll(pivot.getHierarchies(), Arrays.asList(location));
-        else
-            impactedLocs = null;
+        //compute the impacted locations
+        impactedLocs = new HashSet<ILocation>();
+        // When we display the store, all the cell of the impacted currency must be updated.
+        for (String currency : updatedCurrencies) {
+            ILocation loc = LocationUtil.createModifiedLocation(location, level.getHierarchyInfo(), new Object[]{ALLMEMBER, currency});
+            impactedLocs.add(loc);
+        }
 
         // TODO : could be possible that a currency has been removed ?
         return new Impact(location, impactedLocs, null);

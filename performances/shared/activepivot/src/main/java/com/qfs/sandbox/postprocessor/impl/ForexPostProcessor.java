@@ -46,13 +46,6 @@ public class ForexPostProcessor extends ADynamicAggregationPostProcessor{
             throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + REFERENCE_CURRENCY);
         }
 
-        /*ICursor cursor = getDatastoreVersion().getQueryRunner().forStore(FOREX_STORE_NAME).withoutCondition().withResultsLimit(1).selectingAllReachableFields().run();
-        if (cursor.hasNext()) {
-            cursor.next();
-            IRecordReader reader = cursor.getRecord();
-            this.referenceCurrency = (String) reader.read(FOREX_INITIAL_CURRENCY);
-        }*/
-
         // Declaring the dependency to the context values
         addContextDependency(ICurrencyContextValue.class);
     }

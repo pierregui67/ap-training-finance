@@ -19,7 +19,7 @@
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
             <!-- TODO : the default value is hard coded ! -->
-            <entry key="referenceCurrency" value="USD" />
+            <entry key="referenceCurrency" value="EUR" />
         </properties>
     </postProcessor>
 
@@ -27,7 +27,7 @@
                    formatter="DOUBLE[#,###.00;-#,###.00]" continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" />
-            <entry key="referenceCurrency" value="USD" />
+            <entry key="referenceCurrency" value="EUR" />
         </properties>
     </postProcessor>
 
@@ -169,10 +169,10 @@
     <!--Display Forex-->
     <postProcessor name="ForexRate" folder="forexRate" pluginKey="DISPLAY"
                    formatter="DOUBLE[#,##0.0000;-#,##0.0000]"
-                   continuousQueryHandlers="STORED, FOREX_HANDLER">
+                   continuousQueryHandlers="STORED, FOREX_DISPLAY_HANDLER">
         <properties>
             <entry key="hierForex" value="ForexHier" />
-            <entry key="referenceCurrency" value="USD" />
+            <entry key="referenceCurrency" value="EUR" />
             <!--The following property is crucial to display the rate. Indeed, ForexHier is an analysis hierarchy with an allMember.
                 Without this add, the evaluate function will never be called if displaying the Forex Level.
                 And if one would wish to display the Forex Dimension, the currency would not be available but only
