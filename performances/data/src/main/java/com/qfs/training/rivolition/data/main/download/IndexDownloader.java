@@ -3,12 +3,11 @@ package com.qfs.training.rivolition.data.main.download;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
-import com.qfs.training.rivolition.data.main.serializable.Indices;
-import com.qfs.training.rivolition.data.main.serializable.Symbols;
+import com.qfs.training.rivolition.data.main.serializable.SerializableObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
@@ -29,19 +28,13 @@ public class IndexDownloader extends Downloader {
     public void main() {
 
         try {
-            this.parseURL(INDICES_LIST_URL);
+            this.getAll();
 
             // Serialization of the stock symbols in order to get them whenever we want.
-            File fileSym = new File(path + "authorizedSymbols.ser");
-            File fileInd = new File(path + "authorizedIndices.ser");
-            ObjectOutputStream oosSym = new ObjectOutputStream(new FileOutputStream(fileSym));
-            ObjectOutputStream oosInd = new ObjectOutputStream(new FileOutputStream(fileInd));
-            Symbols symbols = new Symbols(this.stockSymbols);
-            Indices indices = new Indices(this.indices);
-            oosSym.writeObject(symbols);
-            oosInd.writeObject(indices);
-
-            //indexDownloader.stockSymbols;
+            SerializableObject ser =  new SerializableObject<HashSet>(this.stockSymbols);
+            ser.serializableSaver(this.path + "authorizedSymbols.ser");
+            ser.setObj(this.indices);
+            ser.serializableSaver(this.path+"authorizedIndices.ser");
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -57,9 +50,9 @@ public class IndexDownloader extends Downloader {
         return FOLDER;
     }
 
+    protected void getAll() throws IOException {
 
-    protected void parseURL(String url) throws IOException {
-
+        String url = INDICES_LIST_URL;
         // Connection to the URL
         Document doc = Jsoup.connect(url).timeout(1000000).get();
 
@@ -74,12 +67,13 @@ public class IndexDownloader extends Downloader {
                 // We get the index Name and then we move to the associated page giving the
                 // information of its components.
                 String indexName = element.attr("data-symbol");
-                parseInterURL(indexName, PREFIX_URL + indexName + SUFFIX_URL + indexName);
+                parseURL(indexName);
             }
         }
     }
 
-    private void parseInterURL(String indexName, String url) throws IOException {
+    protected void parseURL(String indexName) throws IOException {
+        String url = PREFIX_URL + indexName + SUFFIX_URL + indexName;
 
         // The needed data to be collected
         String nameCompany, stockSym, dateString, lastPrice, volume;

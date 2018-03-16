@@ -1,9 +1,6 @@
 package com.qfs.training.rivolition.data.main;
 
-import com.qfs.training.rivolition.data.main.download.Downloader;
-import com.qfs.training.rivolition.data.main.download.IndexDownloader;
-import com.qfs.training.rivolition.data.main.download.IndicesHistoryDownloader;
-import com.qfs.training.rivolition.data.main.download.StockPriceHistoryDownloader;
+import com.qfs.training.rivolition.data.main.download.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,8 +49,10 @@ public class DataDownlader {
 		download.main();*/
 		/*download = new StockPriceHistoryDownloader(BASE_FOLDER);
 		download.main();*/
-        download = new IndicesHistoryDownloader(BASE_FOLDER);
-		download.main();
+        /*download = new IndicesHistoryDownloader(BASE_FOLDER);
+		download.main();*/
+        download = new SectorDownloader(BASE_FOLDER);
+        download.main();
 	}
 
 }

@@ -1,18 +1,18 @@
 package com.qfs.training.rivolition.data.main.download;
 
+import com.qfs.training.rivolition.data.main.serializable.SerializableObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+
+import static com.qfs.training.rivolition.data.main.serializable.SerializableObject.readSerializable;
 
 /**
  * Class downloading historical data CSV of each portfolios symbol
@@ -21,15 +21,23 @@ import java.util.Locale;
  */
 public abstract class HistoryDownloader extends Downloader {
 
-    protected static final String PREFIX_URL = "https://finance.yahoo.com/quote/^";
-    protected static final String SUFFIX_URL = "/history?p=^";
+    protected final String PREFIX_URL = "https://finance.yahoo.com/quote/^";
+    protected final String SUFFIX_URL = "/history?p=^";
+
+    protected String fileNamePrefix="";
+
+    protected static HashSet<String> target;
+
+    @Override
+    public void main() {
+        this.getAll(target);
+    }
 
     public HistoryDownloader(String path) {
         super(path);
     }
 
-    @Override
-    public String getInformation(List<Node> childNodes, int index) {
+    protected String getDeeperInformation(List<Node> childNodes, int index) {
         try {
             return super.getInformation(childNodes.get(index).childNodes(),0);
         } catch (UnsupportedOperationException e) {
@@ -37,13 +45,15 @@ public abstract class HistoryDownloader extends Downloader {
         }
     }
 
-    public void getAll(ArrayList<String> elements) {
+    public void getAll(HashSet<String> elements) {
+        //int cpt = 0;
         for (String sym : elements) {
             try {
                 parseURL(sym);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //cpt ++;
         }
     }
 
@@ -69,7 +79,7 @@ public abstract class HistoryDownloader extends Downloader {
         int indVolume = 6;
 
         String replacedSym = sym.replace(".", "-");
-        String fileName = "PriceHistory_" + replacedSym;
+        String fileName = fileNamePrefix + "History_" + replacedSym;
 
         // Connection to the URL
         Document doc = Jsoup.connect(url).timeout(10000000).get();
@@ -79,7 +89,7 @@ public abstract class HistoryDownloader extends Downloader {
         for (Element element : elements) {
             List<Node> childNodes = element.childNodes();
 
-            dateString = getInformation(childNodes, indDate);
+            dateString = getDeeperInformation(childNodes, indDate);
             try {
                 date = dateFormat1.parse(dateString);
                 dateString = dateFormat2.format(date).toString();
@@ -92,12 +102,12 @@ public abstract class HistoryDownloader extends Downloader {
                 record = record + dateString + ",,,,,," + System.getProperty("line.separator");
             else {
 
-                open = getInformation(childNodes, indOpen).replace(",", "");
-                close = getInformation(childNodes, indClose).replace(",", "");
-                high = getInformation(childNodes, indHigh).replace(",", "");
-                low = getInformation(childNodes, indLow).replace(",", "");
-                adjClose = getInformation(childNodes, indAdjClose).replace(",", "");
-                volume = getInformation(childNodes, indVolume).replace(",", "");
+                open = getDeeperInformation(childNodes, indOpen).replace(",", "");
+                close = getDeeperInformation(childNodes, indClose).replace(",", "");
+                high = getDeeperInformation(childNodes, indHigh).replace(",", "");
+                low = getDeeperInformation(childNodes, indLow).replace(",", "");
+                adjClose = getDeeperInformation(childNodes, indAdjClose).replace(",", "");
+                volume = getDeeperInformation(childNodes, indVolume).replace(",", "");
 
                 // We record the data in a CSV format.
                 record = record + dateString + "," + open + "," + high + "," + low + "," + close
@@ -109,4 +119,25 @@ public abstract class HistoryDownloader extends Downloader {
         System.out.println(" : written.");
     }
 
+    protected Object getSerializableObject(String serName) {
+
+        // We try to open the file containing the serializable object
+        try {
+            return readSerializable(this.path + serName);
+            // There is no serializable file, thus we try to generate it.
+        } catch (IOException e) { // If there is no serializable file, then we try to generate it.
+            new IndexDownloader(this.path).main(); // Files generation
+            // Due to the new IndexDownloader there have been a reinitialisation
+            init(this.path);
+            try {
+                return readSerializable(this.path + serName);
+                // There still is no file despite the generation attempt.
+            } catch (IOException e1) {
+                System.out.println("ERROR. After trying to generate an Indices.ser file by " +
+                        "calling an IndexDownloader, the files are still missing !");
+                e1.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
