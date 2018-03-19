@@ -1,5 +1,6 @@
 package com.qfs.sandbox.tuplepublisher.impl;
 
+import com.qfs.sandbox.bean.CurrenciesBean;
 import com.qfs.source.IStoreMessage;
 import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
@@ -105,6 +106,9 @@ public class ForexTuplePublisher extends TuplePublisher {
 
         Collection<Object[]> processedTuples = this.process(message, reorganizedTuples);
         this.datastore.getTransactionManager().addAll(storeName, processedTuples);
+
+        CurrenciesBean.addCurency(referenceCurrency);
+        CurrenciesBean.addCurrency(foreignCurrency);
     }
 
 }
