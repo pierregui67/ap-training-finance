@@ -10,6 +10,7 @@ import com.qfs.distribution.security.IDistributedSecurityManager;
 import com.qfs.messenger.IDistributedMessenger;
 import com.qfs.monitoring.HealthCheckAgent;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
+import com.qfs.sandbox.bean.DatastoreConfigBean;
 import com.qfs.sandbox.postprocessor.impl.ForexDisplayHandler;
 import com.qfs.sandbox.postprocessor.impl.ForexHandler;
 import com.qfs.sandbox.postprocessor.impl.ForexStream;
@@ -72,6 +73,8 @@ value = {
 
 		// Streaming Services monitor
 		StreamingMonitorConfig.class,
+
+        DatastoreConfigBean.class
 })
 public class SandboxConfig {
 
@@ -104,6 +107,9 @@ public class SandboxConfig {
 	/** ActivePivot Service Config */
 	@Autowired
 	protected ActivePivotServicesConfig apServiceConfig;
+
+	@Autowired
+    protected DatastoreConfigBean datastoreConfigBean;
 
 	/**
 	 *
@@ -201,9 +207,8 @@ public class SandboxConfig {
         inject(IStream.class, ForexStream.PLUGIN_KEY, "datastore", datastoreConfig.datastore());
         inject(IAggregatesContinuousHandler.class, ForexDisplayHandler.PLUGIN_KEY, "currencyLevel", "CurrencyContextValue");
         inject(IAggregatesContinuousHandler.class, ForexHandler.PLUGIN_KEY, "currencyLevel", "CurrencyContextValue");
-        //inject(Translator.class, tran, pr, );
-		//inject(IContextValueTranslator.class, CurrencyContextValueTranslator.KEY,"currencies", );
 
+        datastoreConfigBean.setDatastoreConfig(datastoreConfig);
 	}
 
 }

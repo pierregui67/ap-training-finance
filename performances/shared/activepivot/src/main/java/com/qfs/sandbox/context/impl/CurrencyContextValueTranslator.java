@@ -9,22 +9,16 @@ package com.qfs.sandbox.context.impl;
 import java.util.*;
 
 import com.qfs.sandbox.bean.CurrenciesBean;
-import com.qfs.sandbox.context.ExternalContextGetter;
+import com.qfs.sandbox.bean.DatastoreConfigBean;
 import com.qfs.sandbox.context.ICurrencyContextValue;
-import com.qfs.store.query.IDictionaryCursor;
-import com.qfs.store.query.IQueryRunner;
-import com.qfs.store.record.IRecordReader;
+import com.qfs.store.IDatastoreVersion;
+import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.quartetfs.biz.pivot.context.ContextValueTranslationException;
-import com.quartetfs.biz.pivot.context.IActivePivotContext;
 import com.quartetfs.biz.pivot.context.IContextValueTranslator;
 import com.quartetfs.biz.pivot.context.impl.SimpleContextValueTranslator;
-import com.quartetfs.biz.pivot.query.impl.QueryCache;
 import com.quartetfs.fwk.QuartetPluginValue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_INITIAL_CURRENCY;
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_STORE_NAME;
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_TARGET_CURRENCY;
 
@@ -52,7 +46,26 @@ public class CurrencyContextValueTranslator extends SimpleContextValueTranslator
     public CurrencyContextValueTranslator() {
         super();
 
-        currencies = CurrenciesBean.getCurrencies();
+        IDatastoreVersion datastoreVersion = DatastoreConfigBean.getDatastoreConfig().datastore().getMostRecentVersion();
+        Iterator it;
+
+        // Get the foreign currencies
+        it = DatastoreQueryHelper.selectDistinct(datastoreVersion, FOREX_STORE_NAME, FOREX_TARGET_CURRENCY).iterator();
+        while (it.hasNext()) {
+            currencies.add((String) it.next());
+        }
+
+        // Get the reference currency, the iterator should contain an single value.
+        it = DatastoreQueryHelper.selectDistinct(datastoreVersion, FOREX_STORE_NAME, FOREX_INITIAL_CURRENCY).iterator();
+        while (it.hasNext()) {
+            currencies.add((String) it.next());
+        }
+        /*
+        Alternative method : use the CurrenciesBean, initialize when creating the ForexStore.
+        This solution is more elegant in this case but in order to keep an example of the
+        DatastoreQueryHelper, one uses the DatastoreConfigBean.
+         */
+        // currencies = CurrenciesBean.getCurrencies();
     }
 
     @Override
