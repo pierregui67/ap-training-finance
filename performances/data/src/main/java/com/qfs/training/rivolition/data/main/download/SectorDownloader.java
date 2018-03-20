@@ -1,7 +1,9 @@
 package com.qfs.training.rivolition.data.main.download;
 
-import com.qfs.training.rivolition.data.main.serializable.SerializableObject;
+import com.qfs.training.rivolition.data.main.utilities.SerializableObject;
+import com.qfs.training.rivolition.data.main.utilities.Utils;
 import org.jsoup.Jsoup;
+import org.jsoup.UncheckedIOException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -69,7 +71,7 @@ public class SectorDownloader extends HistoryDownloader {
                 directory.mkdir();
             }
 
-            writter(record, industry);
+            Utils.writter(record, baseFolder + industry + FILE_EXTENSION);
             // If we do not rectified the baseFolder, each new folder will be created inside
             // the previous one.
             baseFolder = baseFolder.replace(sector,"");
@@ -107,7 +109,7 @@ public class SectorDownloader extends HistoryDownloader {
             doc = Jsoup.connect(url).timeout(1000000000).get();
             elements = doc.getElementsByAttributeValueContaining("class","D(ib) Va(t)");
         }
-        catch (ZipException z) {
+        catch (UncheckedIOException e) {
             System.out.println("Exception in thread main org.jsoup.UncheckedIOException: " +
                     "java.util.zip.ZipException: Corrupt GZIP trailer");
             System.out.println("Stock Symbols : " + sym);

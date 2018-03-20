@@ -3,11 +3,10 @@ package com.qfs.training.rivolition.data.main.download;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
-import com.qfs.training.rivolition.data.main.serializable.SerializableObject;
+import com.qfs.training.rivolition.data.main.utilities.SerializableObject;
+import com.qfs.training.rivolition.data.main.utilities.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
@@ -34,7 +33,9 @@ public class IndexDownloader extends Downloader {
             SerializableObject ser =  new SerializableObject<HashSet>(this.stockSymbols);
             ser.serializableSaver(this.path + "authorizedSymbols.ser");
             ser.setObj(this.indices);
-            ser.serializableSaver(this.path+"authorizedIndices.ser");
+            ser.serializableSaver(this.path + "authorizedIndices.ser");
+            ser = new SerializableObject<HashMap>(this.indexToSymbols);
+            ser.serializableSaver(this.path + "indexToSymbols.ser");
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -119,8 +120,12 @@ public class IndexDownloader extends Downloader {
                     + "|42422424|equity|" + dateString + "|" + volume + System.getProperty("line.separator");
 
             stockSymbols.add(stockSym);
+            if (indexToSymbols.containsKey(indexNameClean))
+                indexToSymbols.get(indexNameClean).add(stockSym);
+            else
+                indexToSymbols.put(indexNameClean, new HashSet<String>(Arrays.asList(stockSym)));
         }
-        writter(record, indexNameClean);
+        Utils.writter(record, baseFolder + indexNameClean + FILE_EXTENSION);
         System.out.println(" : written.");
     }
 

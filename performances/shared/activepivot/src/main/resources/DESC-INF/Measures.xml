@@ -120,7 +120,7 @@
     <postProcessor name="CumulativeReturnPercent" pluginKey="FORMULA" folder="postProc" formatter="DOUBLE[#,##0.00%;-#,##0.00%]"
                    continuousQueryHandlers="STORED, FOREX_HANDLER">
         <properties>
-            <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],/)"/>
+            <entry key="formula" value="((aggregatedValue[PortfolioValue], aggregatedValue[InitialValue], -),aggregatedValue[InitialValue],int[0],div)"/>
         </properties>
     </postProcessor>
 

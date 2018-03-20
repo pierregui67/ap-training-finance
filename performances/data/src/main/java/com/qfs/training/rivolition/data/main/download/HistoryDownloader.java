@@ -1,6 +1,6 @@
 package com.qfs.training.rivolition.data.main.download;
 
-import com.qfs.training.rivolition.data.main.serializable.SerializableObject;
+import com.qfs.training.rivolition.data.main.utilities.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.qfs.training.rivolition.data.main.serializable.SerializableObject.readSerializable;
+import static com.qfs.training.rivolition.data.main.utilities.SerializableObject.readSerializable;
 
 /**
  * Class downloading historical data CSV of each portfolios symbol
@@ -21,8 +21,8 @@ import static com.qfs.training.rivolition.data.main.serializable.SerializableObj
  */
 public abstract class HistoryDownloader extends Downloader {
 
-    protected final String PREFIX_URL = "https://finance.yahoo.com/quote/^";
-    protected final String SUFFIX_URL = "/history?p=^";
+    protected final String PREFIX_URL = "https://finance.yahoo.com/quote/";
+    protected final String SUFFIX_URL = "/history?p=";
 
     protected String fileNamePrefix="";
 
@@ -46,20 +46,23 @@ public abstract class HistoryDownloader extends Downloader {
     }
 
     public void getAll(HashSet<String> elements) {
-        //int cpt = 0;
         for (String sym : elements) {
             try {
                 parseURL(sym);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //cpt ++;
         }
     }
 
     protected void parseURL(String sym) throws IOException {
         System.out.println(sym);
-        String url = PREFIX_URL + sym + SUFFIX_URL + sym;
+
+        String url;
+        if (this.fileNamePrefix.equals("Index"))
+            url = PREFIX_URL + "^" + sym + SUFFIX_URL + "^" + sym;
+        else
+            url = PREFIX_URL + sym + SUFFIX_URL + sym;
 
         // The needed data to be collected
         String open, high, low, close, volume, adjClose, dateString;
@@ -97,6 +100,11 @@ public abstract class HistoryDownloader extends Downloader {
                 e.printStackTrace();
             }
 
+            if (symbolToDates.containsKey(sym))
+                symbolToDates.get(sym).add(dateString);
+            else
+                symbolToDates.put(sym, new HashSet<String>(Arrays.asList(dateString)));
+
             // When there is two nodes, that means the dividend is being display at this time.
             if (childNodes.size() == 2)
                 record = record + dateString + ",,,,,," + System.getProperty("line.separator");
@@ -114,18 +122,18 @@ public abstract class HistoryDownloader extends Downloader {
                         + "," + volume + "," + adjClose + System.getProperty("line.separator");
             }
         }
-        writter(record, fileName);
+        Utils.writter(record, baseFolder + fileName + FILE_EXTENSION);
 
         System.out.println(" : written.");
     }
 
     protected Object getSerializableObject(String serName) {
 
-        // We try to open the file containing the serializable object
+        // We try to open the file containing the utilities object
         try {
             return readSerializable(this.path + serName);
-            // There is no serializable file, thus we try to generate it.
-        } catch (IOException e) { // If there is no serializable file, then we try to generate it.
+            // There is no utilities file, thus we try to generate it.
+        } catch (IOException e) { // If there is no utilities file, then we try to generate it.
             new IndexDownloader(this.path).main(); // Files generation
             // Due to the new IndexDownloader there have been a reinitialisation
             init(this.path);
