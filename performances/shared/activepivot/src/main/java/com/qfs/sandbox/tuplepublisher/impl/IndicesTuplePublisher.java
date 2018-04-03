@@ -26,7 +26,7 @@ public class IndicesTuplePublisher extends TuplePublisher {
         Iterator storeIt = this.stores.iterator();
         //((TupleTranslator) ((StoreMessage) message).translator).columnIndex
         List<Object[]> portfolioTuples = new ArrayList<Object[]>();
-        List<Object[]> gdaxiTuples = new ArrayList<Object[]>();
+        List<Object[]> indiceTuples = new ArrayList<Object[]>();
 
         int indDate = nameToColumnIndex.get(PORTFOLIOS_DATE);
         int indIndName = nameToColumnIndex.get(PORTFOLIOS_INDEX_NAME);
@@ -42,15 +42,15 @@ public class IndicesTuplePublisher extends TuplePublisher {
             Object[] currentTuple = (Object[]) tuples.get(cpt);
             Object[] portfolio = new Object[] {currentTuple[indDate], currentTuple[indIndName], currentTuple[indNumStock],
                     currentTuple[indStockSym], currentTuple[indPosType]};
-            Object[] gdaxi = new Object[] {currentTuple[indIndName], currentTuple[indName], currentTuple[indCl],
+            Object[] indice = new Object[] {currentTuple[indIndName], currentTuple[indName], currentTuple[indCl],
                     currentTuple[indStockSym], currentTuple[indId], currentTuple[indDate]};
             portfolioTuples.add(portfolio);
-            gdaxiTuples.add(gdaxi);
+            indiceTuples.add(indice);
             cpt++;
         }
 
         Collection<Object[]> processedPortfolio = this.process(message, portfolioTuples);
-        Collection<Object[]> processedGdaxi = this.process(message, gdaxiTuples);
+        Collection<Object[]> processedGdaxi = this.process(message, indiceTuples);
 
         List storesList = (List) this.stores;
 

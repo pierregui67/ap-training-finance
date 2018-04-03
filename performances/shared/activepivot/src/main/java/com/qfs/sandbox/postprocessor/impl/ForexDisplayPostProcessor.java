@@ -51,7 +51,6 @@ public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
             throw new PostProcessorInitializationException("Post processor " + getName() + " is " +
                     "missing the mandatory property " + HIER_FOREX);
         }
-
         if (properties.containsKey(REFERENCE_CURRENCY)) {
             this.referenceCurrency = properties.getProperty(REFERENCE_CURRENCY);
         } else {

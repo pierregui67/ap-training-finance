@@ -69,6 +69,7 @@ public class SourceConfig {
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
     public static final String INDICES_TOPIC = INDICES_STORE_NAME;
     public static final String FOREX_TOPIC = FOREX_STORE_NAME;
+    public static final String INDICES_HISTORY_TOPIC = "IndicesHistory";
 
     // CSV Load
     @Bean
@@ -78,6 +79,7 @@ public class SourceConfig {
 
     @Bean
     public CSVSource csvSource() {
+
         CSVSource csvSource = new CSVSource();
 
         // ////////////////////////////////////////////////
@@ -120,7 +122,7 @@ public class SourceConfig {
 
         // ////////////////////////////////////////////////
         // Add topics
-        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**Initial**.csv", false, mapPortfolios);
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**.csv", false, mapPortfolios);
         portfolios.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(portfolios);
 
@@ -229,6 +231,9 @@ public class SourceConfig {
 
     @Bean
     public IMessageChannel<String, Object> indicesChannel() {
+        Collection<String> topics = new ArrayList<>();
+        topics.add(INDICES_TOPIC);
+        topics.add(INDICES_HISTORY_TOPIC);
         Collection<String> stores = new ArrayList();
         stores.add(PORTFOLIOS_STORE_NAME);
         stores.add(INDICES_STORE_NAME);
@@ -251,7 +256,7 @@ public class SourceConfig {
      */
     @Bean
     @DependsOn(value = { "initialLoad", "indicesChannel", "forexChannel" })
-    public Void gdaxiRealTime() {
+    public Void realTime() {
         // Start real time time update
         csvSource().listen(indicesChannel());
         csvSource().listen(forexChannel());
