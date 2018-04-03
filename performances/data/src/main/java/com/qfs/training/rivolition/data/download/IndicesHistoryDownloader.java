@@ -1,8 +1,11 @@
-package com.qfs.training.rivolition.data.main.download;
+package com.qfs.training.rivolition.data.download;
 
 
 import java.util.HashSet;
 
+/**
+ * This class serves to download the indices history. This is in addition of the initial data.
+ */
 public class IndicesHistoryDownloader extends HistoryDownloader {
 
     public final static String FOLDER = "IndicesHistory/";

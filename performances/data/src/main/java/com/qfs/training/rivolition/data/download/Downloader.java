@@ -1,4 +1,4 @@
-package com.qfs.training.rivolition.data.main.download;
+package com.qfs.training.rivolition.data.download;
 
 import org.jsoup.nodes.Node;
 
@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * Abstract class for downloading data.
+ */
 public abstract class Downloader {
 
     public static String path;

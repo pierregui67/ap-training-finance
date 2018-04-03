@@ -1,6 +1,6 @@
-package com.qfs.training.rivolition.data.main;
+package com.qfs.training.rivolition.data;
 
-import com.qfs.training.rivolition.data.main.download.*;
+import com.qfs.training.rivolition.data.download.*;
 
 /**
  * Class downloading all the data needed

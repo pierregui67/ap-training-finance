@@ -1,6 +1,7 @@
-package com.qfs.training.rivolition.data.main.download;
+package com.qfs.training.rivolition.data.download;
 
-import com.qfs.training.rivolition.data.main.utilities.Utils;
+import com.qfs.training.rivolition.data.utilities.Utils;
+import com.qfs.training.rivolition.data.utilities.SerializableObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,12 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.qfs.training.rivolition.data.main.utilities.SerializableObject.readSerializable;
-
 /**
  * Class downloading historical data CSV of each portfolios symbol
- * @author Perseverance
- *
  */
 public abstract class HistoryDownloader extends Downloader {
 
@@ -131,14 +128,14 @@ public abstract class HistoryDownloader extends Downloader {
 
         // We try to open the file containing the utilities object
         try {
-            return readSerializable(this.path + serName);
+            return SerializableObject.readSerializable(this.path + serName);
             // There is no utilities file, thus we try to generate it.
         } catch (IOException e) { // If there is no utilities file, then we try to generate it.
             new IndexDownloader(this.path).main(); // Files generation
             // Due to the new IndexDownloader there have been a reinitialisation
             init(this.path);
             try {
-                return readSerializable(this.path + serName);
+                return SerializableObject.readSerializable(this.path + serName);
                 // There still is no file despite the generation attempt.
             } catch (IOException e1) {
                 System.out.println("ERROR. After trying to generate an Indices.ser file by " +

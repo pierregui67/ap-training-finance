@@ -1,13 +1,16 @@
-package com.qfs.training.rivolition.data.main.builder;
+package com.qfs.training.rivolition.data.builder;
 
-import com.qfs.training.rivolition.data.main.utilities.SerializableObject;
-import com.qfs.training.rivolition.data.main.utilities.Utils;
+import com.qfs.training.rivolition.data.utilities.SerializableObject;
+import com.qfs.training.rivolition.data.utilities.Utils;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ This class serve to build benchmark portfolios.
+ There are constituted by 100 shares for each stock symbols of the index.
+ */
 public class BenchmarkBuilder {
 
     public static String path;
@@ -20,7 +23,6 @@ public class BenchmarkBuilder {
 
 
     protected static HashMap<String, HashSet<String>> indexToSymbols;
-
     protected static HashMap<String, HashSet<String>> symbolToDates;
 
     public static void main(String[] args) {

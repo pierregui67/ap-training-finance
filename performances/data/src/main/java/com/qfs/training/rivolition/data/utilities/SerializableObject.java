@@ -1,7 +1,11 @@
-package com.qfs.training.rivolition.data.main.utilities;
+package com.qfs.training.rivolition.data.utilities;
 
 import java.io.*;
 
+/**
+ * This class allows to save important informations through serializable objects.
+ * @param <T> : the data to be saved.
+ */
 public class SerializableObject<T> implements Serializable{
 
     private T obj;

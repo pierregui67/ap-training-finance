@@ -1,9 +1,12 @@
-package com.qfs.training.rivolition.data.main.download;
+package com.qfs.training.rivolition.data.download;
 
-import com.qfs.training.rivolition.data.main.utilities.SerializableObject;
+import com.qfs.training.rivolition.data.utilities.SerializableObject;
 
 import java.util.HashSet;
 
+/**
+ * This class serves to download the stock symbol history.
+ */
 public class StockPriceHistoryDownloader extends HistoryDownloader {
 
 

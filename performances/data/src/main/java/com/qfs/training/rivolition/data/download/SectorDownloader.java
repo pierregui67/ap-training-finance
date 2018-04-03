@@ -1,7 +1,7 @@
-package com.qfs.training.rivolition.data.main.download;
+package com.qfs.training.rivolition.data.download;
 
-import com.qfs.training.rivolition.data.main.utilities.SerializableObject;
-import com.qfs.training.rivolition.data.main.utilities.Utils;
+import com.qfs.training.rivolition.data.utilities.SerializableObject;
+import com.qfs.training.rivolition.data.utilities.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.UncheckedIOException;
 import org.jsoup.nodes.Document;
@@ -12,8 +12,10 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.zip.ZipException;
 
+/**
+ * This class serves to download the information of the stock symbols.
+ */
 public class SectorDownloader extends HistoryDownloader {
 
     public static final String PREFIX_URL = "https://finance.yahoo.com/quote/";

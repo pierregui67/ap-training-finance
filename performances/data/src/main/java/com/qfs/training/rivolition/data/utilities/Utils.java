@@ -1,4 +1,4 @@
-package com.qfs.training.rivolition.data.main.utilities;
+package com.qfs.training.rivolition.data.utilities;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,7 +7,10 @@ import java.io.IOException;
 
 public class Utils {
 
-    //baseFolder + fileName + FILE_EXTENSION
+    /**
+     * Write the record in a file.
+     * The fileName must be composed of : baseFolder + fileName + FILE_EXTENSION
+     */
     public static void writter(String record, String fileName) {
         File file = new File(fileName);
         FileWriter fr = null;

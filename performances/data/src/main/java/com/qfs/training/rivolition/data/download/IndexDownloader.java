@@ -1,19 +1,22 @@
-package com.qfs.training.rivolition.data.main.download;
+package com.qfs.training.rivolition.data.download;
 
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import com.qfs.training.rivolition.data.main.utilities.SerializableObject;
-import com.qfs.training.rivolition.data.main.utilities.Utils;
+import com.qfs.training.rivolition.data.utilities.SerializableObject;
+import com.qfs.training.rivolition.data.utilities.Utils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Element;
 
-
+/**
+ * This class serves to find all the major world indices and to save their informations
+ * in serializable files. (defined in utilities)
+ */
 public class IndexDownloader extends Downloader {
 
     public static final String INDICES_LIST_URL = "https://finance.yahoo.com/world-indices";
