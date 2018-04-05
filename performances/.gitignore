@@ -11,3 +11,7 @@ shared/activepivot/src/main/resources/activepivot-types.xsd
 # Data files
 #####################
 *.csv
+**/.idea
+**/target
+
+

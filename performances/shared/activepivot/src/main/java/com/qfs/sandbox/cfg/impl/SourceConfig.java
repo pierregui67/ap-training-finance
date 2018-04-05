@@ -9,12 +9,14 @@ package com.qfs.sandbox.cfg.impl;
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.IWatcherService;
+import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
+import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
@@ -33,6 +35,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
+import java.util.List;
+
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.STOCK_PRICE_HISTORY_STORE_NAME;
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.SECTORS_INDUSTRY_COMPANY_STORE_NAME;
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.PORTFOLIOS_STORE_NAME;
+
+
+@PropertySource(value = { "classpath:directories.properties" })
 
 /**
  * Spring configuration of the Sandbox ActivePivot server.<br>
@@ -50,6 +60,13 @@ public class SourceConfig {
     @Autowired
     protected IDatastore datastore;
 
+
+
+    public static final String STOCK_PRICE_HISTORY_TOPIC = STOCK_PRICE_HISTORY_STORE_NAME;
+    public static final String SECTOR_TOPIC = SECTORS_INDUSTRY_COMPANY_STORE_NAME;
+    public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
+//    public static final String
+
     // CSV Load
     @Bean
     public IWatcherService watcherService() {
@@ -58,13 +75,31 @@ public class SourceConfig {
 
     @Bean
     public CSVSource csvSource() {
+
+        // defining the source
         CSVSource csvSource = new CSVSource();
 
-        // Add topics here, eg.
-//		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
-//		history.getParserConfiguration().setSeparator(',');
-//		csvSource.addTopic(history);
 
+
+
+        // /////////////////////////////////////
+        // Add topics to your source
+
+		DirectoryCSVTopic history = createDirectoryTopic(STOCK_PRICE_HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
+		history.getParserConfiguration().setSeparator(',');
+		csvSource.addTopic(history);
+
+        DirectoryCSVTopic sectors = createDirectoryTopic(SECTOR_TOPIC, env.getProperty("dir.sectors"), 4, "**.csv", true);
+        history.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(sectors);
+
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 7, "**.csv", false);
+        history.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(portfolios);
+
+
+        // ////////////////////////////////////////
+        // Defining the source properties
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
         csvSource.configure(sourceProps);
@@ -74,12 +109,20 @@ public class SourceConfig {
     @Bean
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
-        CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
 
-        // Add calculated columns here
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumns = new ArrayList<IColumnCalculator<ILineReader>>();
 
-// 		channelFactory.setCalculatedColumns(topic, store, calculatedColumns);
+        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>("StockSymbol") {
+            @Override
+            public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
+                String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
 
+                return symbol;
+            }
+        });
+
+ 		CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
+ 		channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumns);
         return channelFactory;
     }
 

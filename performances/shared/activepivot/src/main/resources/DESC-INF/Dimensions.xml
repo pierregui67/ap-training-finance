@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 	
 	<!--Your dimensions here-->
-	<dimension name="SampleDimension">
-		<hierarchy name="SampleHierarchy">
-			<level name="SampleLevel" property="SampleField"/>
+	<dimension name="HighDimension">
+		<hierarchy name="HighHierarchy">
+			<level name="HighLevel" property="HighValue"/> <!-- should be the same value as in cube schema -->
 		</hierarchy>
 	</dimension>
 </dimensions>
