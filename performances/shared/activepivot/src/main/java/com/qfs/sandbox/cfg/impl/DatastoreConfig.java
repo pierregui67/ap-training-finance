@@ -95,15 +95,17 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription stockPriceHistoryStore(){
         return new StoreDescriptionBuilder()
                 .withStoreName(STOCK_PRICE_HISTORY_STORE_NAME)
-                .withField(STOCK_PRICE_HISTORY__ID, INT).asKeyField()
-                .withField(STOCK_PRICE_HISTORY__DATE, "date[yyyy-MM-dd]")
+//                .withField(STOCK_PRICE_HISTORY__ID, INT).asKeyField()
+                .withField(STOCK_PRICE_HISTORY__DATE, "date[yyyy-MM-dd]").asKeyField()
                 .withField(STOCK_PRICE_HISTORY__OPEN, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__HIGH, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__LOW, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__CLOSE, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__VOLUME, INT)
                 .withField(STOCK_PRICE_HISTORY__ADJ_CLOSE, DOUBLE)
-                .withField(STOCK_PRICE_HISTORY__STOCK_SYMBOL) //calculated column
+                .withField(STOCK_PRICE_HISTORY__STOCK_SYMBOL).asKeyField() //calculated column
+                .onDuplicateKeyWithinTransaction().logException()
+                .updateOnlyIfDifferent()
                 .build();
     }
 
@@ -111,11 +113,13 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription sectorsIndustryCompanyStore(){
         return new StoreDescriptionBuilder()
                 .withStoreName(SECTORS_INDUSTRY_COMPANY_STORE_NAME)
-                .withField(SECTORS_INDUSTRY_COMPANY__ID, INT).asKeyField()
-                .withField(SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL)
+//                .withField(SECTORS_INDUSTRY_COMPANY__ID, INT).asKeyField()
+                .withField(SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL).asKeyField()
                 .withField(SECTORS_INDUSTRY_COMPANY__COMPANY_NAME)
                 .withField(SECTORS_INDUSTRY_COMPANY__SECTOR) //calculated column
                 .withField(SECTORS_INDUSTRY_COMPANY__INDUSTRY) // calculated column
+                .onDuplicateKeyWithinTransaction().logException()
+                .updateOnlyIfDifferent()
                 .build();
     }
 
@@ -124,12 +128,14 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription portfoliosStore(){
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
-                .withField(PORTFOLIOS__ID, INT).asKeyField()
-                .withField(PORTFOLIOS__DATE, "date[yyyy-MM-dd]")
+//                .withField(PORTFOLIOS__ID, INT).asKeyField()
+                .withField(PORTFOLIOS__DATE, "date[yyyy-MM-dd]").asKeyField()
                 .withField(PORTFOLIOS__PORTFOLIO_TYPE) // calculated column (custom or benchmark)
                 .withField(PORTFOLIOS__NUMBER_STOCKS, INT)
-                .withField(PORTFOLIOS__STOCK_SYMBOL)
+                .withField(PORTFOLIOS__STOCK_SYMBOL).asKeyField()
                 .withField(PORTFOLIOS__POSITION_TYPE)
+                .onDuplicateKeyWithinTransaction().logException()
+                .updateOnlyIfDifferent()
                 .build();
     }
 
@@ -152,7 +158,8 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(STOCK_PRICE_HISTORY_STORE_NAME)
                 .withName("PortfoliosToStockPriceHistory") // same as in cubeschema
-                .withMapping(SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL, STOCK_PRICE_HISTORY__STOCK_SYMBOL)
+                .withMapping(PORTFOLIOS__STOCK_SYMBOL, STOCK_PRICE_HISTORY__STOCK_SYMBOL)
+                .withMapping(PORTFOLIOS__DATE, STOCK_PRICE_HISTORY__DATE)
                 .build()
         );
         references.add(ReferenceDescription.builder()

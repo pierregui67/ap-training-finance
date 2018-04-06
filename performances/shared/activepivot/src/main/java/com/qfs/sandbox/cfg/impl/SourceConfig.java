@@ -32,14 +32,9 @@ import org.springframework.core.env.Environment;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.List;
+import java.util.*;
 
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.STOCK_PRICE_HISTORY_STORE_NAME;
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.SECTORS_INDUSTRY_COMPANY_STORE_NAME;
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.PORTFOLIOS_STORE_NAME;
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
 
 
 @PropertySource(value = { "classpath:directories.properties" })
@@ -79,21 +74,45 @@ public class SourceConfig {
         // defining the source
         CSVSource csvSource = new CSVSource();
 
+        // /////////////////////////////////////
+        // Map index to fields
 
+        // portfolio mapping
+        Map <Integer, String> mapPortfolios = new HashMap<Integer, String>();
+        mapPortfolios.put(0, PORTFOLIOS__DATE);
+        mapPortfolios.put(1, PORTFOLIOS__PORTFOLIO_TYPE);
+        mapPortfolios.put(2, PORTFOLIOS__NUMBER_STOCKS);
+        mapPortfolios.put(3, PORTFOLIOS__STOCK_SYMBOL);
+        mapPortfolios.put(4, PORTFOLIOS__POSITION_TYPE);
+
+        Map <Integer, String> mapStockPriceHistory = new HashMap<Integer, String>();
+        mapStockPriceHistory.put(0, STOCK_PRICE_HISTORY__DATE);
+        mapStockPriceHistory.put(1, STOCK_PRICE_HISTORY__OPEN);
+        mapStockPriceHistory.put(2, STOCK_PRICE_HISTORY__HIGH);
+        mapStockPriceHistory.put(3, STOCK_PRICE_HISTORY__LOW);
+        mapStockPriceHistory.put(4, STOCK_PRICE_HISTORY__CLOSE);
+        mapStockPriceHistory.put(5, STOCK_PRICE_HISTORY__VOLUME);
+        mapStockPriceHistory.put(6, STOCK_PRICE_HISTORY__ADJ_CLOSE);
+
+        Map <Integer, String> mapSectorsIndustryCompany = new HashMap<Integer, String>();
+        mapSectorsIndustryCompany.put(0, SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL);
+        mapSectorsIndustryCompany.put(1, SECTORS_INDUSTRY_COMPANY__COMPANY_NAME);
+        mapSectorsIndustryCompany.put(2, SECTORS_INDUSTRY_COMPANY__SECTOR);
+        mapSectorsIndustryCompany.put(3, SECTORS_INDUSTRY_COMPANY__INDUSTRY);
 
 
         // /////////////////////////////////////
         // Add topics to your source
 
-		DirectoryCSVTopic history = createDirectoryTopic(STOCK_PRICE_HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
+		DirectoryCSVTopic history = createDirectoryTopic(STOCK_PRICE_HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true, mapStockPriceHistory);
 		history.getParserConfiguration().setSeparator(',');
 		csvSource.addTopic(history);
 
-        DirectoryCSVTopic sectors = createDirectoryTopic(SECTOR_TOPIC, env.getProperty("dir.sectors"), 4, "**.csv", true);
+        DirectoryCSVTopic sectors = createDirectoryTopic(SECTOR_TOPIC, env.getProperty("dir.sectors"), 4, "**.csv", true, mapSectorsIndustryCompany);
         history.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(sectors);
 
-        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 7, "**.csv", false);
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 5, "**.csv", false, mapPortfolios);
         history.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(portfolios);
 
@@ -112,14 +131,17 @@ public class SourceConfig {
 
         List<IColumnCalculator<ILineReader>> csvCalculatedColumns = new ArrayList<IColumnCalculator<ILineReader>>();
 
-        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>("StockSymbol") {
+        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>(STOCK_PRICE_HISTORY__STOCK_SYMBOL) {
             @Override
             public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                 String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
-
+                symbol = symbol.replace("PriceHistory_", "");
+                symbol = symbol.replace(".csv", "");
                 return symbol;
             }
-        });
+        }); // look for new FileNameCalculator(),
+
+//        csvCalculatedColumns.add(new FilePathCalculator());
 
  		CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
  		channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumns);
@@ -135,8 +157,9 @@ public class SourceConfig {
      * @param pattern     pattern of each CSV file to be processed
      * @return
      */
-    private DirectoryCSVTopic createDirectoryTopic(String topic, String directory, int columnCount, String pattern, boolean skipFirstLine) {
+    private DirectoryCSVTopic createDirectoryTopic(String topic, String directory, int columnCount, String pattern, boolean skipFirstLine, Map<Integer, String> mapIndexToField) {
         CSVParserConfiguration cfg = new CSVParserConfiguration(columnCount);
+        cfg.setColumns(mapIndexToField);
         if (skipFirstLine) {
             cfg.setNumberSkippedLines(1);//skip the first line
         }
@@ -149,7 +172,11 @@ public class SourceConfig {
     public Void initialLoad() throws Exception {
         //csv
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-//		csvChannels.add(csvChannelFactory().createChannel(topic, datastore));
+        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
+        csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
+        csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC));
+
+
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
