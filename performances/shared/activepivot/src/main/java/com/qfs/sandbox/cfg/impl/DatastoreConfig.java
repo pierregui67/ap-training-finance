@@ -101,10 +101,9 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(STOCK_PRICE_HISTORY__HIGH, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__LOW, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__CLOSE, DOUBLE)
-                .withField(STOCK_PRICE_HISTORY__VOLUME, INT)
+                .withField(STOCK_PRICE_HISTORY__VOLUME, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__ADJ_CLOSE, DOUBLE)
-                .withField(STOCK_PRICE_HISTORY__STOCK_SYMBOL).asKeyField() //calculated column
-                .onDuplicateKeyWithinTransaction().logException()
+                .withField(STOCK_PRICE_HISTORY__STOCK_SYMBOL, STRING).asKeyField() //calculated column
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -114,11 +113,10 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(SECTORS_INDUSTRY_COMPANY_STORE_NAME)
 //                .withField(SECTORS_INDUSTRY_COMPANY__ID, INT).asKeyField()
-                .withField(SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL).asKeyField()
-                .withField(SECTORS_INDUSTRY_COMPANY__COMPANY_NAME)
-                .withField(SECTORS_INDUSTRY_COMPANY__SECTOR) //calculated column
-                .withField(SECTORS_INDUSTRY_COMPANY__INDUSTRY) // calculated column
-                .onDuplicateKeyWithinTransaction().logException()
+                .withField(SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL, STRING).asKeyField()
+                .withField(SECTORS_INDUSTRY_COMPANY__COMPANY_NAME, STRING).dictionarized() //creates a dictionnary which store only one time the string. Only for strings or dates
+                .withField(SECTORS_INDUSTRY_COMPANY__SECTOR, STRING) //calculated column
+                .withField(SECTORS_INDUSTRY_COMPANY__INDUSTRY, STRING) // calculated column
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -130,11 +128,10 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withStoreName(PORTFOLIOS_STORE_NAME)
 //                .withField(PORTFOLIOS__ID, INT).asKeyField()
                 .withField(PORTFOLIOS__DATE, "date[yyyy-MM-dd]").asKeyField()
-                .withField(PORTFOLIOS__PORTFOLIO_TYPE) // calculated column (custom or benchmark)
-                .withField(PORTFOLIOS__NUMBER_STOCKS, INT)
-                .withField(PORTFOLIOS__STOCK_SYMBOL).asKeyField()
-                .withField(PORTFOLIOS__POSITION_TYPE)
-                .onDuplicateKeyWithinTransaction().logException()
+                .withField(PORTFOLIOS__PORTFOLIO_TYPE, STRING).asKeyField() // calculated column (custom or benchmark)
+                .withField(PORTFOLIOS__NUMBER_STOCKS, DOUBLE)
+                .withField(PORTFOLIOS__STOCK_SYMBOL, STRING).asKeyField()
+                .withField(PORTFOLIOS__POSITION_TYPE, STRING)
                 .updateOnlyIfDifferent()
                 .build();
     }

@@ -109,11 +109,11 @@ public class SourceConfig {
 		csvSource.addTopic(history);
 
         DirectoryCSVTopic sectors = createDirectoryTopic(SECTOR_TOPIC, env.getProperty("dir.sectors"), 4, "**.csv", true, mapSectorsIndustryCompany);
-        history.getParserConfiguration().setSeparator('|');
+        sectors.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(sectors);
 
-        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 5, "**.csv", false, mapPortfolios);
-        history.getParserConfiguration().setSeparator('|');
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**.csv", false, mapPortfolios);
+        portfolios.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(portfolios);
 
 
@@ -163,7 +163,7 @@ public class SourceConfig {
         if (skipFirstLine) {
             cfg.setNumberSkippedLines(1);//skip the first line
         }
-        String baseDir = env.getProperty("dir.base");
+        String baseDir = env.getProperty("dir.data");
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
 
