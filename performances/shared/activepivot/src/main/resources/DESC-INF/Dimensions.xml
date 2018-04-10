@@ -3,10 +3,28 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 	
-	<!--Your dimensions here-->
-	<dimension name="HighDimension">
-		<hierarchy name="HighHierarchy">
-			<level name="HighLevel" property="HighValue"/> <!-- should be the same value as in cube schema -->
+	<!--Group of hierarchy for sector & industry-->
+	<dimension name="SectorDimension">
+		<hierarchy name="SectorDimension">
+			<level name="Sector" /> <!-- should be the same value as in cube schema -->
+			<level name="Industry" />
+            <level name="CompanyName" />
+            <level name="StockSymbol" />
 		</hierarchy>
 	</dimension>
+
+    <!-- group of hierarchy for time -->
+    <dimension name="TimeDimension" type="TIME">
+        <hierarchy name="TimeDimension" allMember="false">
+            <level name="DateGuillaume" property="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
+                <comparator pluginKey="ReverseOrder" />
+                
+            </level>
+        </hierarchy>
+    </dimension>
+    
+    <dimension name="StockSymbol" />
+    
+    <dimension name="PortfolioType" />
+
 </dimensions>

@@ -17,8 +17,12 @@ import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
+import com.qfs.msg.csv.translator.impl.FileFullNameCalculator;
+import com.qfs.msg.csv.translator.impl.FileNameCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.transaction.ITransactionManager;
@@ -103,7 +107,7 @@ public class SourceConfig {
 
         // /////////////////////////////////////
         // Add topics to your source
-
+        // how to load the datas
 		DirectoryCSVTopic history = createDirectoryTopic(STOCK_PRICE_HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true, mapStockPriceHistory);
 		history.getParserConfiguration().setSeparator(',');
 		csvSource.addTopic(history);
@@ -119,6 +123,7 @@ public class SourceConfig {
 
         // ////////////////////////////////////////
         // Defining the source properties
+        // properties for the parsing
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
         csvSource.configure(sourceProps);
@@ -135,15 +140,18 @@ public class SourceConfig {
             @Override
             public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                 String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
+
                 symbol = symbol.replace("PriceHistory_", "");
                 symbol = symbol.replace(".csv", "");
                 return symbol;
             }
         }); // look for new FileNameCalculator(),
-
+        // csvCalculatedColumns.add(new FileNameCalculator());
+        // csvCalculatedColumns.add(new FileFullNameCalculator());
 //        csvCalculatedColumns.add(new FilePathCalculator());
 
  		CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
+
  		channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumns);
         return channelFactory;
     }
