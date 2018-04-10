@@ -143,6 +143,7 @@ public class SourceConfig {
 
                 symbol = symbol.replace("PriceHistory_", "");
                 symbol = symbol.replace(".csv", "");
+                symbol = symbol.replace("-", ".");
                 return symbol;
             }
         }); // look for new FileNameCalculator(),
@@ -196,6 +197,12 @@ public class SourceConfig {
         } else {
             // read data files without sending anything to the datastore (that data is already loaded by the log replayer): those files won't then be considered as new files when enabling real time
         }
+
+        /*datastore.getTransactionManager().
+        // check that the data was successfully loaded into the datastore
+        ICursor cursor = datastore.getLatestVersion().execute(
+                new RecordQuery("StockPriceHistory", BaseConditions.TRUE, Arrays.asList("StockSymbol", "Date", "Open", "High", "Low", "Close", "Volume", "AdjClose")));
+        assertEquals(8, DatastoreQueryHelper.getCursorSize(cursor));*/
 
         long elapsed = System.nanoTime() - before; // log that somewhere
         printStoreSizes();

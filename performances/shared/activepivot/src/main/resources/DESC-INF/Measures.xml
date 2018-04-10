@@ -4,18 +4,19 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
 	<!--Your measures and postprocessors here-->
-	<measure field="Open" name="OpenSum" aggregation="SUM" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="Open" name="OpenAvr" aggregation="AVG" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="HighValue" name="HighSum" aggregation="SUM" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="HighValue" name="HighAvr" aggregation="AVG" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="LowValue" name="LowSum" aggregation="SUM" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="LowValue" name="LowAvg" aggregation="AVG" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="Close" name="CloseSum" aggregation="SUM" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="Close" name="CloseAvg" aggregation="AVG" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="Volume" name="VolumeSum" aggregation="SUM" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="AdjClose" name="AdjCloseSum" aggregation="SUM" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="AdjClose" name="AdjCloseAvg" aggregation="AVG" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
-    <measure field="NumberStocks" name="NumberStocks" formatter="DOUBLE[#,###.00];-#,###.00]" folder="data" />
+	<measure field="Open" name="OpenSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Open" name="OpenAvr" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="HighValue" name="HighSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="HighValue" name="HighAvr" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="LowValue" name="LowSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="LowValue" name="LowAvg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Close" name="CloseSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Close" name="CloseAvg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Volume" name="VolumeSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="AdjClose" name="AdjCloseSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="AdjClose" name="AdjCloseAvg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="NumberStocks" name="NumberStocks" formatter="INTEGER[#,###;-#,###]" folder="data" />
+
 
 
     <postProcessor name="minDepth" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenSum" folder="postProc" >
@@ -25,7 +26,7 @@
         </properties>
     </postProcessor>
 
-    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,CloseSum" folder="postProc">
+    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,CloseAvg" folder="postProc">
         <properties>
             <entry key="DimensionName" value="StockSymbol" />
         </properties>
