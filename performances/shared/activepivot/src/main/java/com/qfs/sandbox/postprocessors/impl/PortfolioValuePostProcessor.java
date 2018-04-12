@@ -9,6 +9,7 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 /**
  * Class which calculates the value of a portfolio
+ * warning : it only takes the numberofstock & close.avg for one date
  */
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = PortfolioValuePostProcessor.PLUGIN_KEY)
 public class PortfolioValuePostProcessor extends ABasicPostProcessor<Double> {

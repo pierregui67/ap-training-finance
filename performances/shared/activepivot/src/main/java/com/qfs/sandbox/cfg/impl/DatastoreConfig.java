@@ -112,7 +112,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(STOCK_PRICE_HISTORY__VOLUME, INT)
                 .withField(STOCK_PRICE_HISTORY__ADJ_CLOSE, DOUBLE)
                 .withField(STOCK_PRICE_HISTORY__STOCK_SYMBOL).asKeyField() //calculated column
-                .onDuplicateKeyWithinTransaction().logException()
+//                .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -126,7 +126,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(SECTORS_INDUSTRY_COMPANY__COMPANY_NAME).dictionarized() //creates a dictionnary which store only one time the string. Only for strings or dates
                 .withField(SECTORS_INDUSTRY_COMPANY__SECTOR)
                 .withField(SECTORS_INDUSTRY_COMPANY__INDUSTRY)
-                .onDuplicateKeyWithinTransaction().logException()
+//                .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -142,7 +142,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(PORTFOLIOS__NUMBER_STOCKS, INT)
                 .withField(PORTFOLIOS__STOCK_SYMBOL).asKeyField()
                 .withField(PORTFOLIOS__POSITION_TYPE)
-                .onDuplicateKeyWithinTransaction().logException()
+//                .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
                 .build();
     }

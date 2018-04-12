@@ -4,31 +4,67 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
 	<!--Your measures and postprocessors here-->
-	<measure field="Open" name="OpenSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="Open" name="OpenAvr" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="HighValue" name="HighSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="HighValue" name="HighAvr" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="LowValue" name="LowSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="LowValue" name="LowAvg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="Close" name="CloseSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="Close" name="CloseAvg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="Volume" name="VolumeSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="AdjClose" name="AdjCloseSum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="AdjClose" name="AdjCloseAvg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="NumberStocks" name="NumberStocks" formatter="INTEGER[#,###;-#,###]" folder="data" />
+	<measure field="Open" name="Open.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Open" name="Open.Avr" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="HighValue" name="HighValue.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="HighValue" name="HighValue.Avr" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="LowValue" name="LowValue.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="LowValue" name="LowValue.Avg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Close" name="Close.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Close" name="Close.Avg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Volume" name="Volume.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="AdjClose" name="AdjClose.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="AdjClose" name="AdjClose.Avg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="NumberStocks" name="NumberStocks" formatter="INT[#,###;-#,###]" folder="data" />
 
 
-
-    <postProcessor name="minDepth" pluginKey="MINIMUM_DEPTH" underlyingMeasures="OpenSum" folder="postProc" >
+    <!-- do not calculate the sum for -->
+    <postProcessor name="minDepthOpenSum" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Open.Sum" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
             <entry key="hierarchyName" value="StockSymbol" />
             <entry key="minimumDepth" value="1" />
         </properties>
     </postProcessor>
 
-    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,CloseAvg" folder="postProc">
+    <postProcessor name="minDepthCloseSum" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Close.Sum" folder="data" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
-            <entry key="DimensionName" value="StockSymbol" />
+            <entry key="hierarchyName" value="StockSymbol" />
+            <entry key="minimumDepth" value="1" />
         </properties>
     </postProcessor>
+
+
+    <postProcessor name="portfolioValue" pluginKey="DYNAMIC_PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,Close.Avg" folder="postProc">
+        <properties><!-- useful for total post processor -->
+            <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" /> <!-- level used by the total post processor -->
+            <entry key="aggregatedFunctions" value="SUM" /> <!-- aggregation function used by the total post processor -->
+            <entry key="outputType" value="double" />
+        </properties>
+    </postProcessor>
+
+
+    <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" underlyingMeasures="portfolioValue" folder="postProc">
+        <properties>
+            <!-- needs to be the same as the displayed dimension in excel or active UI (calculus will be false otherwise)-->
+            <entry key="levelToShift" value="Industry@IndustryDimension@IndustryDimension" /> <!-- not necessary to write the whole hierarchy if "Company name" is unique -->
+
+        </properties>
+    </postProcessor>
+
+
+
+    <postProcessor name="PortfolioValueWeights" pluginKey="FORMULA" folder="postProc">
+        <properties>
+            <entry key="formula" value="aggregatedValue[portfolioValue],aggregatedValue[TotalPortfolioValue],int[0],div" /> <!-- numerator, denominator, value if division by 0, operator -->
+        </properties>
+    </postProcessor>
+
+
+    <postProcessor name="PostfolioValueWeightBis" pluginKey="PORTFOLIO_WEIGHT" underlyingMeasures="portfolioValue,TotalPortfolioValue" folder="postProc">
+        <properties>
+            <entry key="weightName" value="WeightEvaluator"></entry>
+        </properties>
+    </postProcessor>
+
+
 </measures>
