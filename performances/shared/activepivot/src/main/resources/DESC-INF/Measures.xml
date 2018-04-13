@@ -66,5 +66,20 @@
         </properties>
     </postProcessor>
 
+    <postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]">
+        <properties>
+            <entry key="timeHierarchyName" value="TimeDimension" />
+            <entry key="streamMeasureName" value="Close.Avg" />
+            <entry key="positionType" value="CURRENT_STREAM" />
+        </properties>
 
+    </postProcessor>
+
+    <postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]">
+        <properties>
+            <entry key="timeHierarchyName" value="TimeDimension" />
+            <entry key="streamMeasureName" value="Close.Avg" />
+            <entry key="positionType" value="CURRENT_STREAM" />
+        </properties>
+    </postProcessor>
 </measures>

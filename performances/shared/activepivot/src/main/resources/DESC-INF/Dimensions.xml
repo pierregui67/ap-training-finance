@@ -22,7 +22,7 @@
     <!-- group of hierarchy for time -->
     <dimension name="TimeDimension" type="TIME">
         <hierarchy name="TimeDimension" allMember="false">
-            <level name="DateGuillaume" property="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
+            <level name="Date" property="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
                 <comparator pluginKey="ReverseOrder" />
                 
             </level>
