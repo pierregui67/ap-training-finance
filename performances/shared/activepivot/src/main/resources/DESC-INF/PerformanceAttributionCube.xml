@@ -27,6 +27,8 @@
         <!-- Contextual configuration of the MDX engine -->
         <mdxContext>
             <formatters>
+                <!-- put formatter here (or in measures.xml) -->
+                <formatter uniqueName="[Measures].[Close.Avg]" format="DOUBLE[#,###.0000;-#,###.0000]" />
 
             </formatters>
         </mdxContext>

@@ -11,7 +11,7 @@
     <measure field="LowValue" name="LowValue.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
     <measure field="LowValue" name="LowValue.Avg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
     <measure field="Close" name="Close.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
-    <measure field="Close" name="Close.Avg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
+    <measure field="Close" name="Close.Avg" aggregation="AVG" folder="data" />
     <measure field="Volume" name="Volume.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
     <measure field="AdjClose" name="AdjClose.Sum" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
     <measure field="AdjClose" name="AdjClose.Avg" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" folder="data" />
