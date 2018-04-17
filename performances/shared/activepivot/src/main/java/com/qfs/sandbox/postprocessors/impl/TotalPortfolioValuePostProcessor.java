@@ -45,11 +45,12 @@ public class TotalPortfolioValuePostProcessor extends ALocationShiftPostProcesso
         return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(), new Object[] {ILevel.ALLMEMBER});
     }
 
-    @Override
-    public Double evaluate(ILocation location, Object[] underlyingMeasures) {
-        return (double) underlyingMeasures[0];
-
-    }
+    // useless here
+//    @Override
+//    public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+//        return (double) underlyingMeasures[0];
+//
+//    }
 
     @Override
     public String getType() {

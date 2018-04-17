@@ -12,6 +12,7 @@ public class PortfolioWeightPostProcessor extends ABasicPostProcessor<Double> {
     public static final String PLUGIN_KEY = "PORTFOLIO_WEIGHT";
     private static final long serialVersionUID = 201804121359L;
 
+
     public PortfolioWeightPostProcessor(String name, IPostProcessorCreationContext creationContext){
         super(name, creationContext);
 
@@ -31,4 +32,5 @@ public class PortfolioWeightPostProcessor extends ABasicPostProcessor<Double> {
             return 0.0;
         }
     }
+
 }
