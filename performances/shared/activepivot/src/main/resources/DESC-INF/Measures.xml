@@ -33,12 +33,17 @@
         </properties>
     </postProcessor>
 
+    <!-- version location dependent
+    <postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" folder="postProc" underlyingMeasures="NumberStocks,Close.Avg">
+        <properties>
+            <entry key="DimensionName" value="Sector@SectorDimension@SectorDimension" />
+        </properties>
+    </postProcessor>-->
 
     <postProcessor name="portfolioValue" pluginKey="DYNAMIC_PORTFOLIO_VALUE" underlyingMeasures="NumberStocks,Close.Avg" folder="postProc">
         <properties><!-- useful for total post processor -->
             <entry key="leafLevels" value="StockSymbol@StockSymbol@StockSymbol" /> <!-- level used by the total post processor -->
             <entry key="aggregatedFunctions" value="SUM" /> <!-- aggregation function used by the total post processor -->
-            <entry key="outputType" value="double" />
         </properties>
     </postProcessor>
 
@@ -46,7 +51,7 @@
     <postProcessor name="TotalPortfolioValue" pluginKey="TOTAL_PORTFOLIO_VALUE" underlyingMeasures="portfolioValue" folder="postProc">
         <properties>
             <!-- needs to be the same as the displayed dimension in excel or active UI (calculus will be false otherwise)-->
-            <entry key="levelToShift" value="Industry@IndustryDimension@IndustryDimension" /> <!-- not necessary to write the whole hierarchy if "Company name" is unique -->
+            <entry key="levelToShift" value="Sector@SectorHierarchy@SectorDimension" /> <!-- not necessary to write the whole hierarchy if "Company name" is unique -->
 
         </properties>
     </postProcessor>
@@ -68,7 +73,7 @@
 
     <postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
-            <entry key="timeHierarchyName" value="TimeDimension" />
+            <entry key="timeHierarchyName" value="TimeHierarchy" />
             <entry key="streamMeasureName" value="Close.Avg" />
             <entry key="positionType" value="CURRENT_STREAM" />
         </properties>
@@ -77,9 +82,39 @@
 
     <postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" folder="postProc" formatter="DOUBLE[#,###.00;-#,###.00]">
         <properties>
-            <entry key="timeHierarchyName" value="TimeDimension" />
+            <entry key="timeHierarchyName" value="TimeHierarchy " />
             <entry key="streamMeasureName" value="Close.Avg" />
             <entry key="positionType" value="CURRENT_STREAM" />
+        </properties>
+    </postProcessor>
+
+
+    <postProcessor name="ExempleValues" pluginKey="PORTFOLIO_CHOOSE" underlyingMeasures="portfolioValue">
+        <properties>
+            <entry key="levelToShift" value="PortfolioType@PortfolioType@PortfolioType" />
+            <entry key="portfolioType" value="exemple" />
+            <entry key="hierarchyName" value="PortfolioType" />
+        </properties>
+    </postProcessor>
+
+
+    <postProcessor name="BenchmarkValues" pluginKey="PORTFOLIO_CHOOSE" underlyingMeasures="portfolioValue">
+        <properties>
+            <entry key="levelToShift" value="PortfolioType@PortfolioType@PortfolioType" />
+            <entry key="portfolioType" value="benchmark" />
+            <entry key="hierarchyName" value="PortfolioType" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="Performance" pluginKey="FORMULA" folder="postProc" >
+        <properties>
+            <entry key="formula" value="aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="postProc" >
+        <properties>
+            <entry key="formula" value="((aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-),aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
         </properties>
     </postProcessor>
 </measures>

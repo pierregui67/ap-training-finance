@@ -5,7 +5,7 @@
 	
 	<!--Group of hierarchy for sector & industry-->
 	<dimension name="SectorDimension">
-		<hierarchy name="SectorDimension">
+		<hierarchy name="SectorHierarchy">
 			<level name="Sector" /> <!-- should be the same value as in cube schema -->
 			<level name="Industry" />
             <level name="CompanyName" />
@@ -14,14 +14,14 @@
 	</dimension>
 
     <dimension name="IndustryDimension">
-        <hierarchy name="IndustryDimension">
+        <hierarchy name="IndustryHierarchy">
             <level name="Industry" />
         </hierarchy>
     </dimension>
 
     <!-- group of hierarchy for time -->
     <dimension name="TimeDimension" type="TIME">
-        <hierarchy name="TimeDimension" allMember="false">
+        <hierarchy name="TimeHierarchy" allMember="false">
             <level name="Date" property="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
                 <comparator pluginKey="ReverseOrder" />
                 
