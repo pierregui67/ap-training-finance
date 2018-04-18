@@ -4,7 +4,41 @@
                   xsi:schemaLocation="http://www.quartetfs.com activepivot-types.xsd">
 
     <!-- Selection of the aggregate provider -->
-    <aggregateProvider pluginKey="BITMAP"/>
+    <!--<aggregateProvider pluginKey="BITMAP"/>-->
+    <!--<aggregateProvider pluginKey="JUST_IN_TIME" />-->
+
+    <!--<aggregateProvider pluginKey="BITMAP">-->
+        <!--<properties>-->
+            <!--<entry key="rangeSharing" value="1_000_000" />-->
+        <!--</properties>-->
+    <!--</aggregateProvider>-->
+
+    <aggregateProvider pluginKey="JUST_IN_TIME" >
+        <properties>
+            <entry key="rangeSharing" value="1_000_000" />
+        </properties>
+
+        <partialProvider pluginKey="BITMAP">
+            <hierarchies>
+                <hierarchy name="SectorHierarchy" dimension="SectorDimension" level="Sector"/>
+
+            </hierarchies>
+            <measures>
+                <measure name="Close.sum" />
+                <measure name="Close.Avg" />
+                <measure name="HighValue.Sum" />
+                <measure name="HighValue.Avr" />
+                <measure name="LowValue.Sum" />
+                <measure name="LowValue.Avg" />
+                <measure name="Open.Sum" />
+                <measure name="Open.Avr" />
+                <measure name="Volume.Sum" />
+                <measure name="AdjClose.Sum" />
+                <measure name="AdjClose.Avg" />
+                <measure name="NumberStocks" />
+            </measures>
+        </partialProvider>
+    </aggregateProvider>
 
     <!-- true: Activation of factless hierarchies, across all dimensions -->
     <autoFactlessHierarchies>true</autoFactlessHierarchies>
