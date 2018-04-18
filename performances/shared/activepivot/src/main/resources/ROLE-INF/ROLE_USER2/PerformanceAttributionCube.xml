@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contexts xmlns="http://www.quartetfs.com"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.quartetfs.com ../../activepivot-types.xsd">
+    <subCubeProperties isAccessGranted="true">
+        <grantedMeasures>
+            <measure>Close.Sum</measure>
+            <measure>PeriodReturn</measure>
+            <measure>CumulativeReturn</measure>
+            <measure>portfolioValue</measure>
+            <measure>Volume.Sum</measure>
+            <measure>NumberStocks</measure>
+        </grantedMeasures>
+        <hierarchyRestrictions>
+            <hierarchy dimension="PortfolioType" name="PortfolioType">
+                <allowedMember >
+                    <memberPathPart xsi:type="xs:string">AllMember</memberPathPart>
+                    <memberPathPart xsi:type="xs:string">benchmark</memberPathPart>
+                </allowedMember>
+            </hierarchy>
+        </hierarchyRestrictions>
+    </subCubeProperties>
+</contexts>
