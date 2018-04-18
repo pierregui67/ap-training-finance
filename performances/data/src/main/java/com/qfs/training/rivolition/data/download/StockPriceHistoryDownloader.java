@@ -11,8 +11,6 @@ public class StockPriceHistoryDownloader extends HistoryDownloader {
 
 
     public final static String FOLDER = "History/";
-    protected final String PREFIX_URL = "https://finance.yahoo.com/quote/^";
-    protected final String SUFFIX_URL = "/history?p=^";
 
     @Override
     public void main() {
