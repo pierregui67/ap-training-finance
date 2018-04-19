@@ -6,7 +6,7 @@
     <subCubeProperties isAccessGranted="true">
         <grantedMeasures />
         <hierarchyRestrictions>
-            <hierarchy dimension="SectorDimension" name="SectorDimension">
+            <hierarchy dimension="SectorDimension" name="SectorHierarchy">
                 <allowedMember>
                     <memberPathPart xsi:type="xs:string">AllMember</memberPathPart>
                     <memberPathPart xsi:type="xs:string">Basic Materials</memberPathPart>
