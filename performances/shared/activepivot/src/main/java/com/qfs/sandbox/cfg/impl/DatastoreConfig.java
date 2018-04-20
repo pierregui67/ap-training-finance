@@ -11,6 +11,7 @@ import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.ReferenceDescription;
+import com.qfs.desc.impl.StoreDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.literal.ILiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -58,6 +59,9 @@ public class DatastoreConfig implements IDatastoreConfig {
     /** Portfolios store */
     public static final String PORTFOLIOS_STORE_NAME = "Portfolios";
 
+    /** Indices store */
+    public static final String INDICES_STORE_NAME = "Indices";
+
     @Autowired
     protected ActivePivotConfig apConfig;
 
@@ -68,7 +72,6 @@ public class DatastoreConfig implements IDatastoreConfig {
     // ////////////////////////////////////////////////
 
     // stock price history fields
-    public static final String STOCK_PRICE_HISTORY__ID = "Id";
     public static final String STOCK_PRICE_HISTORY__DATE = "Date";
     public static final String STOCK_PRICE_HISTORY__OPEN = "Open";
     public static final String STOCK_PRICE_HISTORY__HIGH = "HighValue";
@@ -80,19 +83,28 @@ public class DatastoreConfig implements IDatastoreConfig {
 
 
     // SECTORS industry company fields
-    public static final String SECTORS_INDUSTRY_COMPANY__ID = "Id";
     public static final String SECTORS_INDUSTRY_COMPANY__SECTOR = "Sector";
     public static final String SECTORS_INDUSTRY_COMPANY__INDUSTRY = "Industry";
     public static final String SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL = "StockSymbol";
     public static final String SECTORS_INDUSTRY_COMPANY__COMPANY_NAME = "CompanyName";
 
     // Portfolios fields
-    public static final String PORTFOLIOS__ID = "Id";
     public static final String PORTFOLIOS__DATE = "Date";
     public static final String PORTFOLIOS__PORTFOLIO_TYPE = "PortfolioType";
     public static final String PORTFOLIOS__STOCK_SYMBOL = "StockSymbol";
     public static final String PORTFOLIOS__NUMBER_STOCKS = "NumberStocks";
     public static final String PORTFOLIOS__POSITION_TYPE = "PositionType";
+
+
+    // Indices fields
+    public static final String INDICES__INDEX_NAME = "IndexName";
+    public static final String INDICES__COMPANY_NAME = "CompanyName";
+    public static final String INDICES__CLOSE_VALUE = "CloseValue";
+    public static final String INDICES__STOCK_SYMBOL = "StockSymbol";
+    public static final String INDICES__TIMESTAMP = "timestamp";
+    public static final String INDICES__EQUITY = "Equity";
+    public static final String INDICES__DATE_TIME = "Datetime";
+    public static final String INDICES__VOLUME = "Volume";
 
 
     // ////////////////////////////////////////////////
@@ -147,6 +159,21 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build();
     }
 
+
+    public IStoreDescription indicesStore(){
+        return new StoreDescriptionBuilder()
+                .withStoreName(INDICES_STORE_NAME)
+                .withField(INDICES__INDEX_NAME)
+                .withField(INDICES__COMPANY_NAME)
+                .withField(INDICES__CLOSE_VALUE)
+                .withField(INDICES__STOCK_SYMBOL).asKeyField()
+//                .withField(INDICES__TIMESTAMP)
+                .withField(INDICES__EQUITY)
+                .withField(INDICES__DATE_TIME, "date[yyyy-MM-dd]").asKeyField()
+//                .withField(INDICES__VOLUME)
+                .updateOnlyIfDifferent()
+                .build();
+    }
     /**
      * Spring environment, automatically wired
      */
@@ -177,6 +204,15 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withMapping(SECTORS_INDUSTRY_COMPANY__STOCK_SYMBOL, PORTFOLIOS__STOCK_SYMBOL)
                 .dontIndexOwner()// don't index parents, when there's no update in child
                 .build()
+        );
+
+        references.add(ReferenceDescription.builder()
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(INDICES_STORE_NAME)
+                .withName("PortfoliosToIndices")
+                .withMapping(PORTFOLIOS__STOCK_SYMBOL, INDICES__STOCK_SYMBOL)
+                .build()
+
         );
 
         return references;
@@ -225,6 +261,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(stockPriceHistoryStore());
         stores.add(sectorsIndustryCompanyStore());
         stores.add(portfoliosStore());
+        stores.add(indicesStore());
 
         return new DatastoreSchemaDescription(stores, references());
     }

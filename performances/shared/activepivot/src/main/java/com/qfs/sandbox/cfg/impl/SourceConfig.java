@@ -14,12 +14,14 @@ import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
+import com.qfs.msg.csv.impl.CSVColumnParser;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.csv.translator.impl.FileFullNameCalculator;
 import com.qfs.msg.csv.translator.impl.FileNameCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.source.impl.TuplePublisher;
@@ -64,6 +66,7 @@ public class SourceConfig {
     public static final String STOCK_PRICE_HISTORY_TOPIC = STOCK_PRICE_HISTORY_STORE_NAME;
     public static final String SECTOR_TOPIC = SECTORS_INDUSTRY_COMPANY_STORE_NAME;
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
+    public static final String INDICES_TOPIC = INDICES_STORE_NAME;
 //    public static final String
 
     // CSV Load
@@ -104,6 +107,16 @@ public class SourceConfig {
         mapSectorsIndustryCompany.put(2, SECTORS_INDUSTRY_COMPANY__SECTOR);
         mapSectorsIndustryCompany.put(3, SECTORS_INDUSTRY_COMPANY__INDUSTRY);
 
+        // Indices mapping (from csv schema)
+        Map <Integer, String> mapIndices = new HashMap<>();
+        mapIndices.put(0, INDICES__INDEX_NAME);
+        mapIndices.put(1, INDICES__COMPANY_NAME);
+        mapIndices.put(2, INDICES__CLOSE_VALUE);
+        mapIndices.put(3, INDICES__STOCK_SYMBOL);
+        mapIndices.put(4, INDICES__TIMESTAMP);
+        mapIndices.put(5, INDICES__EQUITY);
+        mapIndices.put(6, INDICES__DATE_TIME);
+        mapIndices.put(7, INDICES__VOLUME);
 
         // /////////////////////////////////////
         // Add topics to your source
@@ -120,6 +133,10 @@ public class SourceConfig {
         portfolios.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(portfolios);
 
+        DirectoryCSVTopic indices = createDirectoryTopic(INDICES_TOPIC, env.getProperty("dir.indices"), 8, "**.csv", false, mapIndices);
+        indices.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(indices);
+
 
         // ////////////////////////////////////////
         // Defining the source properties
@@ -134,9 +151,9 @@ public class SourceConfig {
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
 
-        List<IColumnCalculator<ILineReader>> csvCalculatedColumns = new ArrayList<IColumnCalculator<ILineReader>>();
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsPortfolio = new ArrayList<IColumnCalculator<ILineReader>>();
 
-        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>(STOCK_PRICE_HISTORY__STOCK_SYMBOL) {
+        csvCalculatedColumnsPortfolio.add(new AColumnCalculator<ILineReader>(STOCK_PRICE_HISTORY__STOCK_SYMBOL) {
             @Override
             public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                 String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
@@ -153,7 +170,17 @@ public class SourceConfig {
 
  		CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
 
- 		channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumns);
+ 		channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumnsPortfolio);
+
+
+ 		// other method (java8) :
+        /*List<IColumnCalculator<ILineReader>> csvCalculatedColumnsIndices = Arrays.<IColumnCalculator<ILineReader>>asList(
+                new CSVColumnParser(INDICES__TIMESTAMP, "String", 4)
+//                new CSVColumnParser(PORTFOLIOS__NUMBER_STOCKS, "Integer", 7)
+        );
+
+        channelFactory.setCalculatedColumns(INDICES_TOPIC, INDICES_STORE_NAME, csvCalculatedColumnsIndices);*/
+
         return channelFactory;
     }
 
@@ -176,15 +203,31 @@ public class SourceConfig {
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
 
+
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
+
+
+
+        ArrayList<String> stores = new ArrayList();
+        stores.add(PORTFOLIOS_STORE_NAME);
+        stores.add(INDICES_STORE_NAME);
+
+        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+
+        // get reverse map from original map ( value => key )
+        nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
+
+        // indices publisher
+        IndicesTuplePublisher indicesPublisher = new IndicesTuplePublisher(datastore, stores, nameToIndex);
+
         //csv
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC));
-
+        csvChannels.add(csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher));
 
 
         long before = System.nanoTime();
@@ -201,7 +244,7 @@ public class SourceConfig {
         /*datastore.getTransactionManager().
         // check that the data was successfully loaded into the datastore
         ICursor cursor = datastore.getLatestVersion().execute(
-                new RecordQuery("StockPriceHistory", BaseConditions.TRUE, Arrays.asList("StockSymbol", "Date", "Open", "High", "Low", "Close", "Volume", "AdjClose")));
+                new RecordQuery("StockPriceHistory", BaseConditions.TRUE, Arrays.asList("StockSymbol", "Date", "Open", "HighValue", "LowValue", "Close", "Volume", "AdjClose")));
         assertEquals(8, DatastoreQueryHelper.getCursorSize(cursor));*/
 
         long elapsed = System.nanoTime() - before; // log that somewhere

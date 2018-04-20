@@ -13,5 +13,6 @@ shared/activepivot/src/main/resources/activepivot-types.xsd
 *.csv
 **/.idea
 **/target
+*.iml
 
 

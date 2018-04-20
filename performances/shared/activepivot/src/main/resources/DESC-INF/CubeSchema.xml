@@ -28,6 +28,10 @@
             <field name="Volume" expression="PortfoliosToStockPriceHistory/Volume" />
             <field name="AdjClose" expression="PortfoliosToStockPriceHistory/AdjClose" />
 
+            <!-- indices fields -->
+            <field name="IndexName" expression="PortfoliosToIndices/IndexName" />
+
+
         </fields>
     </datastoreSelection>
 

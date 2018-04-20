@@ -33,4 +33,6 @@
     
     <dimension name="PortfolioType" />
 
+    <dimension name="IndexName" />
+
 </dimensions>
