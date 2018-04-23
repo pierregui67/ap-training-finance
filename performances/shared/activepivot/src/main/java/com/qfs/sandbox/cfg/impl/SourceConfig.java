@@ -23,10 +23,12 @@ import com.qfs.msg.csv.translator.impl.FileNameCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.source.ITuplePublisher;
+import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
+import com.qfs.store.log.impl.LogWriteException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,31 +205,33 @@ public class SourceConfig {
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
 
+    @Bean
+    public IMessageChannel<String, Object> indicesChannel(){
+        // get reverse map from original map ( value => key )
+        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
+
+        ArrayList<String> stores = new ArrayList();
+        stores.add(PORTFOLIOS_STORE_NAME);
+        stores.add(INDICES_STORE_NAME);
+        // indices publisher
+        final ITuplePublisher<String> indicesPublisher = new AutoCommitTuplePublisher<>( // autocommit because RT
+                new IndicesTuplePublisher(datastore, stores, nameToIndex)
+        );
+        return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher);
+    }
 
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
 
 
-
-        ArrayList<String> stores = new ArrayList();
-        stores.add(PORTFOLIOS_STORE_NAME);
-        stores.add(INDICES_STORE_NAME);
-
-        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
-
-        // get reverse map from original map ( value => key )
-        nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
-
-        // indices publisher
-        IndicesTuplePublisher indicesPublisher = new IndicesTuplePublisher(datastore, stores, nameToIndex);
-
         //csv
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC));
-        csvChannels.add(csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher));
+//        csvChannels.add(csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher));
 
 
         long before = System.nanoTime();
@@ -252,6 +256,15 @@ public class SourceConfig {
 
         return null;
     }
+
+    @Bean
+    @DependsOn(value = { "initialLoad" })
+    public Void indicesRealTime() throws LogWriteException{
+        csvSource().listen(indicesChannel());
+        printStoreSizes();
+        return null;
+    }
+
 
     private void printStoreSizes() {
         //add some logging

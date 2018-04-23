@@ -30,6 +30,7 @@
 
             <!-- indices fields -->
             <field name="IndexName" expression="PortfoliosToIndices/IndexName" />
+            <field name="StockSymbolI" expression="PortfoliosToIndices/StockSymbol" />
 
 
         </fields>

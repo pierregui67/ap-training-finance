@@ -30,6 +30,8 @@
     </dimension>
     
     <dimension name="StockSymbol" />
+
+    <dimension name="StockSymbolI" />
     
     <dimension name="PortfolioType" />
 
