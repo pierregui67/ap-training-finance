@@ -14,18 +14,14 @@ import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
-import com.qfs.msg.csv.impl.CSVColumnParser;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
-import com.qfs.msg.csv.translator.impl.FileFullNameCalculator;
-import com.qfs.msg.csv.translator.impl.FileNameCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
-import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.log.impl.LogWriteException;
@@ -69,6 +65,7 @@ public class SourceConfig {
     public static final String SECTOR_TOPIC = SECTORS_INDUSTRY_COMPANY_STORE_NAME;
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
     public static final String INDICES_TOPIC = INDICES_STORE_NAME;
+    public static final String FOREX_TOPIC = FOREX_STORE_NAME;
 //    public static final String
 
     // CSV Load
@@ -120,6 +117,12 @@ public class SourceConfig {
         mapIndices.put(6, INDICES__DATE_TIME);
         mapIndices.put(7, INDICES__VOLUME);
 
+        // forex mapping
+        Map <Integer, String> mapForex = new HashMap<>();
+        mapForex.put(0, FOREX__CURRENCY);
+        mapForex.put(1, FOREX__TARGET_CURRENCY);
+        mapForex.put(2, FOREX__RATIO);
+
         // /////////////////////////////////////
         // Add topics to your source
         // how to load the datas
@@ -139,6 +142,9 @@ public class SourceConfig {
         indices.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(indices);
 
+        DirectoryCSVTopic forex = createDirectoryTopic(FOREX_TOPIC, env.getProperty("dir.forex"), 3, "**.csv", false, mapForex);
+        forex.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(forex);
 
         // ////////////////////////////////////////
         // Defining the source properties
@@ -221,6 +227,7 @@ public class SourceConfig {
         return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher);
     }
 
+
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
@@ -231,6 +238,7 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC));
+        csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
 //        csvChannels.add(csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher));
 
 

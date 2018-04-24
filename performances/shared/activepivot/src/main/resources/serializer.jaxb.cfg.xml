@@ -11,6 +11,7 @@
 	<entry key="ActivePivot-Security">pivot.security-jaxb-mapping.xml</entry>
 	<entry key="ActivePivot-Queries">pivot.queries-jaxb-mapping.xml</entry>
 	<entry key="ActivePivot-Streaming">pivot.streaming-jaxb-mapping.xml</entry>
-	<entry key="ActivePivot-Sandbox">sandbox-jaxb-mapping.xml</entry>
+	<!--<entry key="ActivePivot-Sandbox">sandbox-jaxb-mapping.xml</entry>-->
 	<entry key="ActiveMonitor">sentinel.context-jaxb-mapping.xml</entry>
+	<entry key="ActivePivot-Custom-ReferenceCurrency">JAXB-INF/pivot.referencecurrency-jaxb-mapping.xml</entry>
 </properties>

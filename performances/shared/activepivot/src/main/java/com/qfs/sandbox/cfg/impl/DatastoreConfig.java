@@ -11,9 +11,7 @@ import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.ReferenceDescription;
-import com.qfs.desc.impl.StoreDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
-import com.qfs.literal.ILiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.impl.ActivePivotConfig;
 import com.qfs.store.IDatastore;
@@ -23,16 +21,12 @@ import com.qfs.store.log.ReplayException;
 import com.qfs.store.log.impl.LogConfiguration;
 import com.qfs.store.transaction.IDatastoreWithReplay;
 import com.quartetfs.biz.pivot.definitions.impl.ActivePivotDatastorePostProcessor;
-import com.quartetfs.biz.pivot.definitions.impl.ActivePivotSchemaDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import static com.qfs.literal.ILiteralType.DOUBLE;
 import static com.qfs.literal.ILiteralType.INT;
-import static com.qfs.literal.ILiteralType.LONG;
-import static com.qfs.literal.ILiteralType.OBJECT;
-import static com.qfs.literal.ILiteralType.STRING;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -61,6 +55,9 @@ public class DatastoreConfig implements IDatastoreConfig {
 
     /** Indices store */
     public static final String INDICES_STORE_NAME = "Indices";
+
+    /** Forex store */
+    public static final String FOREX_STORE_NAME = "Forex";
 
     @Autowired
     protected ActivePivotConfig apConfig;
@@ -105,6 +102,11 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String INDICES__EQUITY = "Equity";
     public static final String INDICES__DATE_TIME = "Datetime";
     public static final String INDICES__VOLUME = "Volume";
+
+    // Forex fields
+    public static final String FOREX__CURRENCY = "Euro";
+    public static final String FOREX__TARGET_CURRENCY = "Target currency";
+    public static final String FOREX__RATIO = "Ratio";
 
 
     // ////////////////////////////////////////////////
@@ -174,6 +176,17 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .updateOnlyIfDifferent()
                 .build();
     }
+
+    public IStoreDescription forexStore(){
+        return new StoreDescriptionBuilder()
+                .withStoreName(FOREX_STORE_NAME)
+                .withField(FOREX__CURRENCY)
+                .withField(FOREX__TARGET_CURRENCY).asKeyField()
+                .withField(FOREX__RATIO, DOUBLE)
+                .updateOnlyIfDifferent()
+                .build();
+    }
+
     /**
      * Spring environment, automatically wired
      */
@@ -214,6 +227,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build()
 
         );
+
 
         return references;
     }
@@ -262,6 +276,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(sectorsIndustryCompanyStore());
         stores.add(portfoliosStore());
         stores.add(indicesStore());
+        stores.add(forexStore());
 
         return new DatastoreSchemaDescription(stores, references());
     }

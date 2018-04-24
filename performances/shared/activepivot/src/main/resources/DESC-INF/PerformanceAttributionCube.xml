@@ -66,6 +66,8 @@
 
             </formatters>
         </mdxContext>
+
+        <ReferenceCurrency referenceCurrency="EUR"/>
     </sharedContexts>
 
 </pivotDescription>

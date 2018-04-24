@@ -117,4 +117,25 @@
             <entry key="formula" value="((aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-),aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
         </properties>
     </postProcessor>
+
+    <postProcessor name="USD-EUR close value" pluginKey="FOREX" folder="postProc" underlyingMeasures="Close.Avg" formatter="DOUBLE[#,###.00;-#,###.00]">
+        <properties>
+            <entry key="referenceCurrency" value="USD" />
+            <entry key="targetCurrency" value="EUR" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="JPY-USD close value" pluginKey="FOREX" folder="postProc" underlyingMeasures="Close.Avg" formatter="DOUBLE[#,###.00;-#,###.00]">
+        <properties>
+            <entry key="referenceCurrency" value="JPY" />
+            <entry key="targetCurrency" value="USD" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="EUR-USD close value" pluginKey="FOREX" folder="postProc" underlyingMeasures="Close.Avg" formatter="DOUBLE[#,###.00;-#,###.00]">
+        <properties>
+            <entry key="referenceCurrency" value="EUR" />
+            <entry key="targetCurrency" value="USD" />
+        </properties>
+    </postProcessor>
 </measures>
