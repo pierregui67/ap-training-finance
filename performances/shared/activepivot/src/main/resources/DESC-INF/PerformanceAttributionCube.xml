@@ -54,6 +54,8 @@
         <import resource="DESC-INF/Measures.xml"/>
     </measures>
 
+    <aggregatesCacheDescription size="100"/>
+
     <sharedContexts>
         <!-- Query maximum execution time (before timeout cancellation) -->
         <queriesTimeLimit seconds="60"/>

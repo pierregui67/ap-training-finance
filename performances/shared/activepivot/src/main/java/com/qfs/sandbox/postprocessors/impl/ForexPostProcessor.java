@@ -12,6 +12,7 @@ import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.impl.ABasicPostProcessor;
+import com.quartetfs.biz.pivot.query.IQueryCache;
 import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import com.quartetfs.fwk.QuartetRuntimeException;
@@ -95,6 +96,11 @@ public class ForexPostProcessor extends ABasicPostProcessor<Double> {
                     .selecting(DatastoreConfig.FOREX__RATIO)
                     .run();
 
+            if (cursorCurrency == null){
+                throw new IllegalArgumentException("The query can't find the " + currency +
+                        " currency in the datastore");
+            }
+
             while(cursorCurrency.hasNext()){
                 cursorCurrency.next();
                 ratio = (Double) cursorCurrency.getRecord().read(DatastoreConfig.FOREX__RATIO);
@@ -108,11 +114,23 @@ public class ForexPostProcessor extends ABasicPostProcessor<Double> {
 
     private double getRatioTwoCurrency(String referenceCurrency, String targetCurrency){
 
-        Double ratio = 0.0;
+        Double ratio;
+
+        IQueryCache queryCache = pivot.getContext().get(IQueryCache.class);
+
         if(!referenceCurrency.equals("EUR")){
-            ratio = getRatio(targetCurrency)/getRatio(referenceCurrency);
+            try{
+                ratio = (Double) queryCache.get(targetCurrency) / (Double) queryCache.get(referenceCurrency);
+            }catch (Exception e){
+                ratio = getRatio(targetCurrency)/getRatio(referenceCurrency);
+            }
+
         }else{
-            ratio = getRatio(targetCurrency);
+
+            ratio = (Double) queryCache.get(targetCurrency);
+            if(ratio == null)
+                ratio = getRatio(targetCurrency);
+
         }
 
         return ratio;

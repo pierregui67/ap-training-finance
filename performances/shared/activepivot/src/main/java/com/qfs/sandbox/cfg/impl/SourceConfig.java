@@ -260,7 +260,7 @@ public class SourceConfig {
         assertEquals(8, DatastoreQueryHelper.getCursorSize(cursor));*/
 
         long elapsed = System.nanoTime() - before; // log that somewhere
-        printStoreSizes();
+//        printStoreSizes();
 
         return null;
     }

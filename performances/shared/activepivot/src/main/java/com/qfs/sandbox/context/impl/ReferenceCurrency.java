@@ -30,21 +30,13 @@ public class ReferenceCurrency extends AContextValue implements IReferenceCurren
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        long temp;
 
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        try {
-            buffer.put(referenceCurrency.getBytes("UTF-8"));
-            buffer.flip();
-            temp = buffer.getLong();
-            result = prime * result + (int) (temp ^ (temp >>> 32));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        int hash = 7;
+        for (int i = 0; i < referenceCurrency.length(); i++) {
+            hash = hash*31 + referenceCurrency.charAt(i);
         }
 
-        return result;
+        return hash;
     }
 
     @Override
