@@ -30,8 +30,12 @@ public class ForexPostProcessor extends ABasicPostProcessor<Double> {
     public static final String REFERENCE_CURRENCY = "referenceCurrency";
     public static final String TARGET_CURRENCY = "targetCurrency";
 
+    IQueryCache queryCache;
+
     public ForexPostProcessor(String name, IPostProcessorCreationContext creationContext){
         super(name, creationContext);
+
+
     }
 
     @Override
@@ -63,7 +67,6 @@ public class ForexPostProcessor extends ABasicPostProcessor<Double> {
             this.targetCurrency = new ReferenceCurrency();
 
         }
-
 
     }
 
@@ -112,25 +115,33 @@ public class ForexPostProcessor extends ABasicPostProcessor<Double> {
         return ratio;
     }
 
-    private double getRatioTwoCurrency(String referenceCurrency, String targetCurrency){
+    private double getRatioFromQueryOrCache(String currency){
+
+        // code from here: http://support.quartetfs.com/confluence/display/AP5/IQueryCache
+
+        queryCache = pivot.getContext().get(IQueryCache.class);
+
+        Double ratio = (Double) queryCache.get(currency);
+        if (ratio == null){
+            Double computed = getRatio(currency);
+            Double concurrent = (Double) queryCache.putIfAbsent(currency, computed);
+            ratio = concurrent == null ? computed : concurrent;
+        }
+
+        return ratio;
+    }
+
+    protected double getRatioTwoCurrency(String referenceCurrency, String targetCurrency){
 
         Double ratio;
 
-        IQueryCache queryCache = pivot.getContext().get(IQueryCache.class);
 
         if(!referenceCurrency.equals("EUR")){
-            try{
-                ratio = (Double) queryCache.get(targetCurrency) / (Double) queryCache.get(referenceCurrency);
-            }catch (Exception e){
-                ratio = getRatio(targetCurrency)/getRatio(referenceCurrency);
-            }
-
+            Double cur1 = getRatioFromQueryOrCache(referenceCurrency);
+            Double cur2 = getRatioFromQueryOrCache(targetCurrency);
+            ratio = cur2/cur1;
         }else{
-
-            ratio = (Double) queryCache.get(targetCurrency);
-            if(ratio == null)
-                ratio = getRatio(targetCurrency);
-
+            ratio = getRatioFromQueryOrCache(targetCurrency);
         }
 
         return ratio;

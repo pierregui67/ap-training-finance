@@ -138,4 +138,10 @@
             <entry key="targetCurrency" value="USD" />
         </properties>
     </postProcessor>
+
+    <postProcessor name="ForexRate" pluginKey="FOREX_DISPLAY" folder="postProc" underlyingMeasures="Close.Avg" continuousQueryHandlers="STORED, FOREX_HANDLER">
+        <properties>
+            <entry key="DimensionName" value="Currency@ForexHierarchy@ForexDimension" />
+        </properties>
+    </postProcessor>
 </measures>

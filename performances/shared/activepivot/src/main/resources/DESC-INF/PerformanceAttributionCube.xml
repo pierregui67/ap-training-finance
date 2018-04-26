@@ -54,7 +54,7 @@
         <import resource="DESC-INF/Measures.xml"/>
     </measures>
 
-    <aggregatesCacheDescription size="100"/>
+    <aggregatesContinuousQueryEngine pluginKey="CONFLATE" />
 
     <sharedContexts>
         <!-- Query maximum execution time (before timeout cancellation) -->
