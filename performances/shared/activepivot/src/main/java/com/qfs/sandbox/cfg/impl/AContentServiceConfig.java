@@ -6,13 +6,14 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
+import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
 import com.qfs.content.service.IContentService;
 import com.qfs.pivot.content.IActivePivotContentService;
-import com.qfs.server.cfg.IActivePivotContentServiceConfig;
+//import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 
 /**
  * Generic spring configuration for Content service

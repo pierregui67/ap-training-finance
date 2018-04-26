@@ -140,7 +140,7 @@ public class ASecurityConfig {
 	 */
 	@Bean
 	public JwtFilter jwtFilter(AuthenticationManager authenticationManagerBean) {
-		return new JwtFilter(authenticationManagerBean);
+		return new JwtFilter(authenticationManagerBean, "yep", "yep");
 	}
 
 	/**

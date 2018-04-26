@@ -115,7 +115,7 @@ public class ActivePivotServer {
 		@Override
 		public void preConfigure(WebAppContext context) throws Exception {
 			ConcurrentHashSet<String> set = new ConcurrentHashSet<>();
-			ConcurrentHashMap<String, ConcurrentHashSet<String>> map = new ClassInheritanceMap();
+			ClassInheritanceMap map = new ClassInheritanceMap();
 			set.add(ActivePivotServerWebAppInitializer.class.getName());
 			map.put(WebApplicationInitializer.class.getName(), set);
 			context.setAttribute(CLASS_INHERITANCE_MAP, map);

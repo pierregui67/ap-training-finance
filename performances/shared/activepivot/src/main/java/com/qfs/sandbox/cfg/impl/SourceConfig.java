@@ -113,8 +113,10 @@ public class SourceConfig {
         mapIndices.put(1, INDICES_NAME_COMPANY);
         mapIndices.put(2, INDICES_CLOSE_VALUE);
         mapIndices.put(3, INDICES_STOCK_SYMBOL);
+        //mapIndices.put(5, PORTFOLIOS_POSITION_TYPE);
         mapIndices.put(4, INDICES_IDENTIFIER);
         mapIndices.put(6, INDICES_DATE);
+        //mapIndices.put(7, PORTFOLIOS_NUMBER_STOCKS);
 
         mapForex.put(0, FOREX_INITIAL_CURRENCY);
         mapForex.put(1, FOREX_TARGET_CURRENCY);

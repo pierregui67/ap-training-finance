@@ -10,7 +10,7 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import java.util.Properties;
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = DynamicPortfolioValuePostProcessor.PLUGIN_KEY)
-public class DynamicPortfolioValuePostProcessor extends ADynamicAggregationPostProcessor<Double> {
+public class DynamicPortfolioValuePostProcessor extends ADynamicAggregationPostProcessor<Double, Double> {
 
     public static final String PLUGIN_KEY = "PORTFOLIO_VALUE";
 

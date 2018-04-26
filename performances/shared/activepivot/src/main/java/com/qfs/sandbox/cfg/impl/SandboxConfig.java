@@ -15,14 +15,17 @@ import com.qfs.sandbox.postprocessor.impl.ForexDisplayHandler;
 import com.qfs.sandbox.postprocessor.impl.ForexHandler;
 import com.qfs.sandbox.postprocessor.impl.ForexStream;
 import com.qfs.server.cfg.IActivePivotConfig;
-import com.qfs.server.cfg.IActivePivotContentServiceConfig;
+//import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.IJwtConfig;
+import com.qfs.server.cfg.content.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.impl.*;
-import com.quartetfs.biz.pivot.monitoring.impl.JMXEnabler;
+//import com.quartetfs.biz.pivot.monitoring.impl.JMXEnabler;
+import com.quartetfs.biz.pivot.monitoring.impl.DynamicActivePivotManagerMBean;
 import com.quartetfs.biz.pivot.query.aggregates.IAggregatesContinuousHandler;
 import com.quartetfs.biz.pivot.query.aggregates.IStream;
 import com.quartetfs.fwk.Registry;
+import com.quartetfs.fwk.monitoring.jmx.impl.JMXEnabler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
@@ -69,7 +72,9 @@ value = {
 		ActivePivotRemotingServicesConfig.class,
 		ActivePivotXmlaServletConfig.class,
 
-		QfsRestServicesConfig.class,
+		//QfsRestServicesConfig.class,
+
+		ActivePivotRestServicesConfig.class,
 
 		// Streaming Services monitor
 		StreamingMonitorConfig.class,
@@ -155,7 +160,7 @@ public class SandboxConfig {
 	@Bean
 	@DependsOn(value = "startManager")
 	public JMXEnabler JMXActivePivotEnabler() {
-		return new JMXEnabler(apConfig.activePivotManager());
+		return new JMXEnabler(new DynamicActivePivotManagerMBean(apConfig.activePivotManager()));
 	}
 
 	/**

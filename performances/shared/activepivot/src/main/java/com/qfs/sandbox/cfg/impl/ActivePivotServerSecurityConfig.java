@@ -17,6 +17,7 @@ import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.LICENSING_SERVIC
 import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.LONG_POLLING_SERVICE;
 import static com.qfs.server.cfg.impl.CxfServletConfig.CXF_WEB_SERVICES;
 
+import com.quartetfs.fwk.security.IUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,9 +33,9 @@ import com.qfs.QfsWebUtils;
 import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
 import com.qfs.pivot.servlet.impl.ContextValueFilter;
 import com.qfs.server.cfg.IActivePivotConfig;
-import com.qfs.server.cfg.IActivePivotContentServiceConfig;
+//import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 import com.qfs.snl.cfg.activepivot.impl.ActiveMonitorPivotExtensionServiceConfiguration;
-import com.quartetfs.biz.pivot.security.IUserDetailsService;
+//import com.quartetfs.biz.pivot.security.IUserDetailsService;
 import com.quartetfs.biz.pivot.security.impl.UserDetailsServiceWrapper;
 
 /**
