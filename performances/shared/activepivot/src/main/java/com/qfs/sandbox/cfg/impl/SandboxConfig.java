@@ -6,14 +6,19 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
+import com.qfs.content.cfg.impl.ContentServerResourceServerConfig;
+import com.qfs.content.cfg.impl.ContentServerWebSocketServicesConfig;
 import com.qfs.distribution.security.IDistributedSecurityManager;
 import com.qfs.messenger.IDistributedMessenger;
 import com.qfs.monitoring.HealthCheckAgent;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.sandbox.bean.DatastoreConfigBean;
+import com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig;
+import com.qfs.sandbox.pivot.impl.PerformanceCubeManagerConfig;
 import com.qfs.sandbox.postprocessor.impl.ForexDisplayHandler;
 import com.qfs.sandbox.postprocessor.impl.ForexHandler;
 import com.qfs.sandbox.postprocessor.impl.ForexStream;
+import com.qfs.sandbox.source.impl.SourceConfig;
 import com.qfs.server.cfg.IActivePivotConfig;
 //import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -61,7 +66,7 @@ import static com.quartetfs.fwk.types.impl.ExtendedPluginInjector.inject;
 @Configuration
 @Import(
 value = {
-		ActivePivotConfig.class,
+		/*ActivePivotConfig.class,
 		DatastoreConfig.class,
 		SourceConfig.class,
 		JwtConfig.class,
@@ -79,7 +84,32 @@ value = {
 		// Streaming Services monitor
 		StreamingMonitorConfig.class,
 
-        DatastoreConfigBean.class
+        DatastoreConfigBean.class*/
+        // Core imports
+        ActivePivotConfig.class,
+        JwtConfig.class,
+        DatastoreConfig.class,
+
+        // Core WS imports
+        ActivePivotServicesConfig.class,
+        ActivePivotWebServicesConfig.class,
+        ActivePivotWebSocketServicesConfig.class,
+        ContentServerWebSocketServicesConfig.class,
+        ContentServerResourceServerConfig.class,
+        ActivePivotRemotingServicesConfig.class,
+        ActivePivotXmlaServletConfig.class,
+        ActiveViamRestServicesConfig.class,
+
+        SandboxCorsFilterConfig.class,
+        //SandboxUserDetailsServiceConfig.class,
+
+        SourceConfig.class,
+        DatastoreDescriptionConfig.class,
+        PerformanceCubeManagerConfig.class,
+        //RoleContextConfig.class,
+
+        // Streaming Services monitor
+        StreamingMonitorConfig.class,
 })
 public class SandboxConfig {
 

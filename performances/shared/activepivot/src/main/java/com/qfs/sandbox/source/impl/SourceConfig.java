@@ -4,7 +4,7 @@
  * property of Quartet Financial Systems Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.qfs.sandbox.cfg.impl;
+package com.qfs.sandbox.source.impl;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IColumnCalculator;
@@ -21,6 +21,7 @@ import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.sandbox.tuplepublisher.impl.ForexTuplePublisher;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
+import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
@@ -40,8 +41,10 @@ import org.springframework.core.env.Environment;
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Logger;
 
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
+//import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
+import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.*;
 
 @PropertySource(value = { "classpath:perf.properties" })
 
@@ -55,11 +58,21 @@ import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
 @Configuration
 public class SourceConfig {
 
+    /** Logger **/
+    protected static Logger LOGGER = Logger.getLogger(SourceConfig.class.getName());
+
+
     @Autowired
     protected Environment env;
 
+    /*@Autowired
+    protected IDatastore datastore;*/
+
+    /** Application datastore, automatically wired */
     @Autowired
-    protected IDatastore datastore;
+    protected IDatastoreConfig datastoreConfig;
+
+    private final IDatastore datastore = this.datastoreConfig.datastore();
 
     public static final char COMMA_SEPARATOR = ',';
     public static final char BAR_SEPARATOR = '|';

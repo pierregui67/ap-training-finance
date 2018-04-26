@@ -21,7 +21,7 @@ Consult imported classes Javadoc to get a description of the beans, their names 
 2 classes are interesting to look at first:
 
 - `com.qfs.sandbox.cfg.impl.DatastoreConfig` for Datastore configuration
-- `com.qfs.sandbox.cfg.impl.SourceConfig` for Data source configuration
+- `com.qfs.sandbox.source.impl.SourceConfig` for Data source configuration
 
 Resources
 -----------
