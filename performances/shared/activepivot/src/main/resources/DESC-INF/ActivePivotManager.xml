@@ -10,6 +10,7 @@
 	<catalogs>
 		<catalog id="PerformanceAttribution">
 			<activePivot id="PerformanceAttributionCube" />
+			<activePivot id="PerformanceAttributionCubeCustomized" />
 		</catalog>
 	</catalogs>
 	

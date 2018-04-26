@@ -38,6 +38,10 @@
             <pivotDescription resource="DESC-INF/PerformanceAttributionCube.xml"/>
         </activePivot>
 
+        <activePivot id="PerformanceAttributionCubeCustomized">
+            <pivotDescription resource="DESC-INF/PerformanceAttributionCubeCustomized.xml"/>
+        </activePivot>
+
     </activePivots>
 
 </schemaDescription>
