@@ -82,46 +82,52 @@ public abstract class HistoryDownloader extends Downloader {
         String fileName = fileNamePrefix + "History_" + replacedSym;
 
         // Connection to the URL
-        Document doc = Jsoup.connect(url).timeout(10000000).get();
+        try {
+            Document doc = Jsoup.connect(url).timeout(10000000).get();
+            // Only 100 elements. Why so few ?
+            Elements elements = doc.getElementsByAttributeValueContaining("class", "BdT Bdc($c-fuji-grey-c) Ta(end) Fz(s) Whs(nw)");
+            for (Element element : elements) {
+                List<Node> childNodes = element.childNodes();
 
-        // Only 100 elements. Why so few ?
-        Elements elements = doc.getElementsByAttributeValueContaining("class", "BdT Bdc($c-fuji-grey-c) Ta(end) Fz(s) Whs(nw)");
-        for (Element element : elements) {
-            List<Node> childNodes = element.childNodes();
+                dateString = getDeeperInformation(childNodes, indDate);
+                try {
+                    date = dateFormat1.parse(dateString);
+                    dateString = dateFormat2.format(date).toString();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-            dateString = getDeeperInformation(childNodes, indDate);
-            try {
-                date = dateFormat1.parse(dateString);
-                dateString = dateFormat2.format(date).toString();
-            } catch (ParseException e) {
-                e.printStackTrace();
+                if (symbolToDates.containsKey(sym))
+                    symbolToDates.get(sym).add(dateString);
+                else
+                    symbolToDates.put(sym, new HashSet<String>(Arrays.asList(dateString)));
+
+                // When there is two nodes, that means the dividend is being display at this time.
+                if (childNodes.size() == 2)
+                    record = record + dateString + ",,,,,," + System.getProperty("line.separator");
+                else {
+
+                    open = getDeeperInformation(childNodes, indOpen).replace(",", "");
+                    close = getDeeperInformation(childNodes, indClose).replace(",", "");
+                    high = getDeeperInformation(childNodes, indHigh).replace(",", "");
+                    low = getDeeperInformation(childNodes, indLow).replace(",", "");
+                    adjClose = getDeeperInformation(childNodes, indAdjClose).replace(",", "");
+                    volume = getDeeperInformation(childNodes, indVolume).replace(",", "");
+
+                    // We record the data in a CSV format.
+                    record = record + dateString + "," + open + "," + high + "," + low + "," + close
+                            + "," + volume + "," + adjClose + System.getProperty("line.separator");
+                }
             }
+            Utils.writter(record, baseFolder + fileName + FILE_EXTENSION);
 
-            if (symbolToDates.containsKey(sym))
-                symbolToDates.get(sym).add(dateString);
-            else
-                symbolToDates.put(sym, new HashSet<String>(Arrays.asList(dateString)));
-
-            // When there is two nodes, that means the dividend is being display at this time.
-            if (childNodes.size() == 2)
-                record = record + dateString + ",,,,,," + System.getProperty("line.separator");
-            else {
-
-                open = getDeeperInformation(childNodes, indOpen).replace(",", "");
-                close = getDeeperInformation(childNodes, indClose).replace(",", "");
-                high = getDeeperInformation(childNodes, indHigh).replace(",", "");
-                low = getDeeperInformation(childNodes, indLow).replace(",", "");
-                adjClose = getDeeperInformation(childNodes, indAdjClose).replace(",", "");
-                volume = getDeeperInformation(childNodes, indVolume).replace(",", "");
-
-                // We record the data in a CSV format.
-                record = record + dateString + "," + open + "," + high + "," + low + "," + close
-                        + "," + volume + "," + adjClose + System.getProperty("line.separator");
-            }
+            System.out.println(" : written.");
+        } catch (UncheckedIOException e) {
+            System.out.println("UncheckedIOException");
+        } catch (ZipException z) {
+            System.out.println("ZipException");
         }
-        Utils.writter(record, baseFolder + fileName + FILE_EXTENSION);
 
-        System.out.println(" : written.");
     }
 
     protected Object getSerializableObject(String serName) {
