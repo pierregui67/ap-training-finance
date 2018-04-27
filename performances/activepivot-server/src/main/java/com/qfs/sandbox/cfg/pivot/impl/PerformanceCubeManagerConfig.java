@@ -1,4 +1,4 @@
-package com.qfs.sandbox.pivot.impl;
+package com.qfs.sandbox.cfg.pivot.impl;
 
 import com.activeviam.builders.StartBuilding;
 import com.qfs.desc.IDatastoreSchemaDescription;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.PORTFOLIOS_STORE_NAME;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.PORTFOLIOS_STORE_NAME;
 
 @Configuration
 public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {

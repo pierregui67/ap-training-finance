@@ -1,4 +1,4 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.sandbox.context.ICurrencyContextValue;
 import com.quartetfs.biz.pivot.IActivePivotVersion;
@@ -15,8 +15,6 @@ import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 import java.util.*;
-
-import static com.quartetfs.biz.pivot.cube.hierarchy.ILevel.ALLMEMBER;
 
 @QuartetExtendedPluginValue(intf=IAggregatesContinuousHandler.class, key = ForexHandler.PLUGIN_KEY)
 public class ForexHandler extends AAggregatesContinuousHandler<Object> {

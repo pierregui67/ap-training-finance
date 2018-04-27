@@ -42,27 +42,11 @@ import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 		JwtConfig.class
 })
 @org.springframework.context.annotation.Configuration
-public class ContentServerConfig implements IContentServiceConfig {
+public class ContentServerConfig {
 
 	/** Before anything else we statically initialize the Quartet FS Registry. */
 	static {
 		Registry.setContributionProvider(new ClasspathContributionProvider("com.qfs", "com.quartetfs"));
-	}
-
-	/**
-	 * The content service is a bean which can be used by ActivePivot server to store:
-	 * <ul>
-	 * <li>calculated members and share them between users</li>
-	 * <li>the cube descriptions</li>
-	 * <li>entitlements</li>
-	 * </ul>
-	 * @return the content service
-	 */
-	@Override
-	@Bean
-	public IContentService contentService() {
-		Configuration conf  = ContentServerUtil.loadConfiguration("hibernate.properties");
-		return new AuditableHibernateContentService(conf);
 	}
 
 	/**

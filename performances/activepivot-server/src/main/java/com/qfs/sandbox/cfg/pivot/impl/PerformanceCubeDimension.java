@@ -1,4 +1,4 @@
-package com.qfs.sandbox.pivot.impl;
+package com.qfs.sandbox.cfg.pivot.impl;
 
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;

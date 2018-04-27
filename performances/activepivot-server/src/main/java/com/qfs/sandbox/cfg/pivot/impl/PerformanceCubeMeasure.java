@@ -1,9 +1,9 @@
-package com.qfs.sandbox.pivot.impl;
+package com.qfs.sandbox.cfg.pivot.impl;
 
 import com.activeviam.desc.build.ICanStartBuildingMeasures;
 import com.activeviam.desc.build.IHasAtLeastOneMeasure;
 
-import static com.qfs.sandbox.pivot.impl.PerformanceCubeConfig.DATA_FOLDER;
+import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeConfig.DATA_FOLDER;
 
 public class PerformanceCubeMeasure {
 

@@ -9,7 +9,10 @@ package com.qfs.sandbox.server;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.DispatcherType;
@@ -120,9 +123,8 @@ public class ContentServer {
 
 		@Override
 		public void preConfigure(WebAppContext context) throws Exception {
-			ConcurrentHashSet<String> set = new ConcurrentHashSet<>();
-			ConcurrentHashMap<String, ConcurrentHashSet<String>> map = new ClassInheritanceMap();
-			set.add(ContentServerWebAppInitializer.class.getName());
+			final Set<String> set = Collections.singleton(ContentServerWebAppInitializer.class.getName());
+			final Map<String, Set<String>> map =  new ClassInheritanceMap();
 			map.put(WebApplicationInitializer.class.getName(), set);
 			context.setAttribute(CLASS_INHERITANCE_MAP, map);
 			_classInheritanceHandler = new ClassInheritanceHandler(map);

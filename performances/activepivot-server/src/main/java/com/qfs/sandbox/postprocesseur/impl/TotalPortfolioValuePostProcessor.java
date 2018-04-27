@@ -1,6 +1,5 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
-import com.quartetfs.biz.pivot.IActivePivot;
 import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevel;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;

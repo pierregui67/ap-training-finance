@@ -1,4 +1,4 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.sandbox.context.ICurrencyContextValue;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
@@ -15,9 +15,8 @@ import com.quartetfs.fwk.QuartetRuntimeException;
 
 import java.util.Properties;
 
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_RATE;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_RATE;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
 
 @QuartetExtendedPluginValue(intf=IPostProcessor.class, key=ForexPostProcessor.PLUGIN_KEY)
 public class ForexPostProcessor extends ADynamicAggregationPostProcessor{

@@ -4,7 +4,7 @@
  * property of Quartet Financial Systems Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.qfs.sandbox.datastore.impl;
+package com.qfs.sandbox.cfg.datastore.impl;
 
 import static com.qfs.literal.ILiteralType.DOUBLE;
 import static com.qfs.literal.ILiteralType.INT;
@@ -19,15 +19,6 @@ import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.repository.IParameterStoreConfiguration;
 import com.qfs.repository.config.impl.IParameterAwareDatastoreDescriptionConfig;
 import com.qfs.repository.impl.RepositoryCacheUtil;
-import com.qfs.server.cfg.IDatastoreConfig;
-import com.qfs.server.cfg.impl.ActivePivotConfig;
-import com.qfs.store.IDatastore;
-import com.qfs.store.build.impl.DatastoreBuilder;
-import com.qfs.store.log.ILogConfiguration;
-import com.qfs.store.log.ReplayException;
-import com.qfs.store.log.impl.LogConfiguration;
-import com.qfs.store.transaction.IDatastoreWithReplay;
-import com.quartetfs.biz.pivot.definitions.impl.ActivePivotDatastorePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +26,6 @@ import org.springframework.core.env.Environment;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Spring configuration of the Datastore.

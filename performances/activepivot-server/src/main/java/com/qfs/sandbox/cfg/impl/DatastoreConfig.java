@@ -1,7 +1,6 @@
 package com.qfs.sandbox.cfg.impl;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
-import com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig;
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.server.cfg.impl.ActivePivotManagerConfigFromContentServer;

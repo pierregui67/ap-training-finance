@@ -8,8 +8,7 @@ package com.qfs.sandbox.context.impl;
 
 import java.util.*;
 
-import com.qfs.sandbox.bean.CurrenciesBean;
-import com.qfs.sandbox.bean.DatastoreConfigBean;
+import com.qfs.sandbox.bean.impl.DatastoreConfigBean;
 import com.qfs.sandbox.context.ICurrencyContextValue;
 import com.qfs.store.IDatastoreVersion;
 import com.qfs.store.query.impl.DatastoreQueryHelper;
@@ -18,9 +17,9 @@ import com.quartetfs.biz.pivot.context.IContextValueTranslator;
 import com.quartetfs.biz.pivot.context.impl.SimpleContextValueTranslator;
 import com.quartetfs.fwk.QuartetPluginValue;
 
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_INITIAL_CURRENCY;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_TARGET_CURRENCY;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_INITIAL_CURRENCY;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_TARGET_CURRENCY;
 
 /**
  *

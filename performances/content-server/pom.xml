@@ -99,6 +99,15 @@
 			<version>8.0.36</version>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>com.activeviam.sandbox</groupId>
+            <artifactId>sandbox-common</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>com.activeviam.tech</groupId>
+			<artifactId>content-server-spring</artifactId>
+			<version>5.5.10</version>
+		</dependency>
 	</dependencies>
 
 	<build>

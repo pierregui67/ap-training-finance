@@ -1,13 +1,10 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
 import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.impl.ADynamicAggregationPostProcessor;
-import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
-
-import java.util.Properties;
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = DynamicPortfolioValuePostProcessor.PLUGIN_KEY)
 public class DynamicPortfolioValuePostProcessor extends ADynamicAggregationPostProcessor<Double, Double> {

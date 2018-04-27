@@ -1,4 +1,4 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
 import com.quartetfs.biz.pivot.IActivePivotVersion;
 import com.quartetfs.biz.pivot.ILocation;

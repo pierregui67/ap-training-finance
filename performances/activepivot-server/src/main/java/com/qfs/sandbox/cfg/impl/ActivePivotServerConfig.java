@@ -56,7 +56,7 @@ import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 		ActivePivotServerSecurityConfig.class,
 
 		// We have the remote content service config here
-		LocalContentServiceConfig.class
+		//LocalContentServiceConfig.class
 })
 public class ActivePivotServerConfig {
 

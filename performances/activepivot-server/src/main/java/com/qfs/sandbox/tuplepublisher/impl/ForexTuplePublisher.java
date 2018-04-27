@@ -1,6 +1,6 @@
 package com.qfs.sandbox.tuplepublisher.impl;
 
-import com.qfs.sandbox.bean.CurrenciesBean;
+import com.qfs.sandbox.bean.impl.CurrenciesBean;
 import com.qfs.source.IStoreMessage;
 import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;

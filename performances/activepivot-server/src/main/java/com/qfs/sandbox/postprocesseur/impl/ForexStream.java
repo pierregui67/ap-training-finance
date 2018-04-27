@@ -1,4 +1,4 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.store.record.IRecordBlock;
 import com.qfs.store.record.IRecordReader;
@@ -11,7 +11,7 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
 
 
 @QuartetExtendedPluginValue(intf = IStream.class, key = ForexStream.PLUGIN_KEY)

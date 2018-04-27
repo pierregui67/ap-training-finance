@@ -4,7 +4,7 @@
  * property of Quartet Financial Systems Limited. Any unauthorized use,
  * reproduction or transfer of this material is strictly prohibited
  */
-package com.qfs.sandbox.source.impl;
+package com.qfs.sandbox.cfg.source.impl;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IColumnCalculator;
@@ -43,8 +43,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
 
-//import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.*;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.*;
 
 @PropertySource(value = { "classpath:perf.properties" })
 

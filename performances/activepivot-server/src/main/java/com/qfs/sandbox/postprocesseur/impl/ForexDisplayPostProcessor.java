@@ -1,4 +1,4 @@
-package com.qfs.sandbox.postprocessor.impl;
+package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.store.query.impl.DatastoreQueryHelper;
 import com.qfs.store.record.IRecordReader;
@@ -14,8 +14,8 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 import java.util.Properties;
 
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_RATE;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_RATE;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key =ForexDisplayPostProcessor.PLUGIN_KEY)
 public class ForexDisplayPostProcessor extends ABasicPostProcessor<Double> {
