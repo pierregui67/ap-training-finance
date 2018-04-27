@@ -1,4 +1,4 @@
-package com.qfs.sandbox.bean;
+package com.qfs.sandbox.bean.impl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

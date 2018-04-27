@@ -7,6 +7,7 @@ import com.qfs.store.IDatastore;
 import java.util.*;
 
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
+import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.*;
 
 /**
  * First the portfolio store, secondly the gdaxi store.

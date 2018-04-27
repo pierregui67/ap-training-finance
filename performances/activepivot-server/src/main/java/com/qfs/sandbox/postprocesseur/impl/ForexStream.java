@@ -11,7 +11,8 @@ import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.FOREX_STORE_NAME;
+import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
+
 
 @QuartetExtendedPluginValue(intf = IStream.class, key = ForexStream.PLUGIN_KEY)
 public class ForexStream extends AStoreStream<Set<String>, Set<String>>{

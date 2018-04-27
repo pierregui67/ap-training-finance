@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 @Component
 @Import(
         value = {
-                DatastoreDescriptionConfig.class,
-                //ActivePivotManagerConfigFromContentServer.class
+                //DatastoreDescriptionConfig.class,
+                ActivePivotManagerConfigFromContentServer.class
         })
 public class DatastoreConfig implements IDatastoreConfig {
 
@@ -47,7 +47,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     @Override
     @Bean
     public IDatastore datastore() {
-        String logFolder = System.getProperty("user.home");
+        String logFolder = System.getProperty("user.home") + "\\Documents\\Training";
         ILogConfiguration logConfiguration = new LogConfiguration(logFolder);//the transaction logs will sit in your home directory, feel free to change the folder
 
         IDatastoreWithReplay dwr = new DatastoreBuilder()

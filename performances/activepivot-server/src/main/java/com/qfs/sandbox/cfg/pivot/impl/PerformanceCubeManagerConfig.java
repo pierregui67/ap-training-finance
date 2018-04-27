@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.HISTORY_STOCK_SYMBOL;
-import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.PORTFOLIOS_STOCK_SYMBOL;
 import static com.qfs.sandbox.datastore.impl.DatastoreDescriptionConfig.PORTFOLIOS_STORE_NAME;
 
 @Configuration
@@ -62,7 +60,7 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
                 .fromBaseStore(PORTFOLIOS_STORE_NAME)
                 .withField("StockSymbol")
                 .withField("NumberStocks")
-                .withField("Volume")
+                .withField("PortfoliosToStockPriceHistory/Volume")
                 //.withAllReachableFields()
                 //.withAlias(PORTFOLIOS_STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
                 //.withAlias(TRADE__PRODUCT_ID, PRODUCT_ID)

@@ -1,4 +1,4 @@
-package com.qfs.sandbox.bean;
+package com.qfs.sandbox.bean.impl;
 
 import com.qfs.server.cfg.IDatastoreConfig;
 import org.springframework.stereotype.Component;
