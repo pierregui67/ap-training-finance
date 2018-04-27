@@ -1,10 +1,8 @@
 package com.qfs.sandbox.context.impl;
 
+import com.qfs.sandbox.context.IReferenceCurrency;
 import com.quartetfs.biz.pivot.context.IContextValue;
 import com.quartetfs.biz.pivot.context.impl.AContextValue;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
 
 public class ReferenceCurrency extends AContextValue implements IReferenceCurrency {
 

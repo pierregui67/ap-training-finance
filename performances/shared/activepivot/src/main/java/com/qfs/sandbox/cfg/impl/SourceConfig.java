@@ -22,6 +22,7 @@ import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.log.impl.LogWriteException;
@@ -214,7 +215,7 @@ public class SourceConfig {
     @Bean
     public IMessageChannel<String, Object> indicesChannel(){
         // get reverse map from original map ( value => key )
-        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        Map<String, Integer> nameToIndex;
         nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
 
         ArrayList<String> stores = new ArrayList();
@@ -225,6 +226,20 @@ public class SourceConfig {
                 new IndicesTuplePublisher(datastore, stores, nameToIndex)
         );
         return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher);
+    }
+
+    @Bean
+    public IMessageChannel<String, Object> forexChannel(){
+//        Map<String, Integer> nameToIndex;
+//        nameToIndex = csvChannelFactory().getTranslator(FOREX_TOPIC, FOREX_STORE_NAME).getColumnIndexes();
+
+        Collection<String> store = new ArrayList<>();
+        store.add(FOREX_STORE_NAME);
+
+        final ITuplePublisher<String> forexPublisher = new AutoCommitTuplePublisher<>(
+                new TuplePublisher<>(datastore, store)
+        );
+        return csvChannelFactory().createChannel(FOREX_TOPIC, FOREX_STORE_NAME, forexPublisher);
     }
 
 
@@ -238,7 +253,7 @@ public class SourceConfig {
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC));
-        csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
+//        csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
 //        csvChannels.add(csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher));
 
 
@@ -273,6 +288,13 @@ public class SourceConfig {
         return null;
     }
 
+    @Bean
+    @DependsOn(value = { "initialLoad" })
+    public Void forexRealTime() throws LogWriteException{
+        csvSource().listen(forexChannel());
+        printStoreSizes();
+        return null;
+    }
 
     private void printStoreSizes() {
         //add some logging

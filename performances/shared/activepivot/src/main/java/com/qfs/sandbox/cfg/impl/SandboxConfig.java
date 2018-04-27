@@ -10,6 +10,9 @@ import com.qfs.distribution.security.IDistributedSecurityManager;
 import com.qfs.messenger.IDistributedMessenger;
 import com.qfs.monitoring.HealthCheckAgent;
 import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
+import com.qfs.sandbox.bean.DatastoreConfigBean;
+import com.qfs.sandbox.postprocessors.impl.ForexHandler;
+import com.qfs.sandbox.postprocessors.impl.ForexStream;
 import com.qfs.server.cfg.IActivePivotConfig;
 import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -17,6 +20,8 @@ import com.qfs.server.cfg.IJwtConfig;
 import com.qfs.server.cfg.impl.*;
 import com.quartetfs.biz.pivot.impl.PeriodicActivePivotSchemaRebuilder;
 import com.quartetfs.biz.pivot.monitoring.impl.JMXEnabler;
+import com.quartetfs.biz.pivot.query.aggregates.IAggregatesContinuousHandler;
+import com.quartetfs.biz.pivot.query.aggregates.IStream;
 import com.quartetfs.fwk.Registry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -70,6 +75,8 @@ value = {
 
 		// Streaming Services monitor
 		StreamingMonitorConfig.class,
+
+		DatastoreConfigBean.class,
 })
 public class SandboxConfig {
 
@@ -102,6 +109,9 @@ public class SandboxConfig {
 	/** ActivePivot Service Config */
 	@Autowired
 	protected ActivePivotServicesConfig apServiceConfig;
+
+	@Autowired
+	protected DatastoreConfigBean datastoreConfigBean;
 
 	/**
 	 *
@@ -195,6 +205,10 @@ public class SandboxConfig {
 			inject(IDistributedSecurityManager.class, String.valueOf(key), securityConfig.qfsUserDetailsService());
 		}
 
+		inject(IStream.class, ForexStream.PLUGIN_KEY, "datastore", datastoreConfig.datastore());
+		inject(IAggregatesContinuousHandler.class, ForexHandler.PLUGIN_KEY, "currencyLevel", "Currency");
+
+		datastoreConfigBean.setDatastoreConfig(datastoreConfig);
 	}
 
 }

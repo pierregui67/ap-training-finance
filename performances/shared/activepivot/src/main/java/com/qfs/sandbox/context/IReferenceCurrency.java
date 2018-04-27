@@ -1,4 +1,4 @@
-package com.qfs.sandbox.context.impl;
+package com.qfs.sandbox.context;
 
 import com.quartetfs.biz.pivot.context.IContextValue;
 

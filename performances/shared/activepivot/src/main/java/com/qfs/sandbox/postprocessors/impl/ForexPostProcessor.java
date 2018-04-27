@@ -3,11 +3,10 @@ package com.qfs.sandbox.postprocessors.impl;
 import com.qfs.condition.ICondition;
 import com.qfs.condition.impl.BaseConditions;
 import com.qfs.sandbox.cfg.impl.DatastoreConfig;
-import com.qfs.sandbox.context.impl.IReferenceCurrency;
+import com.qfs.sandbox.context.IReferenceCurrency;
 import com.qfs.sandbox.context.impl.ReferenceCurrency;
 import com.qfs.store.IDatastoreVersion;
 import com.qfs.store.query.ICursor;
-import com.qfs.store.query.IDictionaryCursor;
 import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
@@ -17,7 +16,6 @@ import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 import com.quartetfs.fwk.QuartetRuntimeException;
 
-import javax.xml.crypto.Data;
 import java.util.Properties;
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = ForexPostProcessor.PLUGIN_KEY)

@@ -37,4 +37,17 @@
 
     <dimension name="IndexName" />
 
+    <dimension name="ForexDimension">
+        <hierarchy name="ForexHierarchy" allMember="false" factless="true">
+            <properties>
+                <entry key="storeName" value="Forex" />
+            </properties>
+            <level name="Currency">
+                <properties>
+                    <entry key="fieldName" value="Target currency" />
+                </properties>
+            </level>
+        </hierarchy>
+    </dimension>
+
 </dimensions>
