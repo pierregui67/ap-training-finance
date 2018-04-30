@@ -1,0 +1,195 @@
+{
+	/** Measures' captions dictionary */
+	"_MEASURES_" : {
+		"Measures": "测度", 
+		"Currency contribution":"汇率组分", 
+		"pnl.Distributed_Forex":"损益.被分配的外汇",
+		"pnl.bucket.SUM" : "损益.组合.总数",
+		"pnl.FOREX" : "损益.外汇",
+		"pnl.SUM" : "损益.总数",
+		"pnlDelta.bucket.SUM" : "损益Delta. 组合.总数",
+		"pnlVega.bucket.SUM" :  "损益Vega.组合.总数",
+		"pv.SUM" : "现值.总数",
+		"pv.bucket.SUM" : "现值.组合.总数",
+		"pv.UnderlyingsRatio" : "现值.基础资产",
+		"rho.SUM" : " Rho.总数",
+		"pnlDelta.SUM" : "损益Delta.总数",
+		"pnlVega.SUM" : "损益Vega.总数",
+		"delta.SUM" : " Delta.总数",
+		"vega.SUM" : " Vega.总数",
+		"theta.SUM" : " Theta.总数",
+		"gamma.SUM":" Gamma.总数",
+		"update.TIMESTAMP":"更新.时间",
+		"contributors.COUNT":"相应数据.数目", 
+		"pnl.MINIMUM_DEPTH" : "损益. 最低限度",
+		"PnL":"损益",
+        "PnlInEUR" : "损益在 EUR",
+        "PnlInUSD" : "损益在 USD",
+        "pnl.MINIMUM_DEPTH" : "损益.最小深度"
+	},
+
+	"_LEVELS_" : {
+
+		"Branch" : "支系"
+	},
+
+	"_FORMATTERS_" : {
+
+		/** Measures' Formatters*/
+		"[Measures].[update.TIMESTAMP]" 	:"DATE[HH:mm:ss]",
+		"[Measures].[delta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pnl.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.bucket.SUM]" :"DOUBLE[#,###.0000;-#,###.0000]",
+		"[Measures].[pnlDelta.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlDelta.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",	
+		"[Measures].[theta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[rho.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[gamma.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[vega.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pv.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.UnderlyingsRatio]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.ALLMEMBER_HIDE]" :"DOUBLE[#,###.0000;-#,###.0000]",
+
+		/** Levels's member formatters */
+		"[Time].[TimeBucket].[Value Date]" :"DATE",
+		"[Time].[HistoricalDates].[AsOfDate]" :"DATE",
+
+		/** Members translation */
+		"[Time].[TimeBucket].[DateBucket]" :"_DATE_BUCKET_",
+		"[Booking].[Status].[Status]" : "_STATUS_",
+		"[Booking].[Status].[IsSimulated]" : "_SIMULATION_",
+		"[Underlyings].[Products].[ProductType]" : "_PRODUCT_TYPES_",
+		"[Underlyings].[Products].[ProductName]" : "_PRODUCT_NAMES_"		
+	},
+
+	/** Dictionary used for DateBucket's members */
+	"_DATE_BUCKET_" : {
+		"1D" : "1天", 
+		"2D" : "2天",
+		"3D" : "3天",
+		"1W" : "1个星期", 
+		"2W" : "2个星期",
+		"3W" : "3个星期",
+		"1M" : "1个月", 
+		"2M" : "2个月", 
+		"3M" : "3个月", 
+		"6M" : "6个月",
+		"9M" : "9个月",
+		"1Y" : "1年",
+		"2Y" : "2年",
+		"5Y" : "5年"
+	}, 
+
+	/** Dictionary used for Status's members */
+	"_STATUS_" : {
+		"DONE" : "完成",
+		"MATCHED" : "匹配"
+	},
+
+	/** Dictionary used for Simulation's members */
+	"_SIMULATION_" : {
+		"LIVE" : "真实",
+		"SIMULATION" : "模拟"
+	},
+
+	/**  Dictionary used for Product types' members */
+	"_PRODUCT_TYPES_" : {
+		"LISTED" : "上市",
+		"OTC" : "衍生" 
+	},
+
+	/** Dictionary used for product names' members */
+	"_PRODUCT_NAMES_" : {
+	    "FUTURE" : "期货合约",
+	    "OPTION" : "期权",
+	    "BARRIER OPTION" : "障碍期权",
+	    "EQUITY SWAP" : "股权置换"
+	},
+
+	/** Cubes captions */
+	"_CUBES_" : {
+		"EquityDerivativesCube": "股票衍生产品立方",
+		"EquityDerivativesCubeSmall":"股票衍生产品立方 (小)",
+		"EquityDerivativesCubeDist": "股票衍生产品立方 (分配)",
+		"EquityDerivativesCubeEURGBP": "股票衍生产品立方欧元英镑"
+	},
+
+
+	"_DESCRIPTIONS_" : {
+
+		"The two elements of underlyings which have the highest value" : "有最高值的基础资产的两个元素.",
+		"Dimension of underlyings" : "维数",
+		"Hierarchy of products" : "产品的阶层",
+		"Level of product names" : "层次",
+		"Sum of pnl in a same currency" : "相同货币里的损益的总数"
+	},
+
+
+
+	/** The GENERAL dictionary, used for all other types (Dimensions, levels, drillthough...) */
+
+	"_GENERAL_" : {
+		"Goal":"目标",
+		"Status":"状态",
+		"Value":"价值",
+		"Data contribution":"数据贡献",
+		"Kpis": "关键绩效指标",
+		"PnL Monitoring (LookUp)": "损益监控(LookUp)",
+		"Pnl Sensitivity": "损益的灵敏度",
+		"Smoothed PnL": "被平滑的损益",
+		"Tunnel Count Monitoring": "隧道数监控",
+		"BookingStatus":"合同设置的情况",
+		"AsOfDate":"作为日",
+		"Time":"时间",
+		"Measures":"测度",
+		"Booking":"合同设置",
+		"Epoch":",时期",
+		"HistoricalDates":"历史的日期",
+		"Desk":"办公桌",
+		"PnL Monitoring":"监控损益",
+		"RISK MESURES":"风险计量",
+		"PNL":"损益",
+		"IsSimulated":"模拟了",
+		"DateBucket":"日期组", 
+		"Sensitivities":"灵敏度",
+		"Date":"日期",
+		"BookId":"记录编号", 
+		"TimeBucket": "时间组",
+		"TimeBucketDynamic" : "变动时间组",
+		"TimeBucketDynamic_1" : "变动时间组1",
+		"Value Date": "执行日期",
+		"HostName": "主机名",
+		"Underlyings" : "基础资产",
+		"Products" : "产品" ,
+		"ProductType" : "品种",
+		"ProductName" : "品名",
+		"Currency" : "基础资产货币",
+		"UnderlierType" : "基础资产的种类",
+		"UnderlierCode" : "基础资产的代码",
+		"City" : "城市",
+        "Counterparty" : "对方",
+        "CounterParty" : "对方",
+        "CounterPartyGroup" : "对方组",
+		"Sets" : "集合",
+		"PnL Monitoring (MDX) Status" : "损益监控的状态 (MDX)",
+		"PnL Monitoring (MDX) Goal" : "损益监控的目标 (MDX)" ,
+		"PnL Limit" : "损益限度",
+		"PnL Monitoring (MDX)": "损益监控(MDX)" ,
+		"Top2Underlyings" : "前2个基础资产",
+		"pnl" : "损益",
+		"delta + gamma" : " Delta + Gamma ",
+		"pnl in EUR":"以欧元的损益",
+		"pnl in CHF" : "以瑞士法郎的损益",
+		"pnl in GBP" : "以英镑的损益",
+		"pnl in JPY" : "以日元的损益",
+		"pnl in USD" : "以美元的损益",
+		"pnl in ZAR" : "以南非兰特的损益",
+		"EUR + USD" : "欧元+美元",
+		"TradeId" : "贸识别码",
+        "Geography" : "地理",
+        "Trades" : "贸"
+	}
+}

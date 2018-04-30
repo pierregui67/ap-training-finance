@@ -1,0 +1,186 @@
+{
+	/** Measures' captions dictionary */
+	"_MEASURES_" : {
+		"Measures": "メジャー",
+		"Currency contribution":"為替コントリビューション",
+		"pnl.Distributed_Forex":"損益. 分散外国為替",
+		"pnl.bucket.SUM" : "損益.バケット.総額",
+		"pnl.FOREX" : "損益.外国為替",
+		"pnl.SUM" : "損益.総額",
+		"pnlDelta.bucket.SUM" : "損益デルタ.バケット.総額",
+		"pnlVega.bucket.SUM" :  "損益ベガ.バケット.総額",
+		"pv.SUM" : "現在価値.総額",
+		"pv.bucket.SUM" : "現在価値.バケット.総額",
+		"pv.UnderlyingsRatio" : "現在価値.基礎資産比率",
+		"rho.SUM" : "金利感応度.総額", 
+		"pnlDelta.SUM" : " 損益デルタ.総額",
+		"pnlVega.SUM" : "損益ベガ.総額",
+		"delta.SUM" : " デルタ.総額",
+		"vega.SUM" : "ベガ.総額",
+		"theta.SUM" : "シータ. 総額",
+		"gamma.SUM":"ガンマ.総額",
+		"update.TIMESTAMP":"更新.タイムスタンプ",
+		"contributors.COUNT":"投稿者.カウント",
+		"pnl.MINIMUM_DEPTH" : "損益. 最小段階 ",
+		"PnL":"損益"
+	},
+
+	"_LEVELS_" : {
+
+		"Branch" : "ブランチ"
+	},
+
+	"_FORMATTERS_" : {
+
+		/** Measures' Formatters*/
+		"[Measures].[update.TIMESTAMP]" 	:"DATE[HH:mm:ss]",
+		"[Measures].[delta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pnl.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.bucket.SUM]" :"DOUBLE[#,###.0000;-#,###.0000]",
+		"[Measures].[pnlDelta.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlDelta.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",	
+		"[Measures].[theta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[rho.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[gamma.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[vega.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pv.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.UnderlyingsRatio]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.ALLMEMBER_HIDE]" :"DOUBLE[#,###.0000;-#,###.0000]",
+
+		/** Levels's member formatters */
+		"[Time].[TimeBucket].[Value Date]" :"DATE",
+		"[Time].[HistoricalDates].[AsOfDate]" :"DATE",
+
+		/** Members translation */
+		"[Time].[TimeBucket].[DateBucket]" :"_DATE_BUCKET_",
+		"[Booking].[Status].[Status]" : "_STATUS_",
+		"[Booking].[Status].[IsSimulated]" : "_SIMULATION_",
+		"[Underlyings].[Products].[ProductType]" : "_PRODUCT_TYPES_",
+		"[Underlyings].[Products].[ProductName]" : "_PRODUCT_NAMES_"		
+	},
+
+	/** Dictionary used for DateBucket's members */
+	"_DATE_BUCKET_" : {
+		"1D" : "1日間",
+		"2D" : "2日間",
+		"3D" : "3日間",
+		"1W" : "1週間", 
+		"2W" : "2週間",
+		"3W" : "3週間",
+		"1M" : "1ヶ月",
+		"2M" : "2ヶ月",
+		"3M" : "3ヶ月",
+		"6M" : "6ヶ月",
+		"9M" : "9ヶ月",
+		"1Y" : "1年間",
+		"2Y" : "2年間",
+		"5Y" : "5年間"
+	}, 
+
+	/** Dictionary used for Status's members */
+	"_STATUS_" : {
+		"DONE" : "完成",
+		"MATCHED" : "マッチ" 
+	},
+
+	/** Dictionary used for Simulation's members */
+	"_SIMULATION_" : {
+		"LIVE" : "放送中",
+		"SIMULATION" : "シミュレーション"
+	},
+
+	/**  Dictionary used for Product types' members */
+	"_PRODUCT_TYPES_" : {
+		"LISTED" : " 上場",
+		"OTC" : "デリバティブ"
+	},
+
+	/** Dictionary used for product names' members */
+	"_PRODUCT_NAMES_" : {
+	    "FUTURE" : "先物取引",
+	    "OPTION" : "選択",
+	    "BARRIER OPTION" : "バリアオプション",
+	    "EQUITY SWAP" : "株式交換"
+	},
+
+	/** Cubes captions */
+	"_CUBES_" : {
+		"EquityDerivativesCube": "エクイティ・デリバティブキューブ・キュブ",
+		"EquityDerivativesCubeSmall":"エクイティ・デリバティブキューブ・キュブ(小)",
+		"EquityDerivativesCubeDist": "エクイティ・デリバティブキューブ・キュブ (分配)",
+		"EquityDerivativesCubeEURGBP": "エクイティ・デリバティブキューブ・キュブユーロ・ポンド"
+	},
+
+
+	"_DESCRIPTIONS_" : {
+
+		"The two elements of underlyings which have the highest value" : "原資産の中で最高値になる二つの要素",
+		"Dimension of underlyings" : "原資産の寸法",
+		"Hierarchy of products" : "商品の階層性",
+		"Level of product names" : "商品名のレベル",
+		"Sum of pnl in a same currency" : "同じ通貨で損益の合計"
+	},
+
+
+
+	/** The GENERAL dictionary, used for all other types (Dimensions, levels, drillthough...) */
+
+	"_GENERAL_" : {
+		"Goal":"目標",
+		"Status":"状態",
+		"Value":"価値",
+		"Measures": "インジケーター",
+		"Data contribution":"データ・コントリビューション",
+		"Kpis": "重要業績評価指標",
+		"PnL Monitoring (LookUp)": "損益モニター (LookUp)",
+		"Pnl Sensitivity": "損益の感受性",
+		"Smoothed PnL": "平滑化された損益",
+		"Tunnel Count Monitoring": "トンネル数の監視",
+		"BookingStatus":"契約のセットの状況",
+		"AsOfDate":"日現在",
+		"Time":"時間",
+		"Booking":"契約のセット",
+		"Epoch":"時代",
+		"HistoricalDates":"歴史的な日付",
+		"Desk":"デスク",
+		"PnL Monitoring":"損益モニター",
+		"RISK MESURES":"冒険のインジケーター",
+		"PNL":"損益",
+		"IsSimulated":"シミュレートされた",
+		"DateBucket":"日付のバケット",
+		"Sensitivities":"感受性",
+		"Date":"日付",
+		"BookId":"トレーダー役職記録",
+		"TimeBucket": "タイムバケット",
+		"TimeBucketDynamic" : "タイムバケットダイナミック",
+		"TimeBucketDynamic_1" : "タイムバケットダイナミッ1",
+		"Value Date": "実行日",
+		"HostName": "ホストドメイン",
+		"Underlyings" : "原資産",
+		"Products" : "産品品",
+		"ProductType" : "商品の種類",
+		"ProductName" : "商品名",
+		"Currency" : "原資産の通貨",
+		"UnderlierType" : "原資産の型",
+		"UnderlierCode" : "原資産のコード",
+		"Sets" : "セット",
+		"PnL Monitoring (MDX) Status" : " 損益モニターの状態(MDX)",
+		"PnL Monitoring (MDX) Goal" : "損益モニターの目標(MDX)", 
+		"PnL Limit" : "損益の限界",
+		"PnL Monitoring (MDX)": "損益モニター(MDX)", 
+		"Top2Underlyings" : "基礎資産のトップ2",
+		"Book Id" : "トレーダー役職記録",
+		"pnl" : "損益",
+		"delta + gamma" : "デルタ＋ガンマ",
+		"pnl in EUR": "ユーロで 損益",
+		"pnl in CHF" : "スイス・フランで損益",
+		"pnl in GBP" : "ポンドで損益",
+		"pnl in JPY" : "円で損益",
+		"pnl in USD" : "米ドルで損益",
+		"pnl in ZAR" : "ランドで損益",
+		"EUR + USD" : "ユーロと米ドル"
+	}
+}

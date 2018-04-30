@@ -1,0 +1,186 @@
+{
+	/** Measures' captions dictionary */
+	"_MEASURES_" : {
+
+		"pnl.bucket.SUM" : "pnl.bucket.SOMME",
+		"pnl.FOREX" : "pnl.FOREX",
+		"pnl.SUM" : "pnl.SOMME",
+		"pnlDelta.bucket.SUM" : "pnlDelta.bucket.SOMME",
+		"pnlVega.bucket.SUM" :  "pnlVega.bucket.SOMME",
+		"pv.SUM" : "pv.SOMME",
+		"pv.bucket.SUM" : "pv.bucket.SOMME",
+		"pv.UnderlyingsRatio" : "pv.UnderlyingsRatio",
+		"rho.SUM" : "rho.SOMME",
+		"pnlDelta.SUM" : "pnlDelta.SOMME",
+		"pnlVega.SUM" : "pnlVega.SOMME",
+		"delta.SUM" : "delta.SOMME",
+		"vega.SUM" : "vega.SOMME",
+		"theta.SUM" : "theta.SOMME",
+		"gamma.SUM":"gamma.SOMME",
+		"update.TIMESTAMP":"Dernière mise à jour",
+		"contributors.COUNT":"Nombre de faits",
+		"pnl.MINIMUM_DEPTH" : "pnl.PROFONDEUR_MINIMALE",
+		"PnL":"PnL",
+		"Currency Contribution" : "Contribution de la devise",
+		"PnlInEUR" : "PnL en EUR",
+		"PnlInUSD" : "PnL en USD",
+		"pnl.Distributed_Forex" : "pnl.FOREX distribué"
+	},
+
+	"_LEVELS_" : {
+
+		"Branch" : "Simulation"
+		
+	},
+
+	"_FORMATTERS_" : {
+
+		/** Measures' Formatters*/
+		"[Measures].[update.TIMESTAMP]" 	:"DATE[HH:mm:ss]",
+		"[Measures].[delta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pnl.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.bucket.SUM]" :"DOUBLE[#,###.0000;-#,###.0000]",
+		"[Measures].[pnlDelta.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlDelta.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",	
+		"[Measures].[theta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[rho.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[gamma.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[vega.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pv.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.UnderlyingsRatio]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.ALLMEMBER_HIDE]" :"DOUBLE[#,###.0000;-#,###.0000]",
+
+		/** Levels's member formatters */
+		"[Time].[TimeBucket].[Value Date]" :"DATE",
+		"[Time].[HistoricalDates].[AsOfDate]" :"DATE",
+
+		/** Members translation */
+		"[Time].[TimeBucket].[DateBucket]" :"_DATE_BUCKET_",
+		"[Booking].[Status].[Status]" : "_STATUS_",
+		"[Booking].[Status].[IsSimulated]" : "_SIMULATION_",
+		"[Underlyings].[Products].[ProductType]" : "_PRODUCT_TYPES_",
+		"[Underlyings].[Products].[ProductName]" : "_PRODUCT_NAMES_"		
+	},
+
+	/** Dictionary used for DateBucket's members */
+	"_DATE_BUCKET_" : {
+		"1D" : "1 Jour",
+		"2D" : "2 Jours",
+		"3D" : "3 Jours",
+		"1W" : "1 Semaine",
+		"2W" : "2 Semaines",
+		"3W" : "3 Semaines",
+		"1M" : "1 Mois",
+		"2M" : "2 Mois",
+		"3M" : "3 Mois",
+		"6M" : "6 Mois",
+		"9M" : "9 Mois",
+		"1Y" : "1 An",
+		"2Y" : "2 Ans",
+		"5Y" : "5 Ans"
+	}, 
+
+	/** Dictionary used for Status's members */
+	"_STATUS_" : {
+		"DONE" : "ACCOMPLI",
+		"MATCHED" : "MATCHED"
+	},
+
+	/** Dictionary used for Simulation's members */
+	"_SIMULATION_" : {
+		"LIVE" : "EN DIRECT",
+		"SIMULATION" : "SIMULATION"
+	},
+
+	/**  Dictionary used for Product types' members */
+	"_PRODUCT_TYPES_" : {
+		"LISTED" : "COTE",
+		"OTC" : "HORS COTE"
+	},
+
+	/** Dictionary used for product names' members */
+	"_PRODUCT_NAMES_" : {
+	    "FUTURE" : "Contrat à terme",
+	    "OPTION" : "OPTION",
+	    "BARRIER OPTION" : "Option à barrière",
+	    "EQUITY SWAP" : "Echange de titres"
+	},
+
+	/** Cubes captions */
+	"_CUBES_" : {
+		"EquityDerivativesCube": "Cube actions et produits dérivés",
+		"EquityDerivativesCubeSmall":"Cube actions et produits dérivés (petit)",
+		"EquityDerivativesCubeDist": "Cube actions et produits dérivés (distribué)",
+		"EquityDerivativesCubeEURGBP": "Cube actions et produits dérivés (EUR et GBP)"
+	},
+
+
+	"_DESCRIPTIONS_" : {
+
+		"The two elements of underlyings which have the highest value" : "Les deux sous-jacents avec de plus grande valeur.",
+		"Dimension of underlyings" : "Dimension des Sous-jacents",
+		"Hierarchy of products" : "Hiérarchie des produits",
+		"Level of product names" : "Niveau des noms des produits",
+		"Sum of pnl in a same currency" : "Somme des pnl tenant compte des taux de change"
+	},
+
+
+
+	/** The GENERAL dictionary, used for all other types (Dimensions, levels, drillthough...) */
+
+	"_GENERAL_" : {
+
+		"Time":"Temps",
+		"Measures":"Mesures",
+		"Booking":"Enregistrement",
+		"Epoch":"Epoque",
+		"HistoricalDates":"Dates historiques",
+		"Desk":"Caisse",
+		"PnL Monitoring":"Moniteur de PnL",
+		"RISK MESURES":"MESURES DE RISQUES",
+		"PNL":"Profit et Loss",
+		"IsSimulated":"Est Simulation",
+		"DateBucket":"Bucket de dates",
+		"Sensitivities":"Sensibilités",
+		"Date":"Date",
+		"Status":"Statut",
+		"BookId":"Enregistrement Id",
+		"TimeBucket": "Bucket de temps",
+		"TimeBucketDynamic" : "Bucket de temps dynamique",
+		"Value Date": "Valeur date",
+		"HostName": "Nom de domaine",
+		"Underlyings" : "Sous-jacents",
+		"Products" : "Produits" ,
+		"ProductType" : "Type de produit",
+		"ProductName" : "Nom de produit",
+		"Currency" : "Devise",
+		"UnderlierType" : "Type sous-jacent",
+		"UnderlierCode" : "Code sous-jacent",
+		"City" : "Ville",
+		"Counterparty" : "Contrepartie",
+		"CounterParty" : "Contrepartie",
+		"CounterPartyGroup" : "Groupe de contreparties",
+		"Sets" : "Ensembles",
+		"PnL Monitoring (MDX) Status" : "Statut de Moniteur PnL (MDX)",
+		"PnL Monitoring (MDX) Goal" : "Objectif de Moniteur PnL (MDX)" ,
+		"PnL Limit" : "Limite de Moniteur PnL",
+		"PnL Monitoring (MDX)": "Moniteur PnL (MDX)" ,
+		"Top2Underlyings" : "Les deux premiers sous-jacents",
+		"Book Id" : "Enregistrement Id",
+		"pnl" : "profit and loss",
+		"delta + gamma" : "Somme de delta et gamma",
+		"pnl in EUR":"pnl en euro",
+		"pnl in CHF" : "pnl en CHF",
+		"pnl in GBP" : "pnl en GBP",
+		"pnl in JPY" : "pnl en JPY",
+		"pnl in USD" : "pnl en USD",
+		"pnl in ZAR" : "pnl en ZAR",
+		"EUR + USD" : "Somme de EUR et USD",
+		"TradeId" : "Identifiant de la transaction",
+        "Geography" : "Géographie",
+        "Trades" : "Transactions"
+	}
+}

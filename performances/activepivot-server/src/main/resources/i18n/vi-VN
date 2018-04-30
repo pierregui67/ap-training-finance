@@ -1,0 +1,176 @@
+{
+	/** Measures' captions dictionary */
+	"_MEASURES_" : {
+
+		"pnl.bucket.SUM" : "Tong loi nhuan theo nhom",
+		"pnl.FOREX" : "Loi nhuan quy doi tien te",
+		"pnl.SUM" : "Tong loi nhuan",
+		"pnlDelta.bucket.SUM" : "Tong pnlDelta theo nhom",
+		"pnlVega.bucket.SUM" :  "Tong pnlVega theo nhom",
+		"pv.SUM" : "Tong pv",
+		"pv.bucket.SUM" : "Tong pv theo nhom",
+		"pv.UnderlyingsRatio" : "Ty so pv",
+		"rho.SUM" : "Tong rho",
+		"pnlDelta.SUM" : "Tong pnlDelta",
+		"pnlVega.SUM" : "Tong pnlVega",
+		"delta.SUM" : "Tong delta",
+		"vega.SUM" : "Tong vega",
+		"theta.SUM" : "Tong theta",
+		"gamma.SUM":"Tong gamma",
+		"update.TIMESTAMP":"Nhan thoi gian",
+		"contributors.COUNT":"So luong",
+		"pnl.MINIMUM_DEPTH" : "Loi nhuan do sau nho nhat",
+		"PnL":"Loi nhuan"
+	},
+
+	"_LEVELS_" : {
+
+		"Branch" : "Mô phỏng"
+	},
+
+	"_FORMATTERS_" : {
+
+		/** Measures' Formatters*/
+		"[Measures].[update.TIMESTAMP]" 	:"DATE[HH:mm:ss]",
+		"[Measures].[delta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pnl.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.bucket.SUM]" :"DOUBLE[#,###.0000;-#,###.0000]",
+		"[Measures].[pnlDelta.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlDelta.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnlVega.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",	
+		"[Measures].[theta.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[rho.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[gamma.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[vega.SUM]" :"DOUBLE[#,###.0000;-#,###.00]",
+		"[Measures].[pv.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.bucket.SUM]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pv.UnderlyingsRatio]" :"DOUBLE[#,###.00;-#,###.00]",
+		"[Measures].[pnl.ALLMEMBER_HIDE]" :"DOUBLE[#,###.0000;-#,###.0000]",
+
+		/** Levels's member formatters */
+		"[Time].[TimeBucket].[Value Date]" :"DATE",
+		"[Time].[HistoricalDates].[AsOfDate]" :"DATE",
+
+		/** Members translation */
+		"[Time].[TimeBucket].[DateBucket]" :"_DATE_BUCKET_",
+		"[Booking].[Status].[Status]" : "_STATUS_",
+		"[Booking].[Status].[IsSimulated]" : "_SIMULATION_",
+		"[Underlyings].[Products].[ProductType]" : "_PRODUCT_TYPES_",
+		"[Underlyings].[Products].[ProductName]" : "_PRODUCT_NAMES_"		
+	},
+
+	/** Dictionary used for DateBucket's members */
+	"_DATE_BUCKET_" : {
+		"1D" : "1 Ngay",
+		"2D" : "2 Ngay",
+		"3D" : "3 Ngay",
+		"1W" : "1 Tuan",
+		"2W" : "2 Tuan",
+		"3W" : "3 Tuan",
+		"1M" : "1 Thang",
+		"2M" : "2 Thang",
+		"3M" : "3 Thang",
+		"6M" : "6 Thang",
+		"9M" : "9 Thang",
+		"1Y" : "1 Nam",
+		"2Y" : "2 Nam",
+		"5Y" : "5 Nam"
+	}, 
+
+	/** Dictionary used for Status's members */
+	"_STATUS_" : {
+		"DONE" : "HOAN THANH",
+		"MATCHED" : "KHOP LENH"
+	},
+
+	/** Dictionary used for Simulation's members */
+	"_SIMULATION_" : {
+		"LIVE" : "TRUC TIEP",
+		"SIMULATION" : "THU NGHIEM"
+	},
+
+	/**  Dictionary used for Product types' members */
+	"_PRODUCT_TYPES_" : {
+		"LISTED" : "NIEM YET",
+		"OTC" : "TU DO"
+	},
+
+	/** Dictionary used for product names' members */
+	"_PRODUCT_NAMES_" : {
+		"FUTURE" : "TUONG LAI",
+		"OPTION" : "QUYEN MUA/BAN",
+		"BARRIER OPTION" : "QUYEN MUA/BAN BARRIER",
+		"EQUITY SWAP" : "TRAO DOI"
+	},
+
+	/** Cubes captions */
+	"_CUBES_" : {
+		"EquityDerivativesCubeSmall":"So nho",
+		"EquityDerivativesCube":"So lon"
+	},
+
+
+	"_DESCRIPTIONS_" : {
+
+		"The two elements of underlyings which have the highest value" : "Hai phan tu co gia tri cao nhat",
+		"Dimension of underlyings" : "Dimension san pham",
+		"Hierarchy of products" : "Hierarchy san pham",
+		"Level of product names" : "Level ten san pham",
+		"Naive sum of pnl" : "Tong loi nhuan ko quy doi tien te",
+		"Sum of pnl in a same currency" : "Tong loi nhuan quy doi tien te"
+	},
+
+
+
+	/** The GENERAL dictionary, used for all other types (Dimensions, levels, drillthough...) */
+
+	"_GENERAL_" : {
+
+		"Time":"Thoi gian",
+		"Measures":"Phep do",
+		"Booking":"Tap",
+		"Epoch":"Thoi gian lich su",
+		"HistoricalDates":"Ngay lich su",
+		"Desk":"Ban giao dich",
+		"PnL Monitoring":"Chi so theo doi loi nhuan",
+		"RISK MESURES":"Rui ro",
+		"PNL":"Loi nhuan",
+		"IsSimulated":"Thu nghiem",
+		"DateBucket":"Nhom ngay",
+		"Sensitivities":"Do nhay",
+		"Date":"Ngay",
+		"Status":"Trang thai",
+		"BookId":"Nhan tap",
+		"TimeBucket": "Nhom thoi gian",
+		"TimeBucketDynamic" : "Nhom thoi gian dong",
+		"Value Date": "Ngay gia tri",
+		"AsOfDate" : "Ngay giao dich",
+		"HostName": "Ten mien",
+		"Kpis" : "Chi so theo doi",
+		"Underlyings" : "Co so",
+		"Products" : "San pham" ,
+		"ProductType" : "Loai san pham",
+		"ProductName" : "Ten san pham",
+		"Currency" : "Tien te",
+		"UnderlierType" : "Loai co so",
+		"UnderlierCode" : "Ma co so",
+		"Bucketing" : "Nhom" ,
+		"Sets" : "Tap hop",
+		"PnL Monitoring (MDX) Status" : "Trang thai loi nhuan (MDX)",
+		"PnL Monitoring (MDX) Goal" : "Muc tieu loi nhuan (MDX)" ,
+		"PnL Limit" : "Gioi han loi nhuan",
+		"PnL Monitoring (MDX)": "Theo doi loi nhuan (MDX)" ,
+		"Top2Underlyings" : "Hai phan tu dung dau",
+		"Book Id" : "Nhan Tap",
+		"pnl" : "loi nhuan",
+		"delta + gamma" : "Tong delta va gamma",
+		"pnl in EUR":"Loi nhuan bang euro",
+		"pnl in CHF" : "Loi nhuan theo CHF",
+		"pnl in GBP" : "Loi nhuan theo GBP",
+		"pnl in JPY" : "Loi nhuan theo JPY",
+		"pnl in USD" : "Loi nhuan theo USD",
+		"pnl in ZAR" : "Loi nhuan theo ZAR",
+		"EUR + USD" : "Tong EUR va USD"
+	}
+}
