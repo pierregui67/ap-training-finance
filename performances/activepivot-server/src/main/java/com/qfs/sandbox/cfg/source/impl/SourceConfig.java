@@ -20,6 +20,7 @@ import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.sandbox.cfg.impl.DatastoreConfig;
+import com.qfs.sandbox.context.impl.CurrencyContextValueTranslator;
 import com.qfs.sandbox.tuplepublisher.impl.ForexTuplePublisher;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -270,6 +271,7 @@ public class SourceConfig {
         // Start real time time update
         csvSource().listen(indicesChannel());
         csvSource().listen(forexChannel());
+        CurrencyContextValueTranslator.init();
         csvSource().listen(historyChannel());
         printStoreSizes();
 

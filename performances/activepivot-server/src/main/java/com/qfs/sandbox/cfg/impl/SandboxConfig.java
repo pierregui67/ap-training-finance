@@ -16,7 +16,9 @@ import com.qfs.sandbox.bean.impl.DatastoreConfigBean;
 import com.qfs.sandbox.cfg.content.impl.EmbeddedContentServiceConfig;
 import com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig;
 import com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig;
+import com.qfs.sandbox.cfg.role.impl.RoleContextConfig;
 import com.qfs.sandbox.cfg.source.impl.SourceConfig;
+import com.qfs.sandbox.context.impl.CurrencyContextValueTranslator;
 import com.qfs.sandbox.postprocesseur.impl.ForexDisplayHandler;
 import com.qfs.sandbox.postprocesseur.impl.ForexHandler;
 import com.qfs.sandbox.postprocesseur.impl.ForexStream;
@@ -90,7 +92,7 @@ value = {
         SourceConfig.class,
         DatastoreDescriptionConfig.class,
         PerformanceCubeManagerConfig.class,
-        //RoleContextConfig.class,
+        RoleContextConfig.class,
 
         // Streaming Services monitor
         StreamingMonitorConfig.class,
@@ -146,6 +148,8 @@ public class SandboxConfig {
 		/* ********************************************************************** */
 		/* Inject dependencies before the ActivePivot components are initialized. */
 		/* ********************************************************************** */
+
+
 		apManagerInitPrerequisitePluginInjections();
 
 		/* *********************************************** */

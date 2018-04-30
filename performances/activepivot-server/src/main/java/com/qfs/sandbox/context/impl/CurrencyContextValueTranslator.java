@@ -44,8 +44,10 @@ public class CurrencyContextValueTranslator extends SimpleContextValueTranslator
 
     public CurrencyContextValueTranslator() {
         super();
+    }
 
-        /*IDatastoreVersion datastoreVersion = DatastoreConfigBean.getDatastoreConfig().datastore().getMostRecentVersion();
+    public static void init() {
+        IDatastoreVersion datastoreVersion = DatastoreConfigBean.getDatastoreConfig().datastore().getMostRecentVersion();
         Iterator it;
 
         // Get the foreign currencies
@@ -64,7 +66,7 @@ public class CurrencyContextValueTranslator extends SimpleContextValueTranslator
         This solution is more elegant in this case but in order to keep an example of the
         DatastoreQueryHelper, one uses the DatastoreConfigBean.
          */
-        // currencies = CurrenciesBean.getCurrencies();*/
+        // currencies = CurrenciesBean.getCurrencies();
     }
 
     @Override
