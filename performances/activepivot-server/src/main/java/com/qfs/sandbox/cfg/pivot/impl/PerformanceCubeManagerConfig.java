@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.PORTFOLIOS_STORE_NAME;
 
-@Configuration
+@Configuration // And not @Component : solved the problem !
 public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
 
     /** Spring environment, automatically wired */

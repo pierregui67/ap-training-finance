@@ -51,7 +51,8 @@ public class PerformanceCubeMeasure {
     protected static IHasAtLeastOneMeasure coreMeasures(final ICanStartBuildingMeasures builder) {
         return builder
                 .withAggregatedMeasure()
-                .sum(VOLUME)
+                .sum("PortfoliosToStockPriceHistory/"+VOLUME)
+                .withName(VOLUME+".SUM")
                 .withinFolder(DATA_FOLDER)
                 .withFormatter(DOUBLE_FORMATTER)
 

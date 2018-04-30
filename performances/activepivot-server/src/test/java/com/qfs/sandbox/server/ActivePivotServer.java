@@ -6,8 +6,10 @@
  */
 package com.qfs.sandbox.server;
 
+import java.util.Collections;
 import java.util.EnumSet;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.DispatcherType;
 
@@ -16,7 +18,6 @@ import org.eclipse.jetty.annotations.ClassInheritanceHandler;
 import org.eclipse.jetty.http.HttpMethod;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.web.WebApplicationInitializer;
@@ -113,13 +114,11 @@ public class ActivePivotServer {
 	public static class JettyAnnotationConfiguration extends AnnotationConfiguration {
 
 		@Override
-		public void preConfigure(WebAppContext context) throws Exception {
-			ConcurrentHashSet<String> set = new ConcurrentHashSet<>();
-			ClassInheritanceMap map = new ClassInheritanceMap();
-			set.add(ActivePivotServerWebAppInitializer.class.getName());
-			map.put(WebApplicationInitializer.class.getName(), set);
-			context.setAttribute(CLASS_INHERITANCE_MAP, map);
-			_classInheritanceHandler = new ClassInheritanceHandler(map);
+		public void preConfigure(WebAppContext context) throws Exception {final Set<String> set = Collections.singleton(ActivePivotServerWebAppInitializer.class.getName());
+            final Map<String, Set<String>> map = new ClassInheritanceMap();
+            map.put(WebApplicationInitializer.class.getName(), set);
+            context.setAttribute(CLASS_INHERITANCE_MAP, map);
+            _classInheritanceHandler = new ClassInheritanceHandler(map);
 		}
 
 	}

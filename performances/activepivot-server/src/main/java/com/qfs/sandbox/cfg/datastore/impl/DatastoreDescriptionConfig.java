@@ -41,12 +41,6 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
     @Autowired
     private Environment env;
 
-    ///** {@link ActivePivotConfig} spring configuration */
-    //@Autowired
-   // protected ActivePivotConfig apConfig;
-
-    //private static final Logger LOGGER = Logger.getLogger(DatastoreConfig.class.getSimpleName());
-
     // ///////////////////////////////////////////////
     // Datastores definition :
 
@@ -228,30 +222,6 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
         return references;
     }
 
-    /*@Override
-    @Bean
-    public IDatastore datastore() {
-        String logFolder = System.getProperty("user.home");
-        ILogConfiguration logConfiguration = new LogConfiguration(logFolder);//the transaction logs will sit in your home directory, feel free to change the folder
-
-        IDatastoreWithReplay dwr = new DatastoreBuilder()
-                .setSchemaDescription(datastoreSchemaDescription())
-                .addSchemaDescriptionPostProcessors(ActivePivotDatastorePostProcessor.createFrom(apConfig.activePivotManagerDescription()))
-                .setLogConfiguration(logConfiguration)
-                .withReplay()
-                .build();
-
-        if (Boolean.parseBoolean(env.getProperty("training.replay"))) {
-            LOGGER.log(Level.INFO, String.format("********************* Replaying the transaction log located under [%s] *********************", logFolder));
-            try {
-                return dwr.replay();
-            } catch (ReplayException e) {
-                LOGGER.log(Level.SEVERE, "Error while replaying transactions, will skip and delete the replay file");
-            }
-        }
-        return dwr.skipAndDeleteReplay();
-    }*/
-
     /**
      * Provide the schema description of the datastore.
      * <p>
@@ -274,10 +244,10 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
         stores.add(companyInformationsStoreDescription());
         stores.add(IndicesStoreDescription());
         stores.add(forexStoreDescription());
-        //stores.add(RepositoryCacheUtil.defaultParameterStoreDescription(parameterStoreConfiguration()));
         return new DatastoreSchemaDescription(stores, references());
     }
 
+    @Bean
     @Override
     public IParameterStoreConfiguration parameterStoreConfiguration() {
         return RepositoryCacheUtil.defaultParameterStoreConfiguration();

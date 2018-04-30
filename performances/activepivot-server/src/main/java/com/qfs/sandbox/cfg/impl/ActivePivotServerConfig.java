@@ -6,6 +6,7 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
+import com.qfs.sandbox.cfg.content.impl.EmbeddedContentServiceConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
@@ -57,6 +58,7 @@ import com.quartetfs.fwk.contributions.impl.ClasspathContributionProvider;
 
 		// We have the remote content service config here
 		//LocalContentServiceConfig.class
+		EmbeddedContentServiceConfig.class,
 })
 public class ActivePivotServerConfig {
 

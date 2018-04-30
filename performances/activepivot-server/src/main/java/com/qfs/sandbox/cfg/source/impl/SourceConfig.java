@@ -19,6 +19,7 @@ import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.sandbox.cfg.impl.DatastoreConfig;
 import com.qfs.sandbox.tuplepublisher.impl.ForexTuplePublisher;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -32,10 +33,7 @@ import com.qfs.store.log.impl.LogWriteException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 
 import java.nio.file.FileSystems;
@@ -55,6 +53,7 @@ import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.*;
  * @author Quartet FS
  */
 @Configuration
+@Import(value = {DatastoreConfig.class})
 public class SourceConfig {
 
     /** Logger **/
@@ -64,14 +63,11 @@ public class SourceConfig {
     @Autowired
     protected Environment env;
 
-    /*@Autowired
-    protected IDatastore datastore;*/
-
     /** Application datastore, automatically wired */
     @Autowired
-    protected IDatastoreConfig datastoreConfig;
+    protected IDatastore datastore;
 
-    private final IDatastore datastore = this.datastoreConfig.datastore();
+    //private final IDatastore datastore = this.datastoreConfig.datastore();
 
     public static final char COMMA_SEPARATOR = ',';
     public static final char BAR_SEPARATOR = '|';

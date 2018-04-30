@@ -15,6 +15,7 @@ import com.qfs.pivot.content.impl.DynamicActivePivotContentServiceMBean;
 import com.qfs.sandbox.bean.impl.DatastoreConfigBean;
 import com.qfs.sandbox.cfg.content.impl.EmbeddedContentServiceConfig;
 import com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig;
+import com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig;
 import com.qfs.sandbox.cfg.source.impl.SourceConfig;
 import com.qfs.sandbox.postprocesseur.impl.ForexDisplayHandler;
 import com.qfs.sandbox.postprocesseur.impl.ForexHandler;
@@ -66,9 +67,6 @@ import static com.quartetfs.fwk.types.impl.ExtendedPluginInjector.inject;
 @Configuration
 @Import(
 value = {
-
-        DatastoreConfigBean.class,
-
         // Core imports
         ActivePivotConfig.class,
         JwtConfig.class,
@@ -84,18 +82,20 @@ value = {
         ActivePivotXmlaServletConfig.class,
         ActiveViamRestServicesConfig.class,
 
-        EmbeddedContentServiceConfig.class,
+        //EmbeddedContentServiceConfig.class,
 
         SandboxCorsFilterConfig.class,
         //SandboxUserDetailsServiceConfig.class,
 
         SourceConfig.class,
         DatastoreDescriptionConfig.class,
-        //PerformanceCubeManagerConfig.class,
+        PerformanceCubeManagerConfig.class,
         //RoleContextConfig.class,
 
         // Streaming Services monitor
         StreamingMonitorConfig.class,
+
+		DatastoreConfigBean.class
 })
 public class SandboxConfig {
 
@@ -129,8 +129,8 @@ public class SandboxConfig {
 	@Autowired
 	protected ActivePivotServicesConfig apServiceConfig;
 
-	//@Autowired
-    //protected DatastoreConfigBean datastoreConfigBean;
+	@Autowired
+    protected DatastoreConfigBean datastoreConfigBean;
 
 	/**
 	 *
@@ -185,6 +185,7 @@ public class SandboxConfig {
 	 * @return the {@link JMXEnabler} attached to the content service.
 	 */
 	@Bean
+	@DependsOn(value = "startManager")
 	public JMXEnabler JMXActivePivotContentServiceEnabler() {
 		// to allow operations from the JMX bean
 		return new JMXEnabler(
@@ -229,7 +230,7 @@ public class SandboxConfig {
         inject(IAggregatesContinuousHandler.class, ForexDisplayHandler.PLUGIN_KEY, "currencyLevel", "CurrencyContextValue");
         inject(IAggregatesContinuousHandler.class, ForexHandler.PLUGIN_KEY, "currencyLevel", "CurrencyContextValue");
 
-        //datastoreConfigBean.setDatastoreConfig(datastoreConfig);
+        datastoreConfigBean.setDatastoreConfig(datastoreConfig);
 	}
 
 }
