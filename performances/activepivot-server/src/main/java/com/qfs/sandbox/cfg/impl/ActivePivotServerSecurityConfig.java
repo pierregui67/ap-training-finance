@@ -5,7 +5,6 @@
  * reproduction or transfer of this material is strictly prohibited
  */
 package com.qfs.sandbox.cfg.impl;
-
 import static com.qfs.QfsWebUtils.url;
 import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.ID_GENERATOR_REMOTING_SERVICE;
 import static com.qfs.server.cfg.impl.ActivePivotRemotingServicesConfig.LICENSING_REMOTING_SERVICE;
@@ -17,11 +16,14 @@ import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.LICENSING_SERVIC
 import static com.qfs.server.cfg.impl.ActivePivotServicesConfig.LONG_POLLING_SERVICE;
 import static com.qfs.server.cfg.impl.CxfServletConfig.CXF_WEB_SERVICES;
 
-import com.quartetfs.fwk.security.IUserDetailsService;
+import com.qfs.sandbox.security.impl.ASecurityConfig;
+import com.qfs.sandbox.security.impl.JwtSecurityConfigurer;
+import com.qfs.sandbox.security.impl.SandboxUserDetailsServiceConfig;
+import com.qfs.sandbox.security.impl.VersionSecurityConfigurer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -29,14 +31,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 
-import com.qfs.QfsWebUtils;
-import com.qfs.content.cfg.impl.ContentServerRestServicesConfig;
-import com.qfs.pivot.servlet.impl.ContextValueFilter;
+import com.qfs.sandbox.cfg.content.impl.EmbeddedContentServiceSecurityConfig;
 import com.qfs.server.cfg.IActivePivotConfig;
-//import com.qfs.server.cfg.IActivePivotContentServiceConfig;
 import com.qfs.snl.cfg.activepivot.impl.ActiveMonitorPivotExtensionServiceConfiguration;
-//import com.quartetfs.biz.pivot.security.IUserDetailsService;
 import com.quartetfs.biz.pivot.security.impl.UserDetailsServiceWrapper;
+import com.quartetfs.fwk.security.IUserDetailsService;
 
 /**
  * Spring configuration fragment for security on an ActivePivot Server.
@@ -51,6 +50,14 @@ import com.quartetfs.biz.pivot.security.impl.UserDetailsServiceWrapper;
  *
  * @author Quartet FS
  */
+@Import(value={
+		EmbeddedContentServiceSecurityConfig.class,
+		SandboxUserDetailsServiceConfig.class,
+		//EmbeddedActiveMonitorSecurityConfig.class,
+		JwtSecurityConfigurer.class,
+		VersionSecurityConfigurer.class,
+		//InMemoryDownloadLinkConsumerSecurityConfigurer.class,
+})
 @Configuration
 @EnableWebSecurity
 public class ActivePivotServerSecurityConfig extends ASecurityConfig {
@@ -64,54 +71,7 @@ public class ActivePivotServerSecurityConfig extends ASecurityConfig {
 	 */
 	@Bean
 	public IUserDetailsService qfsUserDetailsService() {
-		return new UserDetailsServiceWrapper(userDetailsService());
-	}
-
-	/**
-	 * To expose the Version REST service
-	 * <p>
-	 * Must be done before ActivePivotSecurityConfigurer
-	 *
-	 * @author Quartet FS
-	 *
-	 */
-	@Configuration
-	@Order(3)
-	// Order start at 3 so that deployment projects can add configurations that should be done before this config
-	// For example security config for ActiveUI and JwtService
-	public static class VersionSecurityConfig extends AVersionSecurityConfigurer {}
-
-	/**
-	 * Only required if the content service is exposed.
-	 * <p>
-	 * Separated from {@link ActivePivotSecurityConfigurer} to skip the {@link ContextValueFilter}.
-	 * <p>
-	 * Must be done before ActivePivotSecurityConfigurer (because they match common URLs)
-	 *
-	 * @see IActivePivotContentServiceConfig
-	 */
-	@Configuration
-	@Order(4)
-	public static class ContentServerSecurityConfigurer extends AWebSecurityConfigurer {
-
-		@Override
-		protected void doConfigure(HttpSecurity http) throws Exception {
-			final String url = ContentServerRestServicesConfig.NAMESPACE;
-			http
-					// Only theses URLs must be handled by this HttpSecurity
-					.antMatcher(url + "/**")
-					.authorizeRequests()
-					// The order of the matchers matters
-					.antMatchers(
-							HttpMethod.OPTIONS,
-							QfsWebUtils.url(ContentServerRestServicesConfig.REST_API_URL_PREFIX + "**"))
-					.permitAll()
-					.antMatchers(url + "/**")
-					.hasAuthority(ROLE_USER)
-					.and()
-					.httpBasic();
-		}
-
+		return new UserDetailsServiceWrapper(this.userDetailsConfig.userDetailsService());
 	}
 
 	/**
@@ -121,7 +81,7 @@ public class ActivePivotServerSecurityConfig extends ASecurityConfig {
 	 *
 	 */
 	@Configuration
-	public static class ActivePivotSecurityConfigurer extends AWebSecurityConfigurer {
+	public static class ActivePivotSecurityConfigurer extends ASecurityConfig.AWebSecurityConfigurer {
 
 		@Autowired
 		protected IActivePivotConfig activePivotConfig;
@@ -130,7 +90,7 @@ public class ActivePivotServerSecurityConfig extends ASecurityConfig {
 		 * Constructor
 		 */
 		public ActivePivotSecurityConfigurer() {
-			super(COOKIE_NAME);
+			super(AP_COOKIE_NAME);
 		}
 
 		@Override

@@ -9,16 +9,19 @@ package com.qfs.contentserver.cfg.impl;
 import static com.qfs.content.cfg.impl.ContentServerRestServicesConfig.PING_SUFFIX;
 import static com.qfs.content.cfg.impl.ContentServerRestServicesConfig.REST_API_URL_PREFIX;
 
+import com.qfs.sandbox.security.impl.ASecurityConfig;
+import com.qfs.sandbox.security.impl.ActiveUISecurityConfigurer;
+import com.qfs.sandbox.security.impl.JwtSecurityConfigurer;
+import com.qfs.sandbox.security.impl.VersionSecurityConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import com.qfs.sandbox.cfg.impl.ASecurityConfig;
 
 /**
  * Spring configuration for security on Content server with the fact that ActiveUI is on the same
@@ -27,38 +30,18 @@ import com.qfs.sandbox.cfg.impl.ASecurityConfig;
  * @author Quartet FS
  *
  */
+@Import(value={
+		ActiveUISecurityConfigurer.class,
+		JwtSecurityConfigurer.class,
+		VersionSecurityConfigurer.class,
+		//InMemoryDownloadLinkConsumerSecurityConfigurer.class,
+})
 @Configuration
 @EnableWebSecurity
 public class ContentServerSecurityConfig extends ASecurityConfig {
 
-	/**
-	 * To expose the login page of ActiveUI.
-	 */
-	@Configuration
-	@Order(1)
-	public static class ActiveUISecurityConfigurer extends AActiveUISecurityConfigurer {}
-
-	/**
-	 * To expose the JWT REST service
-	 * <p>
-	 * Must be done before ContentServerSecurityConfigurer (because they match common URLs)
-	 *
-	 * @author Quartet FS
-	 *
-	 */
-	@Configuration
-	@Order(2)
-	public static class JwtSecurityConfigurer extends AJwtSecurityConfigurer {}
-
-	/**
-	 * To expose the Version REST service
-	 *
-	 * @author Quartet FS
-	 *
-	 */
-	@Configuration
-	@Order(3)
-	public static class VersionSecurityConfig extends AVersionSecurityConfigurer {}
+	/** Cookie name for sessions over ActiveMonitor server */
+	public static final String COOKIE_NAME = "CS_JSESSIONID";
 
 	/**
 	 * To expose the Content REST service and Ping REST service
@@ -67,7 +50,7 @@ public class ContentServerSecurityConfig extends ASecurityConfig {
 	 *
 	 */
 	@Configuration
-	@Order(4)
+	@Order(5)
 	public static class ContentServerSecurityConfigurer extends AWebSecurityConfigurer {
 
 		/** Constructor */
@@ -76,7 +59,7 @@ public class ContentServerSecurityConfig extends ASecurityConfig {
 		}
 
 		@Override
-		protected void doConfigure(HttpSecurity http) throws Exception {
+		protected void doConfigure(final HttpSecurity http) throws Exception {
 			// The order of antMatchers does matter!
 			http.authorizeRequests()
 					.antMatchers(HttpMethod.OPTIONS, "/**")
