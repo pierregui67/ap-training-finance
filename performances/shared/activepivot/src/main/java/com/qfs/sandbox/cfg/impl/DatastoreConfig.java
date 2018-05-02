@@ -238,6 +238,8 @@ public class DatastoreConfig implements IDatastoreConfig {
         String logFolder = System.getProperty("user.home");
         ILogConfiguration logConfiguration = new LogConfiguration(logFolder);//the transaction logs will sit in your home directory, feel free to change the folder
 
+
+        // dictionnarize all the fields
         ActivePivotDatastorePostProcessor schemaPostProcessor = ActivePivotDatastorePostProcessor.createFrom(apConfig.activePivotManagerDescription());
         IDatastoreWithReplay dwr = new DatastoreBuilder()
                 .setSchemaDescription(datastoreSchemaDescription())
