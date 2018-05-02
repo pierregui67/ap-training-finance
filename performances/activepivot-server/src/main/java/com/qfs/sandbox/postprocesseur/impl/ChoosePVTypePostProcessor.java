@@ -30,6 +30,7 @@ public class ChoosePVTypePostProcessor<Double> extends ALocationShiftPostProcess
     public final static String PORTFOLIO_TYPE = "portfolioType";
     protected String portfolioType;
 
+    public static final String LEVEL_TO_SHIFT = "levelToShift";
     protected ILevelInfo levelToShift;
 
     /** The ordinal of the hierarchy which should not be in the view */
@@ -58,10 +59,10 @@ public class ChoosePVTypePostProcessor<Double> extends ALocationShiftPostProcess
             throw new PostProcessorInitializationException("Post processor " + getName() + " is missing the mandatory property " + PORTFOLIO_TYPE);
         }
 
-        final ILevel level = HierarchiesUtil.getLevel(getActivePivot(), properties.getProperty("levelToShift"));
+        final ILevel level = HierarchiesUtil.getLevel(getActivePivot(), properties.getProperty(LEVEL_TO_SHIFT));
 
         if(level == null) {
-            throw new QuartetException("Unable to find level for property levelToShift: " + properties.getProperty("levelToShift"));
+            throw new QuartetException("Unable to find level for property levelToShift: " + properties.getProperty(LEVEL_TO_SHIFT));
         }
         levelToShift = level.getLevelInfo();
 

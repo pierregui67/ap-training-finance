@@ -17,6 +17,7 @@ import java.util.Properties;
 public class TotalPortfolioValuePostProcessor extends ALocationShiftPostProcessor<Double> {
 
     public static final String PLUGIN_KEY="TOTAL_PORTFOLIO_VALUE";
+    public static final String LEVEL_TO_SHIFT = "levelToShift";
 
     protected ILevelInfo levelToShift;
 
@@ -27,7 +28,7 @@ public class TotalPortfolioValuePostProcessor extends ALocationShiftPostProcesso
     @Override
     public void init(Properties properties) throws QuartetException {
         super.init(properties);
-        final ILevel level = HierarchiesUtil.getLevel(getActivePivot(), properties.getProperty("levelToShift"));
+        final ILevel level = HierarchiesUtil.getLevel(getActivePivot(), properties.getProperty(LEVEL_TO_SHIFT));
 
         if(level == null) {
             throw new QuartetException("Unable to find level for property levelToShift: " + properties.getProperty("levelToShift"));
