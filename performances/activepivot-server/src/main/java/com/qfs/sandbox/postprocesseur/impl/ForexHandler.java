@@ -58,7 +58,7 @@ public class ForexHandler extends AAggregatesContinuousHandler<Object> {
         else
             impactedLocs = null;
 
-        // TODO : could be possible that a currency has been removed ?
+        // TODO : could it be possible that a currency has been removed ?
         return new Impact(location, impactedLocs, null);
     }
 

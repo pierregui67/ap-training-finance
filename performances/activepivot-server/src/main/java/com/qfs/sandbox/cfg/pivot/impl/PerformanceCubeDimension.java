@@ -4,6 +4,7 @@ import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.qfs.fwk.ordering.impl.ReverseEpochComparator;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
+import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 
 import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.FOREX_STORE_NAME;
@@ -50,8 +51,9 @@ public class PerformanceCubeDimension {
 
                 .withDimension(DIM_TIME)
                 .withType(IDimension.DimensionType.TIME)
-                .withHierarchy(HIER_TIME)
+                .withHierarchy(HIER_TIME).slicing()
                 .withLevel(DATE)
+                .withType(ILevelInfo.LevelType.TIME)
                 .withFormatter("DATE[yyyy-MM-dd]")
 
                 .withSingleLevelDimensions(DIM_STOCK_SYMBOL, DIM_INDEX_NAME)

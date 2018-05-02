@@ -273,9 +273,11 @@ public class PerformanceCubeMeasure {
                  */
                 .withPostProcessor("ForexRate")
                 .withPluginKey(ForexDisplayPostProcessor.PLUGIN_KEY)
-                .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
+                .withContinuousQueryHandlers("STORED", ForexDisplayHandler.PLUGIN_KEY)
                 .withProperty(ForexDisplayPostProcessor.HIER_FOREX, HIER_FOREX)
                 .withProperty(ForexDisplayPostProcessor.REFERENCE_CURRENCY, REF_CURRENCY)
+                .withProperty(ForexDisplayPostProcessor.ANALYSIS_LEVELS_PROPERTY,
+                        "Currency@ForexHier@ForexDim")
                 .withFormatter(FORMATTER_FOREX)
                 .withinFolder(FOLDER_FOREX_DISPLAY)
 
