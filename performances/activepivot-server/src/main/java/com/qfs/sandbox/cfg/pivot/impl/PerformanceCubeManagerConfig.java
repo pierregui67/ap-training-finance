@@ -12,8 +12,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.stringtemplate.v4.ST;
 
-import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.PORTFOLIOS_STORE_NAME;
+import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.*;
 
 @Configuration // And not @Component : solved the problem !
 public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
@@ -34,6 +35,25 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
 
     /** Name of the Sandbox {@link IActivePivotSchemaDescription schema} */
     public static final String SANDBOX_SCHEMA_NAME = "SandboxSchema";
+
+    public static final String DATE = "Date";
+    public static final String INDEX_NAME = "IndexName";
+    public static final String NUMBER_STOCKS = "NumberStocks";
+    public static final String STOCK_SYMBOL = "StockSymbol";
+    public static final String POSITION_TYPE = "PositionType";
+
+    public static final String OPEN = REF_PORTFOLIO_TO_STOCK + "/Open";
+    public static final String HIGH = REF_PORTFOLIO_TO_STOCK + "/High";
+    public static final String LOW = REF_PORTFOLIO_TO_STOCK + "/Low";
+    public static final String CLOSE = REF_PORTFOLIO_TO_STOCK + "/Close";
+    public static final String VOLUME = REF_PORTFOLIO_TO_STOCK + "/Volume";
+    public static final String ADJ_CLOSE = REF_PORTFOLIO_TO_STOCK + "/AdjClose";
+
+
+    public static final String NAME = "Name";
+    public static final String SECTOR = "Sector";
+    public static final String INDUSTRY = "Industry";
+
 
     @Bean
     @Override
@@ -58,12 +78,23 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
     {
         return StartBuilding.selection(datastoreDescription)
                 .fromBaseStore(PORTFOLIOS_STORE_NAME)
-                .withField("StockSymbol")
-                .withField("NumberStocks")
-                .withField("PortfoliosToStockPriceHistory/Volume")
-                //.withAllReachableFields()
-                //.withAlias(PORTFOLIOS_STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
-                //.withAlias(TRADE__PRODUCT_ID, PRODUCT_ID)
+                .withField(DATE)
+                .withField(INDEX_NAME)
+                .withField(NUMBER_STOCKS)
+                .withField(STOCK_SYMBOL)
+                .withField(POSITION_TYPE)
+
+                .withField(OPEN)
+                .withField(HIGH)
+                .withField(LOW)
+                .withField(CLOSE)
+                .withField(VOLUME)
+                .withField(ADJ_CLOSE)
+
+                .withField(COMPANY_NAME, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_NAME)
+                .withField(COMPANY_SECTOR, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_SECTOR)
+                .withField(COMPANY_INDUSTRY, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_INDUSTRY)
+
                 .build();
     }
 

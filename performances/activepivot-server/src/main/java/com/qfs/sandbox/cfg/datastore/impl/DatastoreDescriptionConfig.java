@@ -19,6 +19,7 @@ import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.repository.IParameterStoreConfiguration;
 import com.qfs.repository.config.impl.IParameterAwareDatastoreDescriptionConfig;
 import com.qfs.repository.impl.RepositoryCacheUtil;
+import com.qfs.sandbox.security.impl.SandboxUserDetailsServiceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -108,6 +109,13 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
     public static final String FOREX_INITIAL_CURRENCY = "InitialCurrency";
     public static final String FOREX_TARGET_CURRENCY = "TargetCurrency";
     public static final String FOREX_RATE = "Rate";
+
+    // ///////////////////////////////////////////////
+    // References
+    public static final String REF_PORTFOLIO_TO_INDICES = "PortfolioToIndices";
+    public static final String REF_PORTFOLIO_TO_COMPANY = "PortfoliosToCompanyInformations";
+    public static final String REF_PORTFOLIO_TO_STOCK = "PortfoliosToStockPriceHistory";
+
 
     // ////////////////////////////////////////////////
     // Stores
@@ -201,20 +209,20 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(STOCK_PRICE_HISTORY_STORE_NAME)
-                .withName("PortfoliosToStockPriceHistory")
+                .withName(REF_PORTFOLIO_TO_STOCK)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
                 .withMapping(PORTFOLIOS_DATE, HISTORY_DATE)
                 .build());
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(COMPANY_INFORMATIONS_STORE_NAME)
-                .withName("PortfoliosToCompanyInformations")
+                .withName(REF_PORTFOLIO_TO_COMPANY)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, COMPANY_STOCK_SYMBOL)
                 .build());
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(INDICES_STORE_NAME)
-                .withName("PortfolioToIndices")
+                .withName(REF_PORTFOLIO_TO_INDICES)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, INDICES_STOCK_SYMBOL)
                 .withMapping(PORTFOLIOS_INDEX_NAME, INDICES_INDEX_NAME)
                 .build());

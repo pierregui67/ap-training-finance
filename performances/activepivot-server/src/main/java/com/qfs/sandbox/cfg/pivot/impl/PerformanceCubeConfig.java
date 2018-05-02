@@ -9,10 +9,9 @@ import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
 public class PerformanceCubeConfig {
 
     /** The name of the cube */
-    public static final String CUBE_NAME = "PerformanceCubeConfig";
+    public static final String CUBE_NAME = "PerformanceAttributionCube";
 
-    /** The folder for sensitivities related measures. */
-    public static final String DATA_FOLDER = "data";
+
 
     /**
      * Creates the cube description.
@@ -64,7 +63,7 @@ public class PerformanceCubeConfig {
                 //.withSharedContextValue(drillthroughProperties())
                 //.withSharedContextValue(mdxContext(isActiveMonitorEnabled))
                 // Query maximum execution time (before timeout cancellation): 30s
-                .withSharedContextValue(new QueriesTimeLimit(20))
+                .withSharedContextValue(new QueriesTimeLimit(80))
                 ;
     }
 }

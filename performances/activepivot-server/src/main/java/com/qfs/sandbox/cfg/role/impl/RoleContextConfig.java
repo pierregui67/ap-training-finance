@@ -26,6 +26,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RoleContextConfig implements IRoleContextConfig {
 
+	public static final String REF_CURRENCY = "EUR";
+
 	/** ROLE_ADMIN name */
 	protected static final String ROLE_ADMIN = ASecurityConfig.ROLE_ADMIN;
 	/** ROLE_DESK_A name */
@@ -48,7 +50,7 @@ public class RoleContextConfig implements IRoleContextConfig {
 		return builder
 				.withGlobalEntitlement()
 						.forRole(ROLE_ADMIN)
-						.withContextValue(new CurrencyContextValue("ZAR"))
+						.withContextValue(new CurrencyContextValue(REF_CURRENCY))
 						.withMdxContext()
 								.withCubeFormatter("en-US")
 								.end()
