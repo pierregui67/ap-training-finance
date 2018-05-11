@@ -281,6 +281,24 @@ public class PerformanceCubeMeasure {
                 .withFormatter(FORMATTER_FOREX)
                 .withinFolder(FOLDER_FOREX_DISPLAY)
 
+                /*
+                Forecast
+                 */
+                .withPostProcessor("ForecastValue")
+                .withPluginKey(ForecastPostProcessor.PLUGIN_KEY)
+                .withUnderlyingMeasures("Forex.SUM")
+                .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
+                .withProperty(ForecastPostProcessor.STOCK_SYMBOL_LEVEL,
+                        "StockSymbol@StockSymbol@StockSymbol")
+                /*.withProperty(ForecastPostProcessor.DATE_LEVEL,
+                        "Date@HistoricalDates@Time")*/
+                .withProperty(ForecastPostProcessor.LEAF_LEVELS,
+                        "StockSymbol@StockSymbol@StockSymbol")//"Date@HistoricalDates@Time,
+                // The ANALYSIS_LEVEL property is very important
+                .withProperty(ForecastPostProcessor.ANALYSIS_LEVELS,
+                        "Date@ForecastHier@Forecast")
+                .withinFolder("forecast")
+                .withFormatter(FORMATTER_DOUBLE)
 
                 ;
 

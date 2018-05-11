@@ -3,6 +3,7 @@ package com.qfs.sandbox.cfg.pivot.impl;
 import com.activeviam.desc.build.ICanBuildCubeDescription;
 import com.activeviam.desc.build.dimensions.ICanStartBuildingDimensions;
 import com.qfs.fwk.ordering.impl.ReverseEpochComparator;
+import com.qfs.sandbox.cfg.analysehier.impl.ForecastHierarchy;
 import com.quartetfs.biz.pivot.cube.dimension.IDimension;
 import com.quartetfs.biz.pivot.cube.hierarchy.ILevelInfo;
 import com.quartetfs.biz.pivot.definitions.IActivePivotInstanceDescription;
@@ -51,7 +52,7 @@ public class PerformanceCubeDimension {
 
                 .withDimension(DIM_TIME)
                 .withType(IDimension.DimensionType.TIME)
-                .withHierarchy(HIER_TIME).slicing()
+                .withHierarchy(HIER_TIME)
                 .withLevel(DATE)
                 .withType(ILevelInfo.LevelType.TIME)
                 .withFormatter("DATE[yyyy-MM-dd]")
@@ -64,6 +65,12 @@ public class PerformanceCubeDimension {
                 .withStoreName(FOREX_STORE_NAME)
                 .withLevel("Currency")
                 .withFieldName("TargetCurrency")
+
+                .withDimension("Forecast")
+                .withType(IDimension.DimensionType.TIME)
+                .withHierarchy("ForecastHier")
+                .withPluginKey(ForecastHierarchy.PLUGIN_KEY)
+
 
                 /*.withEpochDimension()
                 .withEpochsLevel()
