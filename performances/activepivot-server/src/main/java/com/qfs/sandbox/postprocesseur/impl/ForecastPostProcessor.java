@@ -1,6 +1,8 @@
 package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.condition.impl.BaseConditions;
+import com.qfs.sandbox.forecasting.ExponentialSmoothingForecast;
+import com.qfs.sandbox.forecasting.LinearTrendForecast;
 import com.qfs.store.query.ICursor;
 import com.qfs.store.record.IRecordReader;
 import com.quartetfs.biz.pivot.ILocation;
@@ -16,14 +18,11 @@ import com.quartetfs.biz.pivot.postprocessing.PostProcessorInitializationExcepti
 import com.quartetfs.biz.pivot.postprocessing.impl.ADynamicAggregationPostProcessor;
 import com.quartetfs.fwk.QuartetException;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
-import javafx.util.Pair;
 
 import java.util.*;
 
 import static com.qfs.sandbox.cfg.analysehier.impl.ForecastHierarchy.EXTRA_DATES_CARDINAL;
 import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.*;
-import static com.qfs.sandbox.forecasting.LinearTrendForecast.computeTrendCoefficients;
-import static com.qfs.sandbox.forecasting.LinearTrendForecast.forecast;
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = ForecastPostProcessor.PLUGIN_KEY)
 public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Double, Double> {
@@ -171,19 +170,18 @@ public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Doub
         /*
         Forecast data
          */
-        // TODO : Here the model must be fitted.
+
+        // Fit the model
         ArrayList<Double> values = new ArrayList<>(allTheDates.values());
-        Pair<ArrayList<Double>, ArrayList<Double>> pair = computeTrendCoefficients(values);
-        ArrayList<Double> levelCoefficients = pair.getKey();
-        ArrayList<Double> trendCoefficients = pair.getValue();
+        ExponentialSmoothingForecast forecastModel = new LinearTrendForecast(values);
 
         maxDate = allTheDates.lastKey();
         // Beginning the forecast
         Date date = maxDate;
         if (date != null) {
             for (int i = 1; i < EXTRA_DATES_CARDINAL; i++) {
-                // TODO : Here the value must be forecasted.
-                Double forecastValue = forecast(levelCoefficients, trendCoefficients, i);
+                // Forecast
+                Double forecastValue = forecastModel.forecast(i);
 
                 allTheDates.put(date, forecastValue);
                 Calendar c = Calendar.getInstance();
