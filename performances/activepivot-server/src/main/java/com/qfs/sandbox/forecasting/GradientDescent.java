@@ -27,7 +27,10 @@ public class GradientDescent {
         int len = point.length;
         for (int n = 0; n < len ; n ++) {
             Double[] h = point.clone();
-            h[n] += STEP;
+            if (n == 3)
+                h[n] += 1;
+            else
+                h[n] += STEP;
             res[n] = (functionToOptimize.apply(h) - functionToOptimize.apply(point)) / STEP;
         }
         return normalize(res);

@@ -2,6 +2,7 @@ package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.condition.impl.BaseConditions;
 import com.qfs.sandbox.forecasting.ExponentialSmoothingForecast;
+import com.qfs.sandbox.forecasting.LinearSeasonalForecast;
 import com.qfs.sandbox.forecasting.LinearTrendForecast;
 import com.qfs.store.query.ICursor;
 import com.qfs.store.record.IRecordReader;
@@ -100,7 +101,6 @@ public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Doub
             final IIterableAggregatesRetrievalResult result,
             final int[] measureIds)
     {
-        // TODO : do not forecast all the stock symbol but only those in the view.
         allTheDatesForAllStockSymbol = new HashMap<>();
         return super.createLeafEvaluationProcedure(result, measureIds);
     }
@@ -173,7 +173,7 @@ public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Doub
 
         // Fit the model
         ArrayList<Double> values = new ArrayList<>(allTheDates.values());
-        ExponentialSmoothingForecast forecastModel = new LinearTrendForecast(values);
+        ExponentialSmoothingForecast forecastModel = new LinearSeasonalForecast(values);
 
         maxDate = allTheDates.lastKey();
         // Beginning the forecast
