@@ -2,15 +2,14 @@ package com.qfs.sandbox.cfg.pivot.impl;
 
 import com.activeviam.desc.build.ICanStartBuildingMeasures;
 import com.activeviam.desc.build.IHasAtLeastOneMeasure;
+import com.qfs.sandbox.aggregator.impl.IndicesPriceAggregator;
 import com.qfs.sandbox.postprocesseur.impl.*;
 import com.quartetfs.biz.pivot.postprocessing.impl.*;
 
 import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.DIM_STOCK_SYMBOL;
 import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.HIER_FOREX;
 import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.HIER_TIME;
-import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig.CLOSE;
-import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig.NUMBER_STOCKS;
-import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig.VOLUME;
+import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig.*;
 import static com.qfs.sandbox.cfg.role.impl.RoleContextConfig.REF_CURRENCY;
 
 public class PerformanceCubeMeasure {
@@ -21,6 +20,7 @@ public class PerformanceCubeMeasure {
     private static final String FOLDER_PP = "post-processeur";
     private static final String FOLDER_HIDDEN = "hidden";
     private static final String FOLDER_FOREX_DISPLAY = "forex-rate";
+    private static final String FOLDER_FORECAST = "forecast";
 
     /*
     Formatter
@@ -73,6 +73,16 @@ public class PerformanceCubeMeasure {
                 .withName("_Close.SUM")
                 .hidden()
 
+
+                .withPostProcessor("_Close.INDEX_AGGREGATION")
+                .withPluginKey(PriceAggregationPostProcessor.PLUGIN_KEY)
+                .withProperty(PriceAggregationPostProcessor.AGGREGATION_FUNCTION, IndicesPriceAggregator.KEY)
+                .withUnderlyingMeasures("_Close.SUM")
+                .withProperty(PriceAggregationPostProcessor.LEAF_LEVELS,
+                        "StockSymbol@StockSymbol@StockSymbol, IndexName@IndexName@IndexName")
+                .hidden()
+
+
                 .withAggregatedMeasure()
                 .avg(CLOSE)
                 .withName("_Close.AVG")
@@ -99,14 +109,14 @@ public class PerformanceCubeMeasure {
                 .withPostProcessor("_Forex.SUM")
                 .withPluginKey(ForexPostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
-                .withUnderlyingMeasures("_Close.SUM")
-                .withinFolder(FOLDER_FOREX)
+                .withUnderlyingMeasures("_Close.INDEX_AGGREGATION")
                 .withProperty(ADynamicAggregationPostProcessor.LEAF_LEVELS,
                         "StockSymbol@StockSymbol@StockSymbol")
                 .withProperty(ForexPostProcessor.REFERENCE_CURRENCY, "EUR")
                 .hidden()
 
-                // The prices should not be aggregated when corresponding to different products.
+                // The prices should not be aggregated when corresponding to different products
+                // and different indices !
                 .withPostProcessor("Forex.SUM")
                 .withPluginKey(MinimumDepthPostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
@@ -290,14 +300,12 @@ public class PerformanceCubeMeasure {
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
                 .withProperty(ForecastPostProcessor.STOCK_SYMBOL_LEVEL,
                         "StockSymbol@StockSymbol@StockSymbol")
-                /*.withProperty(ForecastPostProcessor.DATE_LEVEL,
-                        "Date@HistoricalDates@Time")*/
                 .withProperty(ForecastPostProcessor.LEAF_LEVELS,
                         "StockSymbol@StockSymbol@StockSymbol")//"Date@HistoricalDates@Time,
                 // The ANALYSIS_LEVEL property is very important
                 .withProperty(ForecastPostProcessor.ANALYSIS_LEVELS,
                         "Date@ForecastHier@Forecast")
-                .withinFolder("forecast")
+                .withinFolder(FOLDER_FORECAST)
                 .withFormatter(FORMATTER_DOUBLE)
 
                 ;
