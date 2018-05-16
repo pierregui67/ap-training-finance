@@ -1,147 +1,70 @@
 package com.qfs.sandbox.forecasting;
 
-import sun.reflect.generics.tree.Tree;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.concurrent.*;
 
-public class LinearSeasonalForecast extends ExponentialSmoothingForecast {
+public class LinearSeasonalForecast implements Forecast {
 
-    private Double delta;
-    private int period;
+    LinearSeasonalModel model;
 
-    private final int MIN_PERIOD = 2;
-    private final int MAX_PERIOD = 30;
-
-    protected ArrayList<Double> seasonalCoefficients;
+    protected final int MIN_PERIOD = 2;
+    protected final int MAX_PERIOD = 30;
 
     public LinearSeasonalForecast(ArrayList<Double> values) {
-        //period = 14;
-        setValues(values);
-        evaluateModelParameters(values);
-    }
-
-    private Double computeSeasonal(Double y_t, Double l_t, Double b_t, Double s_tm) {
-        return delta * (1 - alpha) * (y_t - l_t - b_t) +
-                (1 - delta * (1 - alpha)) * s_tm;
-    }
-
-    protected Double computeLevel(Double y_t, Double l_t, Double b_t, Double s_tm) {
-        return alpha * (y_t - s_tm) + (1 - alpha) * (l_t + b_t);
-    }
-
-    protected Double computeTrend(Double l_t1, Double l_t0, Double b_t) {
-        return beta * (l_t1 - l_t0) + (1 - beta) * b_t;
-    }
-
-    @Override
-    ArrayList<Double>[] computeForecastCoefficients(ArrayList<Double> values, Double[] param) {
-        setModelParameters(param);
-        int n = values.size();
-
-        /*
-        Initialization of the coefficients.
-         */
-        ArrayList<Double> levelCoefficients = new ArrayList<>();
-        Double l0 = 0.0;
-        for (int i = 0; i < period; i++)
-            l0 += values.get(i);
-        l0 /= period;
-        levelCoefficients.add(l0);
-
-        ArrayList<Double> trendCoefficients = new ArrayList<>();
-        Double t0 = 0.0;
-        for (int i = 0; i < period; i++)
-            t0 += (values.get(i+1) - values.get(i)) / period;
-        t0 /= period;
-        trendCoefficients.add(t0);
-
-        ArrayList<Double> seasonalCoefficients = new ArrayList<>();
-        for (int i = 0; i < period; i++)
-            seasonalCoefficients.add(values.get(i) - l0);
-
-        /*
-        Computing all the coefficients.
-         */
-        for (int i = 1; i < n ; i++) {
-            Double y_t = values.get(i);
-            levelCoefficients.add(computeLevel(y_t,
-                    levelCoefficients.get(i-1),
-                    trendCoefficients.get(i-1),
-                    seasonalCoefficients.get(i - period + period)));
-            trendCoefficients.add(computeTrend(levelCoefficients.get(i),
-                    levelCoefficients.get(i-1),
-                    trendCoefficients.get(i-1)));
-            seasonalCoefficients.add(computeSeasonal(y_t,
-                    levelCoefficients.get(i-1),
-                    trendCoefficients.get(i-1),
-                    seasonalCoefficients.get(i - period + period)));
-        }
-
-        return new ArrayList[]{levelCoefficients,
-                trendCoefficients, seasonalCoefficients};
-    }
-
-    @Override
-    protected void evaluateModelParameters(ArrayList<Double> values) {
-
-        HashMap<Integer, Double[]> errorToParam = new HashMap<>();
-        Double minError = Double.MAX_VALUE;
-        int minPeriod = MIN_PERIOD;
-
-        Double[] param;
-        for (int p = MIN_PERIOD; p < MAX_PERIOD; p++){
-            this.period = p;
-            param = new Double[] {0.9, 0.2, 0.5};
-
-            GradientDescent gradientDescent = new GradientDescent();
-            param = gradientDescent.minimization(this::functionToOptimize, param);
-            ArrayList<Double>[] coefficients = computeForecastCoefficients(values, param);
-            Double error = computeErrorScore(coefficients);
-            if (error < minError) {
-                minError = error;
-                minPeriod = p;
-            }
-            errorToParam.put(p, param);
-        }
-
-
-        /*
-        Now we compute the level and the trend coefficients associated with the optimal
-        parameters.
-         */
-        param = errorToParam.get(minPeriod);
-        period = minPeriod;
-        ArrayList<Double>[] coefficients = computeForecastCoefficients(values, param);
-        setModel(param, coefficients);
-    }
-
-    @Override
-    protected void setModelParameters(Double[] param) {
-        alpha = param[0];
-        beta = param[1];
-        delta = param[2];
-    }
-
-    @Override
-    protected void setModel(Double[] param, ArrayList<Double>[] coefficients) {
-        setModelParameters(param);
-        levelCoefficients = coefficients[0];
-        trendCoefficients = coefficients[1];
-        seasonalCoefficients = coefficients[2];
+        this.model = evaluateModel(values);
     }
 
     /**
-     return y_{t+h|t} = l_t + h * b_t + s_tm
+     * return y_{t+h|t} = l_t + h * b_t + s_tm
      */
     @Override
     public Double forecast(int h) {
-        int len = levelCoefficients.size() - 1;
+        int len = model.levelCoefficients.size() - 1;
         // TODO : check it's correct.
-        int hm = Math.floorMod(h-1, period) + 1;
-        Double result = levelCoefficients.get(len) + h * trendCoefficients.get(len) +
-                seasonalCoefficients.get(len - period + hm);
+        int hm = Math.floorMod(h - 1, model.period) + 1;
+        Double result = model.levelCoefficients.get(len) + h * model.trendCoefficients.get(len) +
+                model.seasonalCoefficients.get(len - model.period + hm);
         return result;
+    }
+
+    @Override
+    public LinearSeasonalModel evaluateModel(ArrayList<Double> values) {
+
+        Double minError = Double.MAX_VALUE;
+        LinearSeasonalModel bestModel = null;
+
+        for (int p = MIN_PERIOD; p < MAX_PERIOD; p++) {
+            LinearSeasonalModel model = new LinearSeasonalModel(values, p);
+            ExecutorService executor = Executors.newCachedThreadPool();
+            Future<LinearSeasonalModel> futureCall = executor.submit(new LinearSeasonalForecast.ParallelEvaluation(model));
+            try {
+                model = futureCall.get(); // Here the thread will be blocked
+                if (model.modelError < minError) {
+                    minError = model.modelError;
+                    bestModel = model;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return bestModel;
+    }
+
+    class ParallelEvaluation implements Callable<LinearSeasonalModel> {
+
+        LinearSeasonalModel model;
+
+        public ParallelEvaluation(LinearSeasonalModel model) {
+            this.model = model;
+        }
+
+        @Override
+        public LinearSeasonalModel call() throws Exception {
+            model.fitModel();
+            return model;
+        }
     }
 }

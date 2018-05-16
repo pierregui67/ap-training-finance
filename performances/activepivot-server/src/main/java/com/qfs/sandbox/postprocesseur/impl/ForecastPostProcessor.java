@@ -1,7 +1,7 @@
 package com.qfs.sandbox.postprocesseur.impl;
 
 import com.qfs.condition.impl.BaseConditions;
-import com.qfs.sandbox.forecasting.ExponentialSmoothingForecast;
+import com.qfs.sandbox.forecasting.Forecast;
 import com.qfs.sandbox.forecasting.LinearSeasonalForecast;
 import com.qfs.sandbox.forecasting.LinearTrendForecast;
 import com.qfs.store.query.ICursor;
@@ -173,13 +173,14 @@ public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Doub
 
         // Fit the model
         ArrayList<Double> values = new ArrayList<>(allTheDates.values());
-        ExponentialSmoothingForecast forecastModel = new LinearSeasonalForecast(values);
+        //ExponentialSmoothingForecast forecastModel = new LinearSeasonalForecast(values);
+        Forecast forecastModel = new LinearSeasonalForecast(values);
 
         maxDate = allTheDates.lastKey();
         // Beginning the forecast
         Date date = maxDate;
         if (date != null) {
-            for (int i = 1; i < EXTRA_DATES_CARDINAL; i++) {
+            for (int i = 1; i <= EXTRA_DATES_CARDINAL; i++) {
                 // Forecast
                 Double forecastValue = forecastModel.forecast(i);
 
@@ -189,7 +190,7 @@ public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Doub
                 c.add(Calendar.DATE, 1);
                 date = c.getTime();
             }
-            allTheDates.put(date, 0.0);
+            //allTheDates.put(date, 0.0);
         }
         allTheDatesForAllStockSymbol.put(stockSymbolInTheView, allTheDates);
     }

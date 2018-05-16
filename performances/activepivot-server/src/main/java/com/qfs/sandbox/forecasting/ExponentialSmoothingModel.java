@@ -2,17 +2,14 @@ package com.qfs.sandbox.forecasting;
 
 import java.util.ArrayList;
 
-public abstract class ExponentialSmoothingForecast {
+public abstract class ExponentialSmoothingModel {
+
+    protected ArrayList<Double> values;
 
     protected Double alpha, beta;
     protected ArrayList<Double> levelCoefficients, trendCoefficients;
 
-    protected ArrayList<Double> values;
-
-    /*public ExponentialSmoothingForecast(ArrayList<Double> values) {
-        setValues(values);
-        evaluateModelParameters(values);
-    }*/
+    protected Double modelError;
 
     protected void setValues(ArrayList<Double> values) {
         this.values = values;
@@ -38,11 +35,6 @@ public abstract class ExponentialSmoothingForecast {
         return lossFunction(error);
     }
 
-    public abstract Double forecast(int h);
-
-    protected abstract void setModelParameters(Double[] param);
-    protected abstract void setModel(Double[] param, ArrayList<Double>[] coefficients);
-
     protected ArrayList<Double> computeError(ArrayList<Double>[] coefficients) {
         ArrayList<Double> error = new ArrayList<>();
         int len = values.size();
@@ -55,14 +47,11 @@ public abstract class ExponentialSmoothingForecast {
         return error;
     }
 
+    protected abstract void setModelParameters(Double[] param);
+    protected abstract void setModel(Double[] param, ArrayList<Double>[] coefficients);
 
+    protected abstract void fitModel();
 
-    abstract ArrayList<Double>[] computeForecastCoefficients
-            (ArrayList<Double> values, Double[] param);
+    protected abstract ArrayList<Double>[] computeForecastCoefficients(ArrayList<Double> values, Double[] param);
 
-    protected abstract void evaluateModelParameters(ArrayList<Double> values);
-
-
-
-
-}
+    }
