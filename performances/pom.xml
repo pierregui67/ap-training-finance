@@ -19,12 +19,13 @@
 
 	<modules>
 		<!-- applications -->
-		<module>shared/common</module>
+		<module>common</module>
 		<module>shared/activepivot</module>
 
 		<!-- deployments -->
 		<module>content-server</module>
 		<module>activepivot-server</module>
+        <module>common</module>
 	</modules>
 
 	<dependencyManagement>

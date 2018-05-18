@@ -106,6 +106,56 @@
 			<version>8.0.36</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.activeviam.sandbox</groupId>
+			<artifactId>sandbox-content-server</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activepivot</groupId>
+			<artifactId>activepivot-server-spring</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activepivot</groupId>
+			<artifactId>activepivot-server-spring</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activepivot</groupId>
+			<artifactId>activepivot-server-spring</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activepivot</groupId>
+			<artifactId>activepivot-server-spring</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activemonitor</groupId>
+			<artifactId>repository-activepivot</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.tech</groupId>
+			<artifactId>datastore</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activepivot</groupId>
+			<artifactId>activepivot-ext</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.activemonitor</groupId>
+			<artifactId>activemonitor-activepivot-impl</artifactId>
+			<version>5.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

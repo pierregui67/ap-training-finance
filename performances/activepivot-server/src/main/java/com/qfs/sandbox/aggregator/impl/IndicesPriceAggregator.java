@@ -10,8 +10,6 @@ public class IndicesPriceAggregator extends AGenericAggregationFunction<Double, 
 
     public final static String KEY = "PRICE";
 
-    //private IActivePivotConfig apConfig = null;
-
     public IndicesPriceAggregator() {
         super(KEY, Types.TYPE_OBJECT);
     }
@@ -23,8 +21,6 @@ public class IndicesPriceAggregator extends AGenericAggregationFunction<Double, 
 
     @Override
     protected Double aggregate(boolean b, Double aggregate, Double inputValue) {
-        /*if (this.apConfig == null)
-            this.apConfig = APBean.getApConfig();*/
         if (inputValue == null)
             return aggregate;
         if (aggregate == null) {
@@ -38,4 +34,7 @@ public class IndicesPriceAggregator extends AGenericAggregationFunction<Double, 
     protected Double merge(boolean b, Double aDouble, Double aggregateType1) {
         return aggregate(b, aDouble, aggregateType1);
     }
+
 }
+
+

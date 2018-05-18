@@ -47,7 +47,7 @@ public class PerformanceCubeMeasure {
     public static IHasAtLeastOneMeasure measures(final ICanStartBuildingMeasures builder) {
         return builder
                 .withContributorsCount()
-                .withAlias("Count")
+                .withAlias("contributors.COUNT")
                 .withFormatter(FORMATTER_INT)
                 .withUpdateTimestamp()
                 .withAlias("Timestamp")
@@ -204,13 +204,34 @@ public class PerformanceCubeMeasure {
                 .withinFolder(FOLDER_PP)
 
                 .withPostProcessor("PreviousPortfolioValue")
-                .withPluginKey(NeighborValuePostProcessor.PLUGIN_KEY)
+                .withPluginKey(PreviousValuePostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
                 .withProperty(NeighborValuePostProcessor.TIME_HIERARCHY_PROPERTY, HIER_TIME)
                 .withProperty(NeighborValuePostProcessor.STREAM_MEASURE_PROPERTY, "PortfolioValue")
-                .withProperty(NeighborValuePostProcessor.DIRECTION_PROPERTY, "previous")
-                // TODO : add memberToRemove and reverseDimensionOrder ?
+                .withProperty(NeighborValuePostProcessor.DIRECTION_PROPERTY, "next")
+                .withProperty("memberToRemove", 1)
+                .withProperty("reverseDimensionOrder", false)
                 .withinFolder(FOLDER_HIDDEN)
+
+                /*
+                VaR
+                 */
+                .withPostProcessor("Var")
+                .withPluginKey(VaRPostProcessor.PLUGIN_KEY)
+                .withUnderlyingMeasures("VarBucketer, PortfolioValue")
+                .withProperty(VaRPostProcessor.LEAF_LEVELS, "StockSymbol@StockSymbol@StockSymbol")
+                .withFormatter(FORMATTER_PERCENT)
+                .withinFolder(FOLDER_PP)
+
+                .withPostProcessor("VarBucketer")
+                .withPluginKey(VaRBucketerPostProcessor.PLUGIN_KEY)
+                .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
+                .withProperty(VaRBucketerPostProcessor.TIME_HIERARCHY_PROPERTY, HIER_TIME)
+                .withProperty(NeighborValuePostProcessor.STREAM_MEASURE_PROPERTY, "PeriodReturn")
+                .withProperty(NeighborValuePostProcessor.DIRECTION_PROPERTY, "next")
+                .withinFolder(FOLDER_HIDDEN)
+
+
 
                 /*
                 Cumulative Return
@@ -309,8 +330,5 @@ public class PerformanceCubeMeasure {
                 .withFormatter(FORMATTER_DOUBLE)
 
                 ;
-
-
     }
-
 }

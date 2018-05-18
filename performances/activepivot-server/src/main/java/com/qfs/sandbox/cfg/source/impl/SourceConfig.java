@@ -6,6 +6,7 @@
  */
 package com.qfs.sandbox.cfg.source.impl;
 
+import com.google.common.collect.Lists;
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
@@ -22,6 +23,7 @@ import com.qfs.msg.impl.WatcherService;
 import com.qfs.sandbox.cfg.impl.DatastoreConfig;
 import com.qfs.sandbox.context.impl.CurrencyContextValueTranslator;
 import com.qfs.sandbox.tuplepublisher.impl.ForexTuplePublisher;
+import com.qfs.sandbox.tuplepublisher.impl.HistoryTuplePublisher;
 import com.qfs.sandbox.tuplepublisher.impl.IndicesTuplePublisher;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.source.ITuplePublisher;
@@ -233,10 +235,12 @@ public class SourceConfig {
 
     @Bean
     public IMessageChannel<String, Object> historyChannel() {
-        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher(new TuplePublisher<String>(
-                datastore,
-                STOCK_PRICE_HISTORY_STORE_NAME));
-
+        Collection<String> topics = new ArrayList<>();
+        topics.add(STOCK_PRICE_HISTORY_STORE_NAME);
+        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        nameToIndex = csvChannelFactory().getTranslator(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME).getColumnIndexes();
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher(new HistoryTuplePublisher(
+                datastore, topics, nameToIndex));
         return csvChannelFactory().createChannel(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, publisher);
     }
 

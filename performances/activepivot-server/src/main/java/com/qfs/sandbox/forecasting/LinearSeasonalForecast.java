@@ -2,6 +2,9 @@ package com.qfs.sandbox.forecasting;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 
 public class LinearSeasonalForecast implements Forecast {
@@ -9,7 +12,7 @@ public class LinearSeasonalForecast implements Forecast {
     LinearSeasonalModel model;
 
     protected final int MIN_PERIOD = 2;
-    protected final int MAX_PERIOD = 30;
+    protected final int MAX_PERIOD = 45;
 
     public LinearSeasonalForecast(ArrayList<Double> values) {
         this.model = evaluateModel(values);
@@ -34,22 +37,34 @@ public class LinearSeasonalForecast implements Forecast {
         Double minError = Double.MAX_VALUE;
         LinearSeasonalModel bestModel = null;
 
+        long startTime = System.currentTimeMillis();
+
+        Set<Callable<LinearSeasonalModel>> callables = new HashSet<>();
+
         for (int p = MIN_PERIOD; p < MAX_PERIOD; p++) {
             LinearSeasonalModel model = new LinearSeasonalModel(values, p);
-            ExecutorService executor = Executors.newCachedThreadPool();
-            Future<LinearSeasonalModel> futureCall = executor.submit(new LinearSeasonalForecast.ParallelEvaluation(model));
-            try {
-                model = futureCall.get(); // Here the thread will be blocked
+            callables.add(new ParallelEvaluation(model));
+        }
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        try {
+            List<Future<LinearSeasonalModel>> futures = executorService.invokeAll(callables);
+            executorService.shutdown();
+            executorService.awaitTermination(1, TimeUnit.HOURS);
+            for (Future<LinearSeasonalModel> future : futures) {
+                model = future.get();
                 if (model.modelError < minError) {
                     minError = model.modelError;
                     bestModel = model;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+        long estimatedTime = System.currentTimeMillis() - startTime;
+        System.out.println("Elapsed time = " + estimatedTime);
         return bestModel;
     }
 

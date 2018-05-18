@@ -19,7 +19,7 @@ public class LinearSeasonalModel extends ExponentialSmoothingModel {
     protected void fitModel() {
         // parameters initialization
         Double[] param = new Double[] {0.9, 0.2, 0.5};
-        GradientDescent gradientDescent = new GradientDescent();
+        GradientDescent gradientDescent = new GradientDescent(4);
         param = gradientDescent.minimization(this::functionToOptimize, param);
         ArrayList<Double>[] coefficients = computeForecastCoefficients(values, param);
         setModel(param, coefficients);

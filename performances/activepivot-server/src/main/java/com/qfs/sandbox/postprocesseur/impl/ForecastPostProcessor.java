@@ -28,8 +28,6 @@ import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.*;
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = ForecastPostProcessor.PLUGIN_KEY)
 public class ForecastPostProcessor extends ADynamicAggregationPostProcessor<Double, Double> {
 
-    private static HashMap<Date, Double> dates = new HashMap<>();
-
     public static final String PLUGIN_KEY = "ETS_FORECAST";
 
     public static final String DATE_LEVEL = "confirmedDateLevel";
