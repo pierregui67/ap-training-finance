@@ -18,14 +18,14 @@ public class DataDownlader {
 	public static void main(String[] args) {
 
 		Downloader download;
-		download = new IndexDownloader(BASE_FOLDER);
-		download.main();
-		download = new StockPriceHistoryDownloader(BASE_FOLDER);
-		download.main();
+		//download = new IndexDownloader(BASE_FOLDER);
+		//download.main();
+		//download = new StockPriceHistoryDownloader(BASE_FOLDER);
+		//download.main();
         download = new IndicesHistoryDownloader(BASE_FOLDER);
 		download.main();
-        download = new SectorDownloader(BASE_FOLDER);
-        download.main();
+        //download = new SectorDownloader(BASE_FOLDER);
+        //download.main();
 	}
 
 }

@@ -43,7 +43,7 @@ public class BenchmarkBuilder {
                             + System.getProperty("line.separator");
                 }
             }
-            Utils.writter(record, BASE_FOLDER + "Portfolios/Indices/" + index + "_benchmark"
+            Utils.writter(record, BASE_FOLDER + "Portfolios/Initial/" + index + "_benchmark"
                     + FILE_EXTENSION);
         }
     }

@@ -2,6 +2,9 @@ package com.qfs.training.rivolition.data.download;
 
 import com.qfs.training.rivolition.data.utilities.SerializableObject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -11,8 +14,6 @@ public class StockPriceHistoryDownloader extends HistoryDownloader {
 
 
     public final static String FOLDER = "History/";
-    protected final String PREFIX_URL = "https://finance.yahoo.com/quote/^";
-    protected final String SUFFIX_URL = "/history?p=^";
 
     @Override
     public void main() {
@@ -24,7 +25,8 @@ public class StockPriceHistoryDownloader extends HistoryDownloader {
     public StockPriceHistoryDownloader(String path) {
         super(path);
         this.fileNamePrefix = "Price";
-        stockSymbols = (HashSet<String>) getSerializableObject("authorizedSymbols.ser");
+        this.stockSymbols = (HashSet<String>) getSerializableObject("authorizedSymbols.ser");
+        this.symbolToDates = (HashMap<String, HashSet<String>>) getSerializableObject("symbolToDates.ser");
         this.target = this.stockSymbols;
     }
 

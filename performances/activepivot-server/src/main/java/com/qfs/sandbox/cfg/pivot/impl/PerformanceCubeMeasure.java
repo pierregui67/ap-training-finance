@@ -209,7 +209,7 @@ public class PerformanceCubeMeasure {
                 .withProperty(NeighborValuePostProcessor.TIME_HIERARCHY_PROPERTY, HIER_TIME)
                 .withProperty(NeighborValuePostProcessor.STREAM_MEASURE_PROPERTY, "PortfolioValue")
                 .withProperty(NeighborValuePostProcessor.DIRECTION_PROPERTY, "next")
-                .withProperty("memberToRemove", 1)
+                .withProperty("memberToRemove", 0)
                 .withProperty("reverseDimensionOrder", false)
                 .withinFolder(FOLDER_HIDDEN)
 
