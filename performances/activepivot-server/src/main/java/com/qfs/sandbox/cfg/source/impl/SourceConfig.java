@@ -76,11 +76,11 @@ public class SourceConfig {
     public static final char BAR_SEPARATOR = '|';
 
     public static final String STOCK_PRICE_HISTORY_TOPIC = STOCK_PRICE_HISTORY_STORE_NAME;
+    public static final String INDICES_HISTORY_TOPIC = INDICES_HISTORY_STORE_NAME;
     public static final String COMPAGNY_INFORMATIONS_TOPIC = COMPANY_INFORMATIONS_STORE_NAME;
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
     public static final String INDICES_TOPIC = INDICES_STORE_NAME;
     public static final String FOREX_TOPIC = FOREX_STORE_NAME;
-    public static final String INDICES_HISTORY_TOPIC = "IndicesHistory";
 
     // CSV Load
     @Bean
@@ -97,6 +97,7 @@ public class SourceConfig {
         // Create Maps
         Map<Integer, String> mapPortfolios = new HashMap<Integer, String>();
         Map <Integer, String> mapHistory = new HashMap<Integer, String>();
+        Map <Integer, String> mapIndicesHistory = new HashMap<Integer, String>();
         Map <Integer, String> mapCompany = new HashMap<Integer, String>();
         Map <Integer, String> mapIndices = new HashMap<Integer, String>();
         Map <Integer, String> mapForex = new HashMap<Integer, String>();
@@ -106,6 +107,14 @@ public class SourceConfig {
         mapPortfolios.put(2, PORTFOLIOS_NUMBER_STOCKS);
         mapPortfolios.put(3, PORTFOLIOS_STOCK_SYMBOL);
         mapPortfolios.put(4, PORTFOLIOS_POSITION_TYPE);
+
+        /*mapIndicesHistory.put(0, HISTORY_DATE);
+        mapIndicesHistory.put(1, HISTORY_OPEN);
+        mapIndicesHistory.put(2, HISTORY_HIGH);
+        mapIndicesHistory.put(3, HISTORY_LOW);
+        mapIndicesHistory.put(4, HISTORY_CLOSE);
+        mapIndicesHistory.put(5, HISTORY_VOLUME);
+        mapIndicesHistory.put(6, HISTORY_ADJ_CLOSE);*/
 
         mapHistory.put(0, HISTORY_DATE);
         mapHistory.put(1, HISTORY_OPEN);
@@ -143,6 +152,10 @@ public class SourceConfig {
         history.getParserConfiguration().setSeparator(COMMA_SEPARATOR);
         csvSource.addTopic(history);
 
+        DirectoryCSVTopic indicesHistory = createDirectoryTopic(INDICES_HISTORY_TOPIC, env.getProperty("dir.indicesHistory"), 7, "**IndexHistory_*.csv", true, mapHistory);
+        history.getParserConfiguration().setSeparator(COMMA_SEPARATOR);
+        csvSource.addTopic(indicesHistory);
+
         DirectoryCSVTopic company = createDirectoryTopic(COMPAGNY_INFORMATIONS_TOPIC, env.getProperty("dir.company"), 4, "**.csv", true, mapCompany);
         company.getParserConfiguration().setSeparator(BAR_SEPARATOR);
         csvSource.addTopic(company);
@@ -179,6 +192,17 @@ public class SourceConfig {
                                      }
                                  });
 
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsIndicesHist = new ArrayList<IColumnCalculator<ILineReader>>();
+        csvCalculatedColumnsIndicesHist.add(new AColumnCalculator<ILineReader>(INDICES_HISTORY_NAME) {
+            @Override
+            public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
+                String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
+                symbol = symbol.replace("IndexHistory_","");
+                symbol = symbol.replace(".csv","");
+                return symbol;
+            }
+        });
+
         // We retrieve the fields of the Indices files which will be included in the Portfolio store, that means which
         // will not be contains in the custom Indices stores.
         List<IColumnCalculator<ILineReader>> csvCalculatedColumnsIndices = new ArrayList<IColumnCalculator<ILineReader>>();
@@ -187,6 +211,7 @@ public class SourceConfig {
 
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
         channelFactory.setCalculatedColumns(STOCK_PRICE_HISTORY_TOPIC, STOCK_PRICE_HISTORY_STORE_NAME, csvCalculatedColumnsStockS);
+        channelFactory.setCalculatedColumns(INDICES_HISTORY_TOPIC, INDICES_HISTORY_STORE_NAME, csvCalculatedColumnsIndicesHist);
         channelFactory.setCalculatedColumns(INDICES_TOPIC, INDICES_STORE_NAME, csvCalculatedColumnsIndices);
 
         return channelFactory;
@@ -245,6 +270,17 @@ public class SourceConfig {
     }
 
     @Bean
+    public IMessageChannel<String, Object> indexHistoryChannel() {
+        Collection<String> topics = new ArrayList<>();
+        topics.add(INDICES_HISTORY_STORE_NAME);
+        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        nameToIndex = csvChannelFactory().getTranslator(INDICES_HISTORY_TOPIC, INDICES_HISTORY_STORE_NAME).getColumnIndexes();
+        final ITuplePublisher<String> publisher = new AutoCommitTuplePublisher(new HistoryTuplePublisher(
+                datastore, topics, nameToIndex));
+        return csvChannelFactory().createChannel(INDICES_HISTORY_TOPIC, INDICES_HISTORY_STORE_NAME, publisher);
+    }
+
+    @Bean
     public IMessageChannel<String, Object> indicesChannel() {
         Collection<String> topics = new ArrayList<>();
         topics.add(INDICES_TOPIC);
@@ -277,6 +313,7 @@ public class SourceConfig {
         csvSource().listen(forexChannel());
         CurrencyContextValueTranslator.init();
         csvSource().listen(historyChannel());
+        csvSource().listen(indexHistoryChannel());
         printStoreSizes();
 
         return null;

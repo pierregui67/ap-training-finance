@@ -6,9 +6,7 @@ import com.qfs.sandbox.aggregator.impl.IndicesPriceAggregator;
 import com.qfs.sandbox.postprocesseur.impl.*;
 import com.quartetfs.biz.pivot.postprocessing.impl.*;
 
-import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.DIM_STOCK_SYMBOL;
-import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.HIER_FOREX;
-import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.HIER_TIME;
+import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeDimension.*;
 import static com.qfs.sandbox.cfg.pivot.impl.PerformanceCubeManagerConfig.*;
 import static com.qfs.sandbox.cfg.role.impl.RoleContextConfig.REF_CURRENCY;
 
@@ -64,6 +62,23 @@ public class PerformanceCubeMeasure {
      */
     protected static IHasAtLeastOneMeasure coreMeasures(final ICanStartBuildingMeasures builder) {
         return builder
+
+                .withAggregatedMeasure()
+                .sum(INDEX_CLOSE)
+                .withName("_IndexClose")
+                .withFormatter(FORMATTER_DOUBLE)
+                .withinFolder(FOLDER_DATA)
+                .hidden()
+
+                .withPostProcessor("IndexClose")
+                .withPluginKey(MinimumDepthPostProcessor.PLUGIN_KEY)
+                .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
+                .withUnderlyingMeasures("_IndexClose")
+                .withinFolder(FOLDER_DATA)
+                .withProperty(MinimumDepthPostProcessor.HIERARCHY_NAME, DIM_INDEX_NAME)
+                .withProperty(MinimumDepthPostProcessor.MINIMUM_DEPTH, 1)
+                .withFormatter(FORMATTER_DOUBLE)
+
 
                 /*
                 Basic Measures
@@ -242,7 +257,6 @@ public class PerformanceCubeMeasure {
                 .withProperty(Stream2PositionPostProcessor.TIME_HIERARCHY_PROPERTY, HIER_TIME)
                 .withProperty(Stream2PositionPostProcessor.STREAM_MEASURE_PROPERTY, "PeriodReturn")
                 .withProperty(Stream2PositionPostProcessor.POSITION_TYPE, "CURRENT_STREAM")
-                // TODO : add reverseDimensionorder ?
                 .withFormatter(FORMATTER_DOUBLE)
                 .withinFolder(FOLDER_PP)
 
@@ -269,7 +283,7 @@ public class PerformanceCubeMeasure {
                 .withPluginKey(FormulaPostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
                 .withProperty(FormulaPostProcessor.FORMULA_PROPERTY,
-                        "aggregatedValue[ExamplePV],aggregatedValue[BenchmarkPV],-")
+                        "aggregatedValue[FTSE_PV],aggregatedValue[FCHI_PV],-")
                 .withFormatter(FORMATTER_DOUBLE)
                 .withinFolder(FOLDER_PP)
 
@@ -277,24 +291,24 @@ public class PerformanceCubeMeasure {
                 .withPluginKey(FormulaPostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
                 .withProperty(FormulaPostProcessor.FORMULA_PROPERTY,
-                        "(aggregatedValue[CompareExample2Portfolio],aggregatedValue[BenchmarkPV],int[0],div)")
+                        "(aggregatedValue[CompareExample2Portfolio],aggregatedValue[FCHI_PV],int[0],div)")
                 .withFormatter(FORMATTER_DOUBLE)
                 .withinFolder(FOLDER_PP)
 
-                .withPostProcessor("ExamplePV")
+                .withPostProcessor("FCHI_PV")
                 .withPluginKey(ChoosePVTypePostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
                 .withUnderlyingMeasures("PortfolioValue")
-                .withProperty(ChoosePVTypePostProcessor.PORTFOLIO_TYPE, "exemple")
+                .withProperty(ChoosePVTypePostProcessor.PORTFOLIO_TYPE, "FCHI_benchmark")
                 .withProperty(ChoosePVTypePostProcessor.HIERARCHY_NAME, "IndexName")
                 .withProperty(ChoosePVTypePostProcessor.LEVEL_TO_SHIFT, "IndexName@IndexName@IndexName")
                 .withinFolder(FOLDER_HIDDEN)
 
-                .withPostProcessor("BenchmarkPV")
+                .withPostProcessor("FTSE_PV")
                 .withPluginKey(ChoosePVTypePostProcessor.PLUGIN_KEY)
                 .withContinuousQueryHandlers("STORED", ForexHandler.PLUGIN_KEY)
                 .withUnderlyingMeasures("PortfolioValue")
-                .withProperty(ChoosePVTypePostProcessor.PORTFOLIO_TYPE, "benchmark")
+                .withProperty(ChoosePVTypePostProcessor.PORTFOLIO_TYPE, "FTSE_benchmark")
                 .withProperty(ChoosePVTypePostProcessor.HIERARCHY_NAME, "IndexName")
                 .withProperty(ChoosePVTypePostProcessor.LEVEL_TO_SHIFT, "IndexName@IndexName@IndexName")
                 .withinFolder(FOLDER_HIDDEN)

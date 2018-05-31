@@ -20,7 +20,6 @@
 	<modules>
 		<!-- applications -->
 		<module>common</module>
-		<module>shared/activepivot</module>
 
 		<!-- deployments -->
 		<module>content-server</module>

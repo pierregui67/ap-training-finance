@@ -21,8 +21,6 @@ public class HistoryTuplePublisher extends TuplePublisher {
     @Override
     public void publish(IStoreMessage message, List tuples) {
         List<Object[]> enrichedTuples = new ArrayList<Object[]>();
-        if (( (Object[]) tuples.get(0))[nameToColumnIndex.get(HISTORY_STOCK_SYMBOL)].equals("SAN.PA"))
-            System.out.println("dlwmeqv");
 
         int ind = nameToColumnIndex.get(HISTORY_CLOSE);
         Object[] currentTuple = null, nextTuple = null;

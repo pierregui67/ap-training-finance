@@ -54,6 +54,8 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
     public static final String SECTOR = "Sector";
     public static final String INDUSTRY = "Industry";
 
+    public static final String INDEX_CLOSE = REF_PORTFOLIO_TO_INDICES + "/Close";
+
 
     @Bean
     @Override
@@ -90,6 +92,8 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
                 .withField(CLOSE)
                 .withField(VOLUME)
                 .withField(ADJ_CLOSE)
+
+                .withField(INDEX_CLOSE)
 
                 .withField(COMPANY_NAME, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_NAME)
                 .withField(COMPANY_SECTOR, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_SECTOR)

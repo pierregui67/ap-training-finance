@@ -8,6 +8,7 @@ package com.qfs.sandbox.cfg.datastore.impl;
 
 import static com.qfs.literal.ILiteralType.DOUBLE;
 import static com.qfs.literal.ILiteralType.INT;
+import static com.qfs.literal.ILiteralType.LONG;
 import static com.qfs.literal.ILiteralType.STRING;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
@@ -48,6 +49,9 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
     /** Name of the Stock Price History store */
     public static final String STOCK_PRICE_HISTORY_STORE_NAME = "StockPriceHistory";
 
+    /** Name of the Stock Price History store */
+    public static final String INDICES_HISTORY_STORE_NAME = "IndicesHistory";
+
     /** Name of the Portfolio store */
     public static final String PORTFOLIOS_STORE_NAME = "Portfolios";
 
@@ -76,6 +80,11 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
     public static final String HISTORY_ADJ_CLOSE = "AdjClose";
 
     // ///////////////////////////////////////////////
+    // History store fields
+
+    public static final String INDICES_HISTORY_NAME = "IndexName";
+
+    // ///////////////////////////////////////////////
     // Portfolio store fields
 
     public static final String PORTFOLIOS_DATE = "Date";
@@ -93,7 +102,7 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
     public static final String COMPANY_INDUSTRY = "Industry";
 
     // ///////////////////////////////////////////////
-    // GDAXI store fields
+    // Indices store fields
 
     public static final String INDICES_INDEX_NAME = "IndexName";
     public static final String INDICES_NAME_COMPANY = "Name";
@@ -115,6 +124,7 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
     public static final String REF_PORTFOLIO_TO_INDICES = "PortfolioToIndices";
     public static final String REF_PORTFOLIO_TO_COMPANY = "PortfoliosToCompanyInformations";
     public static final String REF_PORTFOLIO_TO_STOCK = "PortfoliosToStockPriceHistory";
+    public static final String REF_PORTFOLIO_TO_INDICES_HISTORY = "PortfoliosToIndicesHistory";
 
 
     // ////////////////////////////////////////////////
@@ -136,6 +146,25 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
                 .onDuplicateKeyWithinTransaction().logException()
                 .updateOnlyIfDifferent()
                 .withModuloPartitioning(PORTFOLIOS_STOCK_SYMBOL, Runtime.getRuntime().availableProcessors())
+                .build();
+    }
+
+    /** @return the description of the stock price history store */
+    @Bean
+    public IStoreDescription indicesHistoryStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(INDICES_HISTORY_STORE_NAME)
+                .withField(INDICES_HISTORY_NAME, STRING).asKeyField()
+                .withField(HISTORY_DATE, "date[" + DATE_PATTERN + "]").asKeyField()
+                .withField(HISTORY_OPEN, DOUBLE)
+                .withField(HISTORY_HIGH, DOUBLE)
+                .withField(HISTORY_LOW, DOUBLE)
+                .withField(HISTORY_CLOSE, DOUBLE)
+                .withField(HISTORY_VOLUME, LONG)
+                .withField(HISTORY_ADJ_CLOSE, DOUBLE)
+                .onDuplicateKeyWithinTransaction().logException()
+                .updateOnlyIfDifferent()
+                //.withModuloPartitioning(PORTFOLIOS_INDEX_NAME, Runtime.getRuntime().availableProcessors())
                 .build();
     }
 
@@ -215,6 +244,13 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
                 .build());
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(INDICES_HISTORY_STORE_NAME)
+                .withName(REF_PORTFOLIO_TO_INDICES_HISTORY)
+                .withMapping(PORTFOLIOS_INDEX_NAME, INDICES_HISTORY_NAME)
+                .withMapping(PORTFOLIOS_DATE, HISTORY_DATE)
+                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(COMPANY_INFORMATIONS_STORE_NAME)
                 .withName(REF_PORTFOLIO_TO_COMPANY)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, COMPANY_STOCK_SYMBOL)
@@ -248,6 +284,7 @@ public class DatastoreDescriptionConfig implements IParameterAwareDatastoreDescr
         final Collection<IStoreDescription> stores = new LinkedList<>();
 
         stores.add(historyStoreDescription());
+        stores.add(indicesHistoryStoreDescription());
         stores.add(portfolioStoreDescription());
         stores.add(companyInformationsStoreDescription());
         stores.add(IndicesStoreDescription());
