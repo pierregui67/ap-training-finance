@@ -7,7 +7,6 @@ import com.qfs.store.IDatastore;
 import java.util.*;
 
 import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.HISTORY_CLOSE;
-import static com.qfs.sandbox.cfg.datastore.impl.DatastoreDescriptionConfig.HISTORY_STOCK_SYMBOL;
 
 public class HistoryTuplePublisher extends TuplePublisher {
 

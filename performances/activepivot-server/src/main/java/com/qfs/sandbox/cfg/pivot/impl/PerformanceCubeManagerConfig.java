@@ -45,7 +45,7 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
     public static final String OPEN = REF_PORTFOLIO_TO_STOCK + "/Open";
     public static final String HIGH = REF_PORTFOLIO_TO_STOCK + "/High";
     public static final String LOW = REF_PORTFOLIO_TO_STOCK + "/Low";
-    public static final String CLOSE = REF_PORTFOLIO_TO_STOCK + "/Close";
+    public static final String CLOSE = "Close";
     public static final String VOLUME = REF_PORTFOLIO_TO_STOCK + "/Volume";
     public static final String ADJ_CLOSE = REF_PORTFOLIO_TO_STOCK + "/AdjClose";
 
@@ -54,7 +54,7 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
     public static final String SECTOR = "Sector";
     public static final String INDUSTRY = "Industry";
 
-    public static final String INDEX_CLOSE = REF_PORTFOLIO_TO_INDICES + "/Close";
+    public static final String INDEX_CLOSE = "IndexClose";
 
 
     @Bean
@@ -89,11 +89,11 @@ public class PerformanceCubeManagerConfig implements IActivePivotManagerConfig {
                 .withField(OPEN)
                 .withField(HIGH)
                 .withField(LOW)
-                .withField(CLOSE)
+                .withField(CLOSE, REF_PORTFOLIO_TO_STOCK + "/" + CLOSE)
                 .withField(VOLUME)
                 .withField(ADJ_CLOSE)
 
-                .withField(INDEX_CLOSE)
+                .withField(INDEX_CLOSE, REF_PORTFOLIO_TO_INDICES_HISTORY + "/" + CLOSE)
 
                 .withField(COMPANY_NAME, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_NAME)
                 .withField(COMPANY_SECTOR, REF_PORTFOLIO_TO_COMPANY + "/" + COMPANY_SECTOR)

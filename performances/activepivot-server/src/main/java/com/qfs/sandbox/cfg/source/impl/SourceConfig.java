@@ -198,7 +198,7 @@ public class SourceConfig {
             public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                 String symbol = iColumnCalculationContext.getContext().getCurrentFile().getName();
                 symbol = symbol.replace("IndexHistory_","");
-                symbol = symbol.replace(".csv","");
+                symbol = symbol.replace(".csv","_benchmark");
                 return symbol;
             }
         });
