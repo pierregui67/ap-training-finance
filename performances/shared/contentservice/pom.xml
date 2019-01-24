@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.activeviam.sandbox</groupId>
+		<artifactId>sandbox-activeviam</artifactId>
+		<version>5.5.10</version>
+		<relativePath>../..</relativePath>
+	</parent>
+	<artifactId>sandbox-contentservice</artifactId>
+	<name>Sandbox Content Service</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.activeviam.sandbox</groupId>
+			<artifactId>sandbox-common</artifactId>
+		</dependency>
+
+		<!-- Content server dependencies -->
+		<dependency>
+			<groupId>com.activeviam.tech</groupId>
+			<artifactId>content-server-spring</artifactId>
+		</dependency>
+
+		<!-- Dependencies for the content service persistence -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-client</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>javax-websocket-server-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-servlet</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-annotations</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.activeviam.tech</groupId>
+			<artifactId>composer-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Connection pool. Scope test to use import it only when using Jetty Server. 
+		Automatically provided when the application is deployed in a tomcat. -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>8.0.36</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>generate-message-bundles</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<target>
+								<!-- generate the I18N resource bundles -->
+								<taskdef name="i18n" classpathref="maven.compile.classpath"
+									classname="mazz.i18n.ant.I18NAntTask" />
+								<i18n outputdir="${project.build.outputDirectory}"
+									defaultlocale="en" verbose="false" verify="true">
+									<classpath refid="maven.compile.classpath" />
+									<classfileset dir="${project.build.outputDirectory}">
+										<include name="**/*.class" />
+									</classfileset>
+								</i18n>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Export the test files as a JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

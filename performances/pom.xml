@@ -21,6 +21,7 @@
 		<!-- applications -->
 		<module>shared/common</module>
 		<module>shared/activepivot</module>
+		<module>shared/contentservice</module>
 
 		<!-- deployments -->
 		<module>content-server</module>
