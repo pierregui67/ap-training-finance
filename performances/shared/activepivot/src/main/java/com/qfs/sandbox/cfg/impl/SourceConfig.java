@@ -6,6 +6,10 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.HISTORY_STORE_NAME;
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.PORTFOLIOS_STORE_NAME;
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.SECTORS_STORE_NAME;
+
 import com.qfs.gui.impl.JungSchemaPrinter;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.IWatcherService;
@@ -16,9 +20,12 @@ import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
+import com.qfs.store.IDatastoreSchemaMetadata;
 import com.qfs.store.impl.SchemaPrinter;
+import com.qfs.store.impl.StoreUtils;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +39,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -50,6 +58,11 @@ public class SourceConfig {
     @Autowired
     protected IDatastore datastore;
 
+    // Topics Name
+    public static final String HISTORY_TOPIC = HISTORY_STORE_NAME;
+    public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
+    public static final String SECTORS_TOPIC = SECTORS_STORE_NAME;
+
     // CSV Load
     @Bean
     public IWatcherService watcherService() {
@@ -59,11 +72,11 @@ public class SourceConfig {
     @Bean
     public CSVSource csvSource() {
         CSVSource csvSource = new CSVSource();
-
         // Add topics here, eg.
-//		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
-//		history.getParserConfiguration().setSeparator(',');
-//		csvSource.addTopic(history);
+		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
+		history.getParserConfiguration().setSeparator(',');
+
+		csvSource.addTopic(history);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -92,8 +105,10 @@ public class SourceConfig {
      * @param pattern     pattern of each CSV file to be processed
      * @return
      */
+
     private DirectoryCSVTopic createDirectoryTopic(String topic, String directory, int columnCount, String pattern, boolean skipFirstLine) {
         CSVParserConfiguration cfg = new CSVParserConfiguration(columnCount);
+
         if (skipFirstLine) {
             cfg.setNumberSkippedLines(1);//skip the first line
         }
