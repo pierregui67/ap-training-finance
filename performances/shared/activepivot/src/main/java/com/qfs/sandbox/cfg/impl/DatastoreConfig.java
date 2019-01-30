@@ -150,7 +150,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
                 .withField(PORTFOLIOS__DATE, "date[" + DATE_PATTERN + "]").asKeyField()
-                .withField(PORTFOLIOS__PORTFOLIO_TYPE, LiteralType.STRING)
+                .withField(PORTFOLIOS__PORTFOLIO_TYPE, LiteralType.STRING).asKeyField()
                 .withField(PORTFOLIOS__NB_OF_STOCKS, LiteralType.INT)
                 .withField(PORTFOLIOS__STOCK_SYMB, LiteralType.STRING).asKeyField()
                 .withField(PORTFOLIOS__POSITION_TYPE, LiteralType.STRING)
@@ -172,7 +172,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(HISTORY_STORE_NAME)
                 .withName(PORTFOLIOS_TO_HISTORY_REF)
-                .withMapping(PORTFOLIOS__DATE, HISTORY__DATE)
+                .withMapping(PORTFOLIOS__DATE, HISTORY__DATE).withMapping(PORTFOLIOS__STOCK_SYMB, HISTORY__STOCK_SYMB)
                 .build());
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)

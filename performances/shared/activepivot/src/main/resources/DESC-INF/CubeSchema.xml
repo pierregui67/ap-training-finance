@@ -22,7 +22,6 @@
             <field name="Volume" expression="PortfoliosToHistory/Volume"/>
             <field name="AdjClose" expression="PortfoliosToHistory/AdjClose"/>
 
-
             <!-- Sectors Fields-->
             <field name="CompanyName" expression="PortfoliosToSectors/CompanyName"/>
             <field name="Sector" expression="PortfoliosToSectors/Sector"/>

@@ -6,11 +6,10 @@
  */
 package com.qfs.sandbox.cfg.impl;
 
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.HISTORY_STORE_NAME;
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.PORTFOLIOS_STORE_NAME;
-import static com.qfs.sandbox.cfg.impl.DatastoreConfig.SECTORS_STORE_NAME;
+import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
+import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.IWatcherService;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
@@ -19,6 +18,7 @@ import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
+import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.source.impl.CSVMessageChannelFactory;
@@ -37,10 +37,10 @@ import org.springframework.core.env.Environment;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * Spring configuration of the Sandbox ActivePivot server.<br>
@@ -49,6 +49,7 @@ import java.util.Properties;
  *
  * @author Quartet FS
  */
+@PropertySource(value = {"classpath:directories.properties"})
 @Configuration
 public class SourceConfig {
 
@@ -63,20 +64,55 @@ public class SourceConfig {
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
     public static final String SECTORS_TOPIC = SECTORS_STORE_NAME;
 
+
     // CSV Load
     @Bean
     public IWatcherService watcherService() {
         return new WatcherService();
     }
 
+    @SuppressWarnings("Duplicates")
     @Bean
     public CSVSource csvSource() {
         CSVSource csvSource = new CSVSource();
-        // Add topics here, eg.
-		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
-		history.getParserConfiguration().setSeparator(',');
 
+        // History Mapping
+        Map<Integer,String> historyMapping = new HashMap<>();
+        historyMapping.put(0, HISTORY__DATE);
+        historyMapping.put(1, HISTORY__OPEN);
+        historyMapping.put(2, HISTORY__HIGH);
+        historyMapping.put(3, HISTORY__LOW);
+        historyMapping.put(4, HISTORY__CLOSE);
+        historyMapping.put(5, HISTORY__VOLUME);
+        historyMapping.put(6, HISTORY__ADJ_CLOSE);
+
+        // Portfolios Mapping
+        Map<Integer, String> portfoliosMapping = new HashMap<>();
+        portfoliosMapping.put(0, PORTFOLIOS__DATE);
+        portfoliosMapping.put(1, PORTFOLIOS__PORTFOLIO_TYPE);
+        portfoliosMapping.put(2, PORTFOLIOS__NB_OF_STOCKS);
+        portfoliosMapping.put(3, PORTFOLIOS__STOCK_SYMB);
+        portfoliosMapping.put(4, PORTFOLIOS__POSITION_TYPE);
+
+        // Sectors Mapping
+        Map<Integer, String> sectorsMapping = new HashMap<>();
+        sectorsMapping.put(0, SECTORS__STOCK_SYMB);
+        sectorsMapping.put(1, SECTORS__COMPANY_NAME);
+        sectorsMapping.put(2, SECTORS__SECTOR);
+        sectorsMapping.put(3, SECTORS__INDUSTRY);
+
+        // Add topics here, eg.
+		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true, historyMapping);
+		history.getParserConfiguration().setSeparator(',');
 		csvSource.addTopic(history);
+
+        DirectoryCSVTopic sectors = createDirectoryTopic(SECTORS_TOPIC, env.getProperty("dir.sectors"), 4, "**.csv", true, sectorsMapping);
+        sectors.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(sectors);
+
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**.csv", false, portfoliosMapping);
+        portfolios.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(portfolios);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -87,11 +123,24 @@ public class SourceConfig {
     @Bean
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
+
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
 
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsPortfolio = new ArrayList<IColumnCalculator<ILineReader>>();
+        csvCalculatedColumnsPortfolio.add(new AColumnCalculator<ILineReader>(HISTORY__STOCK_SYMB) {
+            @Override
+            public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
+                String filename = iColumnCalculationContext.getContext().getCurrentFile().getName();
+                String stockSymbol = filename
+                        .replace("PriceHistory_","")
+                        .replace(".csv","")
+                        .replace("-",".");
+                return stockSymbol;
+            }
+        });
         // Add calculated columns here
 
-// 		channelFactory.setCalculatedColumns(topic, store, calculatedColumns);
+ 		channelFactory.setCalculatedColumns(HISTORY_TOPIC, HISTORY_STORE_NAME, csvCalculatedColumnsPortfolio);
 
         return channelFactory;
     }
@@ -106,13 +155,13 @@ public class SourceConfig {
      * @return
      */
 
-    private DirectoryCSVTopic createDirectoryTopic(String topic, String directory, int columnCount, String pattern, boolean skipFirstLine) {
+    private DirectoryCSVTopic createDirectoryTopic(String topic, String directory, int columnCount, String pattern, boolean skipFirstLine, Map<Integer,String> fieldsMapping) {
         CSVParserConfiguration cfg = new CSVParserConfiguration(columnCount);
-
+        cfg.setColumns(fieldsMapping);
         if (skipFirstLine) {
             cfg.setNumberSkippedLines(1);//skip the first line
         }
-        String baseDir = env.getProperty("dir.base");
+        String baseDir = env.getProperty("dir.data");
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
 
@@ -121,7 +170,9 @@ public class SourceConfig {
     public Void initialLoad() throws Exception {
         //csv
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-//		csvChannels.add(csvChannelFactory().createChannel(topic, datastore));
+		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
+		csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
+		csvChannels.add(csvChannelFactory().createChannel(SECTORS_TOPIC, SECTORS_STORE_NAME));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
