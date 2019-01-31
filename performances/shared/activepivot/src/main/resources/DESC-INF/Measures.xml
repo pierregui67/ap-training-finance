@@ -4,7 +4,19 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 
 	<!--Your measures and postprocessors here-->
-	<measure name="NbOfStocks" field="NbOfStocks" folder="quantities" aggregationFunctions="SUM" />
-	<measure name="Volume.Sum" field="Volume" folder="quantities" aggregationFunctions="SUM" />
+	<measure name="NbOfStocks" field="NbOfStocks" folder="Quantities"  aggregation="SUM" formatter="INT[#,###;-#,###]"/>
+	<measure name="Volume.Sum" field="Volume" folder="Quantities" aggregation="SUM" formatter="INT[#,###;-#,###]"/>
+	<!--Price AVG -->
+	<measure name="OpenPrice.Avg" field="Open" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="HighPrice.Avg" field="High" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="LowPrice.Avg" field="Low" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="ClosePrice.Avg" field="Close" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="AdjClosePrice.Avg" field="AdjClose" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<!--Price SUM -->
+	<measure name="OpenPrice.Sum" field="Open" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="HighPrice.Sum" field="High" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="LowPrice.Sum" field="Low" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="ClosePrice.Sum" field="Close" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]"/>
+	<measure name="AdjClosePrice.Sum" field="AdjClose" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]"/>
 
 </measures>

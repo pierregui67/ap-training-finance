@@ -12,7 +12,6 @@ import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
-import com.qfs.literal.ILiteralType;
 import com.qfs.literal.impl.LiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.store.IDatastore;
@@ -95,7 +94,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String PORTFOLIOS__POSITION_TYPE = "PositionType";
 
     /** Name of the reference from the history store to the sectors store */
-    public static final String HISTORY_TO_SECTORS_REF = "HistoryToSectors";
+//    public static final String HISTORY_TO_SECTORS_REF = "HistoryToSectors";
 
     /** Name of the reference from the portfolios store to the history store */
     public static final String PORTFOLIOS_TO_HISTORY_REF = "PortfoliosToHistory";
@@ -107,14 +106,6 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String DATE_PATTERN = "yyyy-MM-dd";
 
     // Define you datastores here:
-
-//    @Bean
-//    public IStoreDescription baseStore() {
-//        return new StoreDescriptionBuilder().withStoreName("BaseStore")
-//                .withField(SAMPLE_FIELD, ILiteralType.STRING).asKeyField()
-//                .updateOnlyIfDifferent()
-//                .build();
-//    }
 
     /** @return the description of the history store */
     @Bean
@@ -128,7 +119,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(HISTORY__CLOSE, LiteralType.DOUBLE)
                 .withField(HISTORY__VOLUME, LiteralType.INT)
                 .withField(HISTORY__ADJ_CLOSE, LiteralType.DOUBLE)
-                .withField(HISTORY__STOCK_SYMB, LiteralType.STRING).asKeyField()
+                .withField(HISTORY__STOCK_SYMB).asKeyField()
                 .build();
     }
 
@@ -137,10 +128,10 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription sectorsStoreDescription() {
         return new StoreDescriptionBuilder()
                 .withStoreName(SECTORS_STORE_NAME)
-                .withField(SECTORS__STOCK_SYMB, LiteralType.STRING).asKeyField()
-                .withField(SECTORS__COMPANY_NAME, LiteralType.STRING).dictionarized()
-                .withField(SECTORS__SECTOR, LiteralType.STRING).dictionarized()
-                .withField(SECTORS__INDUSTRY, LiteralType.STRING).dictionarized()
+                .withField(SECTORS__STOCK_SYMB).asKeyField()
+                .withField(SECTORS__COMPANY_NAME).dictionarized()
+                .withField(SECTORS__SECTOR).dictionarized()
+                .withField(SECTORS__INDUSTRY).dictionarized()
                 .build();
     }
 
@@ -150,10 +141,10 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
                 .withField(PORTFOLIOS__DATE, "date[" + DATE_PATTERN + "]").asKeyField()
-                .withField(PORTFOLIOS__PORTFOLIO_TYPE, LiteralType.STRING).asKeyField()
+                .withField(PORTFOLIOS__PORTFOLIO_TYPE).asKeyField()
                 .withField(PORTFOLIOS__NB_OF_STOCKS, LiteralType.INT)
-                .withField(PORTFOLIOS__STOCK_SYMB, LiteralType.STRING).asKeyField()
-                .withField(PORTFOLIOS__POSITION_TYPE, LiteralType.STRING).dictionarized()
+                .withField(PORTFOLIOS__STOCK_SYMB).asKeyField()
+                .withField(PORTFOLIOS__POSITION_TYPE).dictionarized()
                 .build();
     }
 
@@ -163,16 +154,11 @@ public class DatastoreConfig implements IDatastoreConfig {
     public Collection<IReferenceDescription> references() {
         final Collection<IReferenceDescription> references = new LinkedList<>();
         references.add(ReferenceDescription.builder()
-                .fromStore(HISTORY_STORE_NAME)
-                .toStore(SECTORS_STORE_NAME)
-                .withName(HISTORY_TO_SECTORS_REF)
-                .withMapping(HISTORY__STOCK_SYMB, SECTORS__STOCK_SYMB)
-                .build());
-        references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(HISTORY_STORE_NAME)
                 .withName(PORTFOLIOS_TO_HISTORY_REF)
-                .withMapping(PORTFOLIOS__DATE, HISTORY__DATE).withMapping(PORTFOLIOS__STOCK_SYMB, HISTORY__STOCK_SYMB)
+                .withMapping(PORTFOLIOS__STOCK_SYMB, HISTORY__STOCK_SYMB)
+                .withMapping(PORTFOLIOS__DATE, HISTORY__DATE)
                 .build());
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)

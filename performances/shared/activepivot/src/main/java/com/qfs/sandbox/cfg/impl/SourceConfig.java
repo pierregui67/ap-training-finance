@@ -124,24 +124,18 @@ public class SourceConfig {
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
 
-        CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
-
-        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsPortfolio = new ArrayList<IColumnCalculator<ILineReader>>();
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumnsPortfolio = new ArrayList<>();
         csvCalculatedColumnsPortfolio.add(new AColumnCalculator<ILineReader>(HISTORY__STOCK_SYMB) {
             @Override
             public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
-                String filename = iColumnCalculationContext.getContext().getCurrentFile().getName();
-                String stock_symb = "";
-                Pattern pattern = Pattern.compile("PriceHistory_(.*)\\.csv");
-                Matcher matcher = pattern.matcher(filename);
-                if(matcher.find()){
-                    stock_symb = matcher.group(1);
-                }
-                return stock_symb;
+                String fileName = iColumnCalculationContext.getContext().getCurrentFile().getName();
+                return fileName.replace("PriceHistory_", "")
+                                .replace(".csv", "")
+                                .replace("-", ".");
             }
         });
         // Add calculated columns here
-
+        CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
  		channelFactory.setCalculatedColumns(HISTORY_TOPIC, HISTORY_STORE_NAME, csvCalculatedColumnsPortfolio);
 
         return channelFactory;
@@ -172,9 +166,9 @@ public class SourceConfig {
     public Void initialLoad() throws Exception {
         //csv
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
-		csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
-		csvChannels.add(csvChannelFactory().createChannel(SECTORS_TOPIC, SECTORS_STORE_NAME));
+		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC));
+		csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
+		csvChannels.add(csvChannelFactory().createChannel(SECTORS_TOPIC));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
