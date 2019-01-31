@@ -138,9 +138,9 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(SECTORS_STORE_NAME)
                 .withField(SECTORS__STOCK_SYMB, LiteralType.STRING).asKeyField()
-                .withField(SECTORS__COMPANY_NAME, LiteralType.STRING)
-                .withField(SECTORS__SECTOR, LiteralType.STRING)
-                .withField(SECTORS__INDUSTRY, LiteralType.STRING)
+                .withField(SECTORS__COMPANY_NAME, LiteralType.STRING).dictionarized()
+                .withField(SECTORS__SECTOR, LiteralType.STRING).dictionarized()
+                .withField(SECTORS__INDUSTRY, LiteralType.STRING).dictionarized()
                 .build();
     }
 
@@ -153,7 +153,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(PORTFOLIOS__PORTFOLIO_TYPE, LiteralType.STRING).asKeyField()
                 .withField(PORTFOLIOS__NB_OF_STOCKS, LiteralType.INT)
                 .withField(PORTFOLIOS__STOCK_SYMB, LiteralType.STRING).asKeyField()
-                .withField(PORTFOLIOS__POSITION_TYPE, LiteralType.STRING)
+                .withField(PORTFOLIOS__POSITION_TYPE, LiteralType.STRING).dictionarized()
                 .build();
     }
 

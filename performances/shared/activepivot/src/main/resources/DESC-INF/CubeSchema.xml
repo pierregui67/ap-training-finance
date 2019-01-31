@@ -8,11 +8,11 @@
         <fields>
 
             <!--Portfolios Fields-->
-            <field name="Date" expression="Date"/>
-            <field name="PortfolioType" expression="PortfolioType"/>
-            <field name="NbOfStocks" expression="NbOfStocks"/>
-            <field name="StockSymbol" expression="StockSymbol"/>
-            <field name="PositionType" expression="PositionType"/>
+            <field name="Date"/>
+            <field name="StockSymbol"/>
+            <field name="NbOfStocks"/>
+            <field name="PortfolioType"/>
+            <field name="PositionType"/>
 
             <!-- Stocks History Fields -->
             <field name="Open" expression="PortfoliosToHistory/Open"/>

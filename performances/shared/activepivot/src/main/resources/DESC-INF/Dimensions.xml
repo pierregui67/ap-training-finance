@@ -5,12 +5,37 @@
 	
 	<!--Your dimensions here-->
 
-	<dimension name="SectorDimension">
+	<dimension name="Sectors">
 		<hierarchy name="SectorHierarchy">
 			<level name="Sector" />
 			<level name="Industry" />
 			<level name="CompanyName" />
+		</hierarchy>
+	</dimension>
+
+	<dimension name="Time" type="TIME">
+		<hierarchy name="TimeHierarchy" allMember="false">
+			<level name="Date" property="Date" type="TIME" formatter="DATE[yyyy-MM-dd]">
+				<comparator pluginKey="ReverseOrder" />
+			</level>
+		</hierarchy>
+	</dimension>
+
+	<dimension name="PositionTypes">
+		<hierarchy name="PositionTypeHierarchy">
+			<level name="PositionType"/>
+		</hierarchy>
+	</dimension>
+
+	<dimension name="StockSymbols">
+		<hierarchy name="StockSymbolHierarchy">
 			<level name="StockSymbol" />
+		</hierarchy>
+	</dimension>
+
+	<dimension name="PortfolioTypes">
+		<hierarchy name="PortfolioTypeHierarchy">
+			<level name="PortfolioType" property="PortfolioType"/>
 		</hierarchy>
 	</dimension>
 

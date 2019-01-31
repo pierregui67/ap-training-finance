@@ -2,7 +2,9 @@
 <measures xmlns="http://www.quartetfs.com"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
-	
+
 	<!--Your measures and postprocessors here-->
+	<measure name="NbOfStocks" field="NbOfStocks" folder="quantities" aggregationFunctions="SUM" />
+	<measure name="Volume.Sum" field="Volume" folder="quantities" aggregationFunctions="SUM" />
 
 </measures>

@@ -131,11 +131,13 @@ public class SourceConfig {
             @Override
             public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
                 String filename = iColumnCalculationContext.getContext().getCurrentFile().getName();
-                String stockSymbol = filename
-                        .replace("PriceHistory_","")
-                        .replace(".csv","")
-                        .replace("-",".");
-                return stockSymbol;
+                String stock_symb = "";
+                Pattern pattern = Pattern.compile("PriceHistory_(.*)\\.csv");
+                Matcher matcher = pattern.matcher(filename);
+                if(matcher.find()){
+                    stock_symb = matcher.group(1);
+                }
+                return stock_symb;
             }
         });
         // Add calculated columns here
