@@ -35,7 +35,7 @@
 
 	<dimension name="PortfolioTypes">
 		<hierarchy name="PortfolioTypeHierarchy">
-			<level name="PortfolioType" property="PortfolioType"/>
+			<level name="PortfolioType"/>
 		</hierarchy>
 	</dimension>
 

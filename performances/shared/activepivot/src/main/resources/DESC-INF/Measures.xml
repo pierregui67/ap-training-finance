@@ -49,14 +49,14 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="portfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NbOfStocks,ClosePrice.Avg" formatter="DOUBLE[#,###.00;-#,###.00]" folder="PostProcs">
+	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NbOfStocks,ClosePrice.Avg" formatter="DOUBLE[#,###.00;-#,###.00]" folder="PostProcs">
 		<properties>
 			<entry key="leafLevels" value="StockSymbol@StockSymbolHierarchy@StockSymbols" />
 			<entry key="aggregatedFunctions" value="SUM" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PortfolioTotalValue" pluginKey="PORTFOLIO_TOTAL_VALUE" underlyingMeasures="portfolioValue" folder="PostProcs">
+	<postProcessor name="PortfolioTotalValue" pluginKey="PORTFOLIO_TOTAL_VALUE" underlyingMeasures="PortfolioValue" folder="PostProcs">
 		<properties>
 			<entry key="levelToShift" value="Sector@SectorHierarchy@Sectors" />
 		</properties>
@@ -64,11 +64,11 @@
 
 	<postProcessor name="PortfolioValueWeight" pluginKey="FORMULA" folder="PostProcs" formatter="DOUBLE[#,###.00;-#,###.00]">
 		<properties>
-			<entry key="formula" value="aggregatedValue[portfolioValue],aggregatedValue[PortfolioTotalValue],int[0],div" />
+			<entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[PortfolioTotalValue],int[0],div" />
 		</properties>
 	</postProcessor>
 
-    <postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" folder="PostProcs" formatter="DOUBLE[#,###.00;-#,###.00]">
+    <postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" folder="PostProcs">
         <properties>
             <entry key="timeHierarchyName" value="TimeHierarchy" />
             <entry key="streamMeasureName" value="ClosePrice.Avg" />
@@ -81,6 +81,34 @@
 			<entry key="timeHierarchyName" value="TimeHierarchy" />
 			<entry key="streamMeasureName" value="ClosePrice.Avg" />
 			<entry key="positionType" value="CURRENT_STREAM" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="ExempleValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn">
+		<properties>
+			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy@PortfolioTypes" />
+			<entry key="portfolioType" value="exemple" />
+			<entry key="hierarchyName" value="PortfolioTypeHierarchy" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="BenchmarkValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn">
+		<properties>
+			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy@PortfolioTypes" />
+			<entry key="portfolioType" value="benchmark" />
+			<entry key="hierarchyName" value="PortfolioTypeHierarchy" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="Performance" pluginKey="FORMULA" folder="PostProcs" >
+		<properties>
+			<entry key="formula" value="aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="PostProcs" >
+		<properties>
+			<entry key="formula" value="((aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-),aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
 		</properties>
 	</postProcessor>
 

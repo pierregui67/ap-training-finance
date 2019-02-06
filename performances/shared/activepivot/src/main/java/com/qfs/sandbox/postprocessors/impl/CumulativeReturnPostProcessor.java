@@ -29,19 +29,15 @@ public class CumulativeReturnPostProcessor extends AStream2PositionPostProcessor
 
     @Override
     protected Double aggregateNextEntry(Double previousPosition, Object currentValue) {
-        Double res;
-        if((double)currentValue == 0.0){
-            currentValue = this.prevValue;
+        Double currentVal = (double)currentValue;
+        if(currentVal == 0.0) currentVal = prevValue;
+        if(initValue == 0.0){
+            initValue = currentVal;
+            prevValue = initValue;
         }
-        if(this.initValue == 0.0){
-            this.initValue = (double)currentValue;
-            this.prevValue = this.initValue;
-        }
+        prevValue = currentVal;
+        return ((currentVal - initValue) / initValue) * 100;
 
-        res = (((double)currentValue - initValue) / this.initValue) * 100;
-        this.prevValue = (double)currentValue;
-
-        return res;
     }
 
     @Override
