@@ -20,6 +20,7 @@ import com.qfs.store.log.ILogConfiguration;
 import com.qfs.store.log.ReplayException;
 import com.qfs.store.log.impl.LogConfiguration;
 import com.qfs.store.transaction.IDatastoreWithReplay;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -92,9 +93,6 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String PORTFOLIOS__NB_OF_STOCKS = "NbOfStocks";
     public static final String PORTFOLIOS__STOCK_SYMB = "StockSymbol";
     public static final String PORTFOLIOS__POSITION_TYPE = "PositionType";
-
-    /** Name of the reference from the history store to the sectors store */
-//    public static final String HISTORY_TO_SECTORS_REF = "HistoryToSectors";
 
     /** Name of the reference from the portfolios store to the history store */
     public static final String PORTFOLIOS_TO_HISTORY_REF = "PortfoliosToHistory";
@@ -209,7 +207,6 @@ public class DatastoreConfig implements IDatastoreConfig {
         final Collection<IStoreDescription> stores = new LinkedList<>();
 
 //      Add all you stores here
-
         stores.add(historyStoreDescription());
         stores.add(sectorsStoreDescription());
         stores.add(portfoliosStoreDescription());
