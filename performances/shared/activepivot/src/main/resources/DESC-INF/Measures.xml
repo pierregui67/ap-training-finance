@@ -75,7 +75,7 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousValue,PortfolioValue" folder="performance">
+	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousValue,PortfolioValue" formatter="DOUBLE[#,###.00;-#,###.00]" folder="performance">
 	</postProcessor>
 
 	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
@@ -86,29 +86,29 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="ExempleValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" visible="false">
+	<postProcessor name="ExempleValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false">
 		<properties>
-			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy@PortfolioTypes" />
+			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy" />
 			<entry key="portfolioType" value="exemple" />
 			<entry key="hierarchyName" value="PortfolioTypeHierarchy" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="BenchmarkValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" visible="false">
+	<postProcessor name="BenchmarkValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false">
 		<properties>
-			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy@PortfolioTypes" />
+			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy" />
 			<entry key="portfolioType" value="benchmark" />
 			<entry key="hierarchyName" value="PortfolioTypeHierarchy" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="Performance" pluginKey="FORMULA" folder="performance" >
+	<postProcessor name="Performance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
 		<properties>
 			<entry key="formula" value="aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="performance" >
+	<postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
 		<properties>
 			<entry key="formula" value="((aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-),aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
 		</properties>
