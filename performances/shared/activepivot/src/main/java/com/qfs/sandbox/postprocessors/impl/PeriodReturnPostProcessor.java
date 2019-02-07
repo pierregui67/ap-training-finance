@@ -1,17 +1,17 @@
 package com.qfs.sandbox.postprocessors.impl;
 
+import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
-import com.quartetfs.biz.pivot.postprocessing.impl.AStream2PositionPostProcessor;
+import com.quartetfs.biz.pivot.postprocessing.impl.ABasicPostProcessor;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = PeriodReturnPostProcessor.PLUGIN_KEY)
-public class PeriodReturnPostProcessor extends AStream2PositionPostProcessor<Double> {
+public class PeriodReturnPostProcessor extends ABasicPostProcessor<Double> {
 
     public static final String PLUGIN_KEY="PERIOD_RETURN";
 
-    private Double prevValue = 0.0;
     /**
      * Constructor
      *
@@ -22,24 +22,12 @@ public class PeriodReturnPostProcessor extends AStream2PositionPostProcessor<Dou
         super(name, creationContext);
     }
 
-    @Override
-    protected Double getInitialPosition() {
-        return 0.0;
-    }
 
     @Override
-    protected Double aggregateNextEntry(Double previousPosition, Object currentValue) {
-        Double res;
-        if(prevValue == 0.0 && (double)currentValue != 0.0){
-            prevValue = (double)currentValue;
-        }
-        if((double)currentValue != 0){
-            res = (((double) currentValue - prevValue) / this.prevValue) * 100;
-            prevValue = (double)currentValue;
-        }else{
-            return 0.0;
-        }
-        return res;
+    public Double evaluate(ILocation location, Object[] underlyingMeasures) {
+        Double previous = (Double) underlyingMeasures[0];
+        Double current = (Double) underlyingMeasures[1];
+        return previous == null ? current :  current == null ? - previous : current - previous;
     }
 
     @Override
