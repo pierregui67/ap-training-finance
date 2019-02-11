@@ -9,25 +9,27 @@ package com.qfs.sandbox.cfg.impl;
 import static com.qfs.sandbox.cfg.impl.DatastoreConfig.*;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
-import com.qfs.msg.IColumnCalculator;
-import com.qfs.msg.IMessageChannel;
-import com.qfs.msg.IWatcherService;
+import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
-import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.csv.translator.impl.AColumnCalculator;
+import com.qfs.msg.IColumnCalculator;
+import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.impl.WatcherService;
-import com.qfs.server.cfg.IDatastoreConfig;
+import com.qfs.msg.IWatcherService;
+import com.qfs.sandbox.publishers.impl.IndicesTuplePublisher;
+import com.qfs.source.impl.AutoCommitTuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.source.ITuplePublisher;
 import com.qfs.store.IDatastore;
-import com.qfs.store.IDatastoreSchemaMetadata;
 import com.qfs.store.impl.SchemaPrinter;
-import com.qfs.store.impl.StoreUtils;
+import com.qfs.store.log.impl.LogWriteException;
 import com.qfs.store.transaction.ITransactionManager;
 import com.qfs.util.timing.impl.StopWatch;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +40,6 @@ import org.springframework.core.env.Environment;
 import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -63,7 +63,7 @@ public class SourceConfig {
     public static final String HISTORY_TOPIC = HISTORY_STORE_NAME;
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
     public static final String SECTORS_TOPIC = SECTORS_STORE_NAME;
-
+    public static final String INDICES_TOPIC = INDICES_STORE_NAME;
 
     // CSV Load
     @Bean
@@ -101,6 +101,18 @@ public class SourceConfig {
         sectorsMapping.put(2, SECTORS__SECTOR);
         sectorsMapping.put(3, SECTORS__INDUSTRY);
 
+        // Indices Mapping
+        Map<Integer, String> indicesMapping = new HashMap<>();
+        indicesMapping.put(0, INDICES_INDEX_NAME);
+        indicesMapping.put(1, INDICES_COMPANY_NAME);
+        indicesMapping.put(2, INDICES_CLOSE_VALUE);
+        indicesMapping.put(3, INDICES_STOCK_SYMB);
+        indicesMapping.put(4, INDICES_TIMESTAMP);
+        indicesMapping.put(5, INDICES_EQUITY);
+        indicesMapping.put(6, INDICES_DATE_TIME);
+        indicesMapping.put(7, INDICES_VOLUME);
+
+
         // Add topics here, eg.
 		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true, historyMapping);
 		history.getParserConfiguration().setSeparator(',');
@@ -113,6 +125,10 @@ public class SourceConfig {
         DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**.csv", false, portfoliosMapping);
         portfolios.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(portfolios);
+
+        DirectoryCSVTopic indices = createDirectoryTopic(INDICES_TOPIC, env.getProperty("dir.indices"), 8, "**.csv", false, indicesMapping);
+        indices.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(indices);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -162,6 +178,21 @@ public class SourceConfig {
     }
 
     @Bean
+    public IMessageChannel<String, Object> indicesChannel(){
+        Map<String, Integer> nameToIndex;
+        nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
+
+        ArrayList<String> stores = new ArrayList<>();
+        stores.add(PORTFOLIOS_STORE_NAME);
+        stores.add(INDICES_STORE_NAME);
+
+        final ITuplePublisher<String> indicesPublisher = new AutoCommitTuplePublisher<>(
+                new IndicesTuplePublisher(datastore, stores, nameToIndex)
+        );
+        return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher);
+    }
+
+    @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
         //csv
@@ -184,6 +215,14 @@ public class SourceConfig {
         long elapsed = System.nanoTime() - before; // log that somewhere
         printStoreSizes();
 
+        return null;
+    }
+
+    @Bean
+    @DependsOn(value = {"initialLoad"})
+    public Void realTime() throws LogWriteException{
+        csvSource().listen(indicesChannel());
+        printStoreSizes();
         return null;
     }
 

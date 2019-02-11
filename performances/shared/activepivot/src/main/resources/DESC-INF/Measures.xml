@@ -7,13 +7,13 @@
 	<measure name="NbOfStocks" field="NbOfStocks" folder="Quantities"  aggregation="SUM" formatter="INT[#,###;-#,###]"/>
 	<measure name="Volume.Sum" field="Volume" folder="Quantities" aggregation="SUM" formatter="INT[#,###;-#,###]"/>
 
-	<!--Price AVG -->
+	<!-- Price AVG -->
 	<measure name="OpenPrice.Avg" field="Open" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 	<measure name="HighPrice.Avg" field="High" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 	<measure name="LowPrice.Avg" field="Low" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 	<measure name="ClosePrice.Avg" field="Close" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 	<measure name="AdjClosePrice.Avg" field="AdjClose" folder="Price" aggregation="AVG" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
-	<!--Price SUM -->
+	<!-- Price SUM -->
 	<measure name="OpenPrice.Sum" field="Open" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 	<measure name="HighPrice.Sum" field="High" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 	<measure name="LowPrice.Sum" field="Low" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
@@ -110,7 +110,7 @@
 
 	<postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
 		<properties>
-			<entry key="formula" value="((aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-),aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
+			<entry key="formula" value="(aggregatedValue[Performance],aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
 		</properties>
 	</postProcessor>
 

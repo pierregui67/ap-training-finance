@@ -1,9 +1,9 @@
 package com.qfs.sandbox.postprocessors.impl;
 
-import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationContext;
-import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
+import com.quartetfs.biz.pivot.ILocation;
 import com.quartetfs.biz.pivot.postprocessing.impl.ABasicPostProcessor;
+import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
 

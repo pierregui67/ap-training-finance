@@ -7,18 +7,18 @@
 package com.qfs.sandbox.cfg.impl;
 
 import com.qfs.desc.IDatastoreSchemaDescription;
-import com.qfs.desc.IReferenceDescription;
-import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
+import com.qfs.desc.IReferenceDescription;
+import com.qfs.desc.IStoreDescription;
 import com.qfs.literal.impl.LiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
-import com.qfs.store.IDatastore;
 import com.qfs.store.build.impl.DatastoreBuilder;
+import com.qfs.store.IDatastore;
 import com.qfs.store.log.ILogConfiguration;
-import com.qfs.store.log.ReplayException;
 import com.qfs.store.log.impl.LogConfiguration;
+import com.qfs.store.log.ReplayException;
 import com.qfs.store.transaction.IDatastoreWithReplay;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String HISTORY_STORE_NAME = "History";
 
     /** Name of the index store */
-    public static final String INDEX_STORE_NAME = "Index";
+    public static final String INDICES_STORE_NAME = "Indices";
 
     /** Name of the portfolios store */
     public static final String PORTFOLIOS_STORE_NAME = "Portfolios";
@@ -94,11 +94,26 @@ public class DatastoreConfig implements IDatastoreConfig {
     public static final String PORTFOLIOS__STOCK_SYMB = "StockSymbol";
     public static final String PORTFOLIOS__POSITION_TYPE = "PositionType";
 
+    // ///////////////////////////////////////////////
+    // Indices store fields
+
+    public static final String INDICES_INDEX_NAME = "IndexName";
+    public static final String INDICES_COMPANY_NAME = "CompanyName";
+    public static final String INDICES_CLOSE_VALUE = "CloseValue";
+    public static final String INDICES_STOCK_SYMB = "StockSymbol";
+    public static final String INDICES_TIMESTAMP = "Timestamp";
+    public static final String INDICES_EQUITY = "Equity";
+    public static final String INDICES_DATE_TIME = "DateTime";
+    public static final String INDICES_VOLUME = "Volume";
+
     /** Name of the reference from the portfolios store to the history store */
     public static final String PORTFOLIOS_TO_HISTORY_REF = "PortfoliosToHistory";
 
     /** Name of the reference from the portfolios store to the sectors store */
     public static final String PORTFOLIOS_TO_SECTORS_REF = "PortfoliosToSectors";
+
+    /** Name of the reference from the portfolios store to the sectors store */
+    public static final String PORTFOLIOS_TO_INDICES_REF = "PortfoliosToIndices";
 
     //Date pattern
     public static final String DATE_PATTERN = "yyyy-MM-dd";
@@ -143,6 +158,22 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withField(PORTFOLIOS__NB_OF_STOCKS, LiteralType.INT)
                 .withField(PORTFOLIOS__STOCK_SYMB).asKeyField()
                 .withField(PORTFOLIOS__POSITION_TYPE).dictionarized()
+                .withModuloPartitioning(PORTFOLIOS__PORTFOLIO_TYPE, 4)
+                .build();
+    }
+
+    /** @return the description of the portfolios store */
+    @Bean
+    public IStoreDescription indicesStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(INDICES_STORE_NAME)
+                .withField(INDICES_INDEX_NAME)
+                .withField(INDICES_COMPANY_NAME)
+                .withField(INDICES_CLOSE_VALUE)
+                .withField(INDICES_STOCK_SYMB).asKeyField()
+                .withField(INDICES_EQUITY)
+                .withField(INDICES_DATE_TIME, "date[" + DATE_PATTERN + "]").asKeyField()
+                .updateOnlyIfDifferent()
                 .build();
     }
 
@@ -163,6 +194,12 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .toStore(SECTORS_STORE_NAME)
                 .withName(PORTFOLIOS_TO_SECTORS_REF)
                 .withMapping(PORTFOLIOS__STOCK_SYMB, SECTORS__STOCK_SYMB)
+                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(INDICES_STORE_NAME)
+                .withName(PORTFOLIOS_TO_INDICES_REF)
+                .withMapping(PORTFOLIOS__STOCK_SYMB, INDICES_STOCK_SYMB)
                 .build());
         return references;
     }
@@ -210,6 +247,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(historyStoreDescription());
         stores.add(sectorsStoreDescription());
         stores.add(portfoliosStoreDescription());
+        stores.add(indicesStoreDescription());
 
         return new DatastoreSchemaDescription(stores, references());
     }
