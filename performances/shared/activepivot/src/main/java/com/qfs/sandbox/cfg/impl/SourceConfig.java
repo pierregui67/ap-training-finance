@@ -64,6 +64,7 @@ public class SourceConfig {
     public static final String PORTFOLIOS_TOPIC = PORTFOLIOS_STORE_NAME;
     public static final String SECTORS_TOPIC = SECTORS_STORE_NAME;
     public static final String INDICES_TOPIC = INDICES_STORE_NAME;
+    public static final String FOREX_TOPIC = FOREX_STORE_NAME;
 
     // CSV Load
     @Bean
@@ -103,14 +104,20 @@ public class SourceConfig {
 
         // Indices Mapping
         Map<Integer, String> indicesMapping = new HashMap<>();
-        indicesMapping.put(0, INDICES_INDEX_NAME);
-        indicesMapping.put(1, INDICES_COMPANY_NAME);
-        indicesMapping.put(2, INDICES_CLOSE_VALUE);
-        indicesMapping.put(3, INDICES_STOCK_SYMB);
-        indicesMapping.put(4, INDICES_TIMESTAMP);
-        indicesMapping.put(5, INDICES_EQUITY);
-        indicesMapping.put(6, INDICES_DATE_TIME);
-        indicesMapping.put(7, INDICES_VOLUME);
+        indicesMapping.put(0, INDICES__INDEX_NAME);
+        indicesMapping.put(1, INDICES__COMPANY_NAME);
+        indicesMapping.put(2, INDICES__CLOSE_VALUE);
+        indicesMapping.put(3, INDICES__STOCK_SYMB);
+        indicesMapping.put(4, INDICES__TIMESTAMP);
+        indicesMapping.put(5, INDICES__EQUITY);
+        indicesMapping.put(6, INDICES__DATE_TIME);
+        indicesMapping.put(7, INDICES__VOLUME);
+
+        // Forex Mapping
+        Map<Integer, String> forexMapping = new HashMap<>();
+        forexMapping.put(0, FOREX__CURRENCY_PAIR);
+        forexMapping.put(1, FOREX__DATE);
+        forexMapping.put(2, FOREX__CLOSE_RATE);
 
 
         // Add topics here, eg.
@@ -129,6 +136,10 @@ public class SourceConfig {
         DirectoryCSVTopic indices = createDirectoryTopic(INDICES_TOPIC, env.getProperty("dir.indices"), 8, "**.csv", false, indicesMapping);
         indices.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(indices);
+
+        DirectoryCSVTopic forex = createDirectoryTopic(FOREX_TOPIC, env.getProperty("dir.forex"), 3, "**.csv", true, forexMapping);
+        history.getParserConfiguration().setSeparator(',');
+        csvSource.addTopic(forex);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -177,20 +188,21 @@ public class SourceConfig {
         return new DirectoryCSVTopic(topic, cfg, Paths.get(baseDir, directory), FileSystems.getDefault().getPathMatcher("glob:" + pattern), watcherService());
     }
 
+    @SuppressWarnings("Duplicates")
     @Bean
     public IMessageChannel<String, Object> indicesChannel(){
         Map<String, Integer> nameToIndex;
         nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
 
         ArrayList<String> stores = new ArrayList<>();
-        stores.add(PORTFOLIOS_STORE_NAME);
-        stores.add(INDICES_STORE_NAME);
+        stores.add(FOREX_STORE_NAME);
 
         final ITuplePublisher<String> indicesPublisher = new AutoCommitTuplePublisher<>(
                 new IndicesTuplePublisher(datastore, stores, nameToIndex)
         );
         return csvChannelFactory().createChannel(INDICES_TOPIC, INDICES_STORE_NAME, indicesPublisher);
     }
+
 
     @Bean
     @DependsOn(value = "startManager")
@@ -200,6 +212,8 @@ public class SourceConfig {
 		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC));
 		csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC));
 		csvChannels.add(csvChannelFactory().createChannel(SECTORS_TOPIC));
+		csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC));
+
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {

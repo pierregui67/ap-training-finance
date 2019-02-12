@@ -30,20 +30,20 @@ public class IndicesTuplePublisher extends TuplePublisher {
                 elmt -> {
                     Object[] temp = (Object[]) elmt;
                     Object[] portfolioTemp = new Object[]{
-                            temp[map.get(INDICES_DATE_TIME)],
-                            temp[map.get(INDICES_INDEX_NAME)],
+                            temp[map.get(INDICES__DATE_TIME)],
+                            temp[map.get(INDICES__INDEX_NAME)],
                             100, // number of stocks = 100,
-                            temp[map.get(INDICES_STOCK_SYMB)],
-                            temp[map.get(INDICES_EQUITY)]
+                            temp[map.get(INDICES__STOCK_SYMB)],
+                            temp[map.get(INDICES__EQUITY)]
                     };
 
                     Object[] indiceTemp = new Object[]{
-                            temp[map.get(INDICES_INDEX_NAME)],
-                            temp[map.get(INDICES_COMPANY_NAME)],
-                            temp[map.get(INDICES_CLOSE_VALUE)],
-                            temp[map.get(INDICES_STOCK_SYMB)],
-                            temp[map.get(INDICES_EQUITY)],
-                            temp[map.get(INDICES_DATE_TIME)]
+                            temp[map.get(INDICES__INDEX_NAME)],
+                            temp[map.get(INDICES__COMPANY_NAME)],
+                            temp[map.get(INDICES__CLOSE_VALUE)],
+                            temp[map.get(INDICES__STOCK_SYMB)],
+                            temp[map.get(INDICES__EQUITY)],
+                            temp[map.get(INDICES__DATE_TIME)]
                     };
 
                     portfolioTuples.add(portfolioTemp);

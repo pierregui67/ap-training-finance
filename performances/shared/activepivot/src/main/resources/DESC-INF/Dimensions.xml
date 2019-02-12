@@ -21,6 +21,19 @@
 		</hierarchy>
 	</dimension>
 
+	<dimension name="Forex">
+		<hierarchy name="ForexHierarchy" allMember="false" factless="true">
+			<properties>
+				<entry key="storeName" value="Forex" />
+			</properties>
+			<level name="Currency">
+				<properties>
+					<entry key="fieldName" value="CurrencyPair" />
+				</properties>
+			</level>
+		</hierarchy>
+	</dimension>
+
 	<dimension name="PositionTypes">
 		<hierarchy name="PositionTypeHierarchy">
 			<level name="PositionType"/>

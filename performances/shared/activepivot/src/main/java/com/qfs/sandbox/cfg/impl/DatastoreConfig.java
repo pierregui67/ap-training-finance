@@ -61,6 +61,9 @@ public class DatastoreConfig implements IDatastoreConfig {
     /** Name of the sectors store */
     public static final String SECTORS_STORE_NAME = "Sectors";
 
+    /** Name of the forex store */
+    public static final String FOREX_STORE_NAME = "Forex";
+
     // ////////////////////////////////////////////////
     // Fields
     // ////////////////////////////////////////////////
@@ -97,14 +100,21 @@ public class DatastoreConfig implements IDatastoreConfig {
     // ///////////////////////////////////////////////
     // Indices store fields
 
-    public static final String INDICES_INDEX_NAME = "IndexName";
-    public static final String INDICES_COMPANY_NAME = "CompanyName";
-    public static final String INDICES_CLOSE_VALUE = "CloseValue";
-    public static final String INDICES_STOCK_SYMB = "StockSymbol";
-    public static final String INDICES_TIMESTAMP = "Timestamp";
-    public static final String INDICES_EQUITY = "Equity";
-    public static final String INDICES_DATE_TIME = "DateTime";
-    public static final String INDICES_VOLUME = "Volume";
+    public static final String INDICES__INDEX_NAME = "IndexName";
+    public static final String INDICES__COMPANY_NAME = "CompanyName";
+    public static final String INDICES__CLOSE_VALUE = "CloseValue";
+    public static final String INDICES__STOCK_SYMB = "StockSymbol";
+    public static final String INDICES__TIMESTAMP = "Timestamp";
+    public static final String INDICES__EQUITY = "Equity";
+    public static final String INDICES__DATE_TIME = "DateTime";
+    public static final String INDICES__VOLUME = "Volume";
+
+    // ///////////////////////////////////////////////
+    // Forex store fields
+
+    public static final String FOREX__CURRENCY_PAIR = "CurrencyPair";
+    public static final String FOREX__DATE = "Date";
+    public static final String FOREX__CLOSE_RATE = "CloseRate";
 
     /** Name of the reference from the portfolios store to the history store */
     public static final String PORTFOLIOS_TO_HISTORY_REF = "PortfoliosToHistory";
@@ -167,13 +177,25 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription indicesStoreDescription() {
         return new StoreDescriptionBuilder()
                 .withStoreName(INDICES_STORE_NAME)
-                .withField(INDICES_INDEX_NAME)
-                .withField(INDICES_COMPANY_NAME)
-                .withField(INDICES_CLOSE_VALUE)
-                .withField(INDICES_STOCK_SYMB).asKeyField()
-                .withField(INDICES_EQUITY)
-                .withField(INDICES_DATE_TIME, "date[" + DATE_PATTERN + "]").asKeyField()
+                .withField(INDICES__INDEX_NAME)
+                .withField(INDICES__COMPANY_NAME)
+                .withField(INDICES__CLOSE_VALUE)
+                .withField(INDICES__STOCK_SYMB).asKeyField()
+                .withField(INDICES__EQUITY)
+                .withField(INDICES__DATE_TIME, "date[" + DATE_PATTERN + "]").asKeyField()
                 .updateOnlyIfDifferent()
+                .build();
+    }
+
+    /** @return the description of the forex store */
+    @Bean
+    public IStoreDescription forexStoreDescription() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(FOREX_STORE_NAME)
+                .withField(FOREX__CURRENCY_PAIR).asKeyField()
+                .withField(FOREX__DATE, "date[" + DATE_PATTERN + "]").asKeyField()
+                .withField(FOREX__CLOSE_RATE, LiteralType.DOUBLE)
+                .withValuePartitioning(FOREX__CURRENCY_PAIR)
                 .build();
     }
 
@@ -199,7 +221,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(INDICES_STORE_NAME)
                 .withName(PORTFOLIOS_TO_INDICES_REF)
-                .withMapping(PORTFOLIOS__STOCK_SYMB, INDICES_STOCK_SYMB)
+                .withMapping(PORTFOLIOS__STOCK_SYMB, INDICES__STOCK_SYMB)
                 .build());
         return references;
     }
@@ -248,6 +270,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(sectorsStoreDescription());
         stores.add(portfoliosStoreDescription());
         stores.add(indicesStoreDescription());
+        stores.add(forexStoreDescription());
 
         return new DatastoreSchemaDescription(stores, references());
     }
