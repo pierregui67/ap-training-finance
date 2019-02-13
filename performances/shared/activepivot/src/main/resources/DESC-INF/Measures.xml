@@ -21,64 +21,74 @@
 	<measure name="AdjClosePrice.Sum" field="AdjClose" folder="Price" aggregation="SUM" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"/>
 
 	<!-- Min Depth postProcessor -->
-	<postProcessor name="OpenPriceSum.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="OpenPrice.Sum">
+	<postProcessor name="OpenPriceSum.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="OpenPrice.Sum"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="minimumDepth" value="1"/>
 			<entry key="hierarchyName" value="StockSymbolHierarchy"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="OpenPriceAvg.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="OpenPrice.Avg">
+	<postProcessor name="OpenPriceAvg.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="OpenPrice.Avg"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbolHierarchy"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="ClosePriceSum.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="ClosePrice.Sum">
+	<postProcessor name="ClosePriceSum.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="ClosePrice.Sum"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbolHierarchy"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="ClosePriceAvg.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="ClosePrice.Avg">
+	<postProcessor name="ClosePriceAvg.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="Price" underlyingMeasures="ClosePrice.Avg"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="hierarchyName" value="StockSymbolHierarchy"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NbOfStocks,ClosePrice.Avg" formatter="DOUBLE[#,###.00;-#,###.00]" folder="PostProcs">
+	<postProcessor name="PortfolioValue" pluginKey="PORTFOLIO_VALUE" underlyingMeasures="NbOfStocks,ClosePrice.Avg" formatter="DOUBLE[#,###.00;-#,###.00]" folder="PostProcs"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="leafLevels" value="StockSymbol@StockSymbolHierarchy@StockSymbols" />
 			<entry key="aggregatedFunctions" value="SUM" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PortfolioTotalValue" pluginKey="PORTFOLIO_TOTAL_VALUE" underlyingMeasures="PortfolioValue" folder="PostProcs" visible="false">
+	<postProcessor name="PortfolioTotalValue" pluginKey="PORTFOLIO_TOTAL_VALUE" underlyingMeasures="PortfolioValue" folder="PostProcs" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="levelToShift" value="Sector@SectorHierarchy@Sectors" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PortfolioValueWeight" pluginKey="FORMULA" folder="PostProcs" formatter="DOUBLE[#,###.00;-#,###.00]">
+	<postProcessor name="PortfolioValueWeight" pluginKey="FORMULA" folder="PostProcs" formatter="DOUBLE[#,###.00;-#,###.00]"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="formula" value="aggregatedValue[PortfolioValue],aggregatedValue[PortfolioTotalValue],int[0],div" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PreviousValue" pluginKey="PreviousValue" visible="false">
+	<postProcessor name="PreviousValue" pluginKey="PreviousValue" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="streamMeasureName" value="PortfolioValue" />
 			<entry key="timeHierarchyName" value="Date@TimeHierarchy@Time" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousValue,PortfolioValue" formatter="DOUBLE[#,###.00;-#,###.00]" folder="performance">
+	<postProcessor name="PeriodReturn" pluginKey="PERIOD_RETURN" underlyingMeasures="PreviousValue,PortfolioValue" formatter="DOUBLE[#,###.00;-#,###.00]" folder="performance"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 	</postProcessor>
 
-	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
+	<postProcessor name="CumulativeReturn" pluginKey="CUMULATIVE_RETURN" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="timeHierarchyName" value="Date@TimeHierarchy@Time" />
 			<entry key="streamMeasureName" value="PortfolioValue" />
@@ -86,7 +96,8 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="ExempleValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false">
+	<postProcessor name="ExempleValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy" />
 			<entry key="portfolioType" value="exemple" />
@@ -94,7 +105,8 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="BenchmarkValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false">
+	<postProcessor name="BenchmarkValues" pluginKey="PORTFOLIO_SELECT" underlyingMeasures="PeriodReturn" formatter="DOUBLE[#,###.00;-#,###.00]" visible="false"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="levelToShift" value="PortfolioType@PortfolioTypeHierarchy" />
 			<entry key="portfolioType" value="benchmark" />
@@ -102,15 +114,26 @@
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="Performance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
+	<postProcessor name="Performance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="formula" value="aggregatedValue[ExempleValues],aggregatedValue[BenchmarkValues],-" />
 		</properties>
 	</postProcessor>
 
-	<postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]">
+	<postProcessor name="RelativePerformance" pluginKey="FORMULA" folder="performance" formatter="DOUBLE[#,###.00;-#,###.00]"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
 		<properties>
 			<entry key="formula" value="(aggregatedValue[Performance],aggregatedValue[BenchmarkValues],int[0],div),int[100],*" />
+		</properties>
+	</postProcessor>
+
+	<postProcessor name="ForexRate" pluginKey="FOREX" folder="Forex" formatter="DOUBLE[#,###.0000]"
+				   continuousQueryHandlers="STORED, FOREX_HANDLER">
+		<properties>
+			<entry key="underlyingMeasures" value="contributors.COUNT"/>
+			<entry key="level" value="Currency@ForexHierarchy@Forex" />
+			<entry key="dateLevel" value="Date@TimeHierarchy@Time" />
 		</properties>
 	</postProcessor>
 
