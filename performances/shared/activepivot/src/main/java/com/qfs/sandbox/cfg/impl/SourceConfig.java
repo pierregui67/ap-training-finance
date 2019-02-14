@@ -138,7 +138,7 @@ public class SourceConfig {
         csvSource.addTopic(indices);
 
         DirectoryCSVTopic forex = createDirectoryTopic(FOREX_TOPIC, env.getProperty("dir.forex"), 3, "**.csv", true, forexMapping);
-        history.getParserConfiguration().setSeparator(',');
+        forex.getParserConfiguration().setSeparator(',');
         csvSource.addTopic(forex);
 
         Properties sourceProps = new Properties();
@@ -195,7 +195,8 @@ public class SourceConfig {
         nameToIndex = csvChannelFactory().getTranslator(INDICES_TOPIC, INDICES_STORE_NAME).getColumnIndexes();
 
         ArrayList<String> stores = new ArrayList<>();
-        stores.add(FOREX_STORE_NAME);
+        stores.add(PORTFOLIOS_STORE_NAME);
+        stores.add(INDICES_STORE_NAME);
 
         final ITuplePublisher<String> indicesPublisher = new AutoCommitTuplePublisher<>(
                 new IndicesTuplePublisher(datastore, stores, nameToIndex)
