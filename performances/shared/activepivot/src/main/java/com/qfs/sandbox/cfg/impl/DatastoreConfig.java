@@ -10,8 +10,8 @@ import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
+import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
-import com.qfs.literal.ILiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.store.IDatastore;
 import com.qfs.store.build.impl.DatastoreBuilder;
@@ -34,40 +34,134 @@ import java.util.logging.Logger;
  *
  * @author Quartet FS
  */
+
+
 @Configuration
 public class DatastoreConfig implements IDatastoreConfig {
 
-    private static final String SAMPLE_FIELD = "SampleField";
     /**
      * Spring environment, automatically wired
      */
+
     @Autowired
     private Environment env;
 
     private static final Logger LOGGER = Logger.getLogger(DatastoreConfig.class.getSimpleName());
 
-    // Define you datastores here:
+    //Store names
+    private static final String BASE_STORE_NAME = "BaseStore";
+    private static final String HISTORY_STORE_NAME = "HistoryStore";
+    private static final String SECTOR_STORE_NAME = "SectorStore";
+    private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
 
-    @Bean
+    //Base Store fields
+    private static final String STOCK_SYMBOL = "StockSymbol";
+    private static final String DATE = "Date";
+
+    //History Store fields
+    private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
+    private static final String HISTORY_DATE = "HistoryDate";
+    private static final String DATE_HISTORY = "Date";
+    private static final String OPEN = "Open";
+    private static final String HIGH = "High";
+    private static final String LOW = "Low";
+    private static final String CLOSE = "Close";
+    private static final String VOLUME = "Volume";
+    private static final String ADJ_CLOSE = "AdjustedClose";
+
+    //Sector Store fields
+    private static final String SECTOR_STOCK_SYMBOL = "SectorStockSymbol";
+    private static final String COMPANY_NAME = "CompanyName";
+    private static final String SECTOR = "Sector";
+    private static final String INDUSTRY = "Industry";
+
+    //Portfolios Store fields
+    private static final String PORTFOLIOS_DATE = "PortfoliosDate";
+    private static final String PORTFOLIOS_STOCK_SYMBOL = "Portfolios StockSymbol";
+    private static final String PORTFOLIOS_TYPE = "PortfoliosType";
+    private static final String STOCK_NUMBER = "StockNumber";
+    private static final String POSITION_TYPE = "PositionType";
+
+    //Reference names list
+    private static final String BASE_TO_PORTFOLIOS_REF = "BaseToPortfolios";
+    private static final String BASE_TO_HISTORY_REF = "BaseToHistory";
+    private static final String BASE_TO_SECTOR_REF = "BaseToSector";
+
+
+
+    // DataStore List :
+
     public IStoreDescription baseStore() {
-        return new StoreDescriptionBuilder().withStoreName("BaseStore")
-                .withField(SAMPLE_FIELD, ILiteralType.STRING).asKeyField()
+        return new StoreDescriptionBuilder()
+                .withStoreName(BASE_STORE_NAME)
+                .withField(STOCK_SYMBOL).asKeyField()
+                .withField(DATE).asKeyField()
                 .updateOnlyIfDifferent()
                 .build();
     }
 
-    // Define your references here:
 
-    @Bean
+    public IStoreDescription sectorStore(){
+        return new StoreDescriptionBuilder()
+                .withStoreName(SECTOR_STORE_NAME)
+                .withField(SECTOR_STOCK_SYMBOL).asKeyField()
+                .withField(COMPANY_NAME)
+                .withField(SECTOR)
+                .withField(INDUSTRY)
+                .build();
+    }
+
+    public IStoreDescription portfoliosStore() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(PORTFOLIOS_STORE_NAME)
+                .withField(PORTFOLIOS_STOCK_SYMBOL).asKeyField()
+                .withField(PORTFOLIOS_DATE).asKeyField()
+                .withField(PORTFOLIOS_TYPE)
+                .withField(STOCK_NUMBER)
+                .withField(POSITION_TYPE)
+                .build();
+    }
+
+    public IStoreDescription historyStore() {
+        return new StoreDescriptionBuilder()
+                .withStoreName(HISTORY_STORE_NAME)
+                .withField(HISTORY_STOCK_SYMBOL).asKeyField()
+                .withField(HISTORY_DATE).asKeyField()
+                .withField(OPEN)
+                .withField(HIGH)
+                .withField(LOW)
+                .withField(CLOSE)
+                .withField(VOLUME)
+                .withField(ADJ_CLOSE)
+                .build();
+    }
+
+
+
     public Collection<IReferenceDescription> references() {
         final Collection<IReferenceDescription> references = new LinkedList<>();
 
-//        references.add(ReferenceDescription.builder()
-//                .fromStore(...)
-//                .toStore(...)
-//                .withName(...)
-//                .withMapping(...)
-//                .build());
+        //Reference list
+        references.add(ReferenceDescription.builder()
+                .fromStore(BASE_STORE_NAME)
+                .toStore(SECTOR_STORE_NAME)
+                .withName(BASE_TO_SECTOR_REF)
+                .withMapping(STOCK_SYMBOL, SECTOR_STOCK_SYMBOL)
+                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore(BASE_STORE_NAME)
+                .toStore(PORTFOLIOS_STORE_NAME)
+                .withName(BASE_TO_PORTFOLIOS_REF)
+                .withMapping(STOCK_SYMBOL, PORTFOLIOS_STOCK_SYMBOL)
+                .withMapping(DATE,PORTFOLIOS_DATE)
+                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore(BASE_STORE_NAME)
+                .toStore(HISTORY_STORE_NAME)
+                .withName(BASE_TO_HISTORY_REF)
+                .withMapping(STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
+                .withMapping(DATE,HISTORY_DATE)
+                .build());
 
         return references;
     }
@@ -107,14 +201,16 @@ public class DatastoreConfig implements IDatastoreConfig {
      *
      * @return schema description
      */
+
     @Bean
     public IDatastoreSchemaDescription datastoreSchemaDescription() {
         final Collection<IStoreDescription> stores = new LinkedList<>();
 
-//      Add all you stores here
-
+        //Store List
         stores.add(baseStore());
-
+        stores.add(sectorStore());
+        stores.add(portfoliosStore());
+        stores.add(historyStore());
         return new DatastoreSchemaDescription(stores, references());
     }
 }

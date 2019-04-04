@@ -6,10 +6,8 @@
     <!-- Selection of fields from the datastore -->
     <datastoreSelection baseStore="BaseStore">
         <fields>
-
-            <!--Your fields here-->
-            <field name="SampleField"/>
-
+            <field name="StockSymbol"/>
+            <field name="Date"/>
         </fields>
     </datastoreSelection>
 
