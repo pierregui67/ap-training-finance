@@ -18,7 +18,12 @@ public class ColumnCalculator  implements IColumnCalculator<ILineReader> {
     @Override
     public Object compute(IColumnCalculationContext<ILineReader> context) {
         String fileName = context.getContext().getCurrentFile().getName();
-        return fileName.substring(13,19);
+        String strBegin = "PriceHistory_";
+        String strEnd = ".csv";
+        fileName.replace(strBegin, "");
+        fileName.replace(strEnd,"");
+        fileName.replace("-",".");
+        return fileName;
     }
 
 }

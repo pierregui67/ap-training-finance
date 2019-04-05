@@ -91,7 +91,7 @@ public class SourceConfig {
         sectors.getParserConfiguration();
         csvSource.addTopic(sectors);
 
-        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**", false);
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 5, "**", false);
         portfolios.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(portfolios);
 
