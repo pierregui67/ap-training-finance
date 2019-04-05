@@ -95,7 +95,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(BASE_STORE_NAME)
                 .withField(STOCK_SYMBOL).asKeyField()
-                .withField(DATE, ILiteralType.DATE).asKeyField()
+                .withField(DATE, DATE +"[yyyy-MM-dd]").asKeyField()
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -114,7 +114,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription portfoliosStore() {
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
-                .withField(PORTFOLIOS_DATE, ILiteralType.DATE).asKeyField()
+                .withField(PORTFOLIOS_DATE, DATE +"[yyyy-MM-dd]").asKeyField()
                 .withField(PORTFOLIOS_TYPE)
                 .withField(STOCK_NUMBER,    ILiteralType.INT)
                 .withField(PORTFOLIOS_STOCK_SYMBOL).asKeyField()
@@ -125,14 +125,14 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription historyStore() {
         return new StoreDescriptionBuilder()
                 .withStoreName(HISTORY_STORE_NAME)
-                .withField(HISTORY_STOCK_SYMBOL).asKeyField()
-                .withField(HISTORY_DATE,    ILiteralType.DATE).asKeyField()
+                .withField(HISTORY_DATE,    DATE +"[yyyy-MM-dd]").asKeyField()
                 .withField(OPEN,            ILiteralType.DOUBLE)
                 .withField(HIGH,            ILiteralType.DOUBLE)
                 .withField(LOW,             ILiteralType.DOUBLE)
                 .withField(CLOSE,           ILiteralType.DOUBLE)
                 .withField(VOLUME,          ILiteralType.DOUBLE)
                 .withField(ADJ_CLOSE,       ILiteralType.DOUBLE)
+                .withField(HISTORY_STOCK_SYMBOL).asKeyField()
                 .build();
     }
 
