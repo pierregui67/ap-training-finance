@@ -7,6 +7,7 @@
 package com.qfs.sandbox.cfg.impl;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
+import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.IWatcherService;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
@@ -32,6 +33,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -42,13 +44,32 @@ import java.util.Properties;
  * @author Quartet FS
  */
 @Configuration
+@PropertySource("classpath:cube.properties")
 public class SourceConfig {
+
+
 
     @Autowired
     protected Environment env;
 
     @Autowired
     protected IDatastore datastore;
+
+    //Store names
+    private static final String HISTORY_STORE_NAME = "HistoryStore";
+    private static final String SECTOR_STORE_NAME = "SectorStore";
+    private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
+
+    //Topic List
+    private static final String HISTORY_TOPIC = "HistoryTopic";
+    private static final String SECTOR_TOPIC = "SectorTopic";
+    private static final String PORTFOLIOS_TOPIC = "PortfoliosTopic";
+
+    //Calculated Column
+    private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
+
+
+
 
     // CSV Load
     @Bean
@@ -61,9 +82,17 @@ public class SourceConfig {
         CSVSource csvSource = new CSVSource();
 
         // Add topics here, eg.
-//		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
-//		history.getParserConfiguration().setSeparator(',');
-//		csvSource.addTopic(history);
+		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 8, "**PriceHistory_*.csv", true);
+		history.getParserConfiguration().setSeparator(',');
+		csvSource.addTopic(history);
+
+        DirectoryCSVTopic sectors = createDirectoryTopic(SECTOR_TOPIC, env.getProperty("dir.sectors"), 4, "**", true);
+        sectors.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(sectors);
+
+        DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 6, "**", false);
+        portfolios.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(portfolios);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -75,11 +104,9 @@ public class SourceConfig {
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
-
-        // Add calculated columns here
-
-// 		channelFactory.setCalculatedColumns(topic, store, calculatedColumns);
-
+        List<IColumnCalculator<ILineReader>> calculatedColumns = new ArrayList<>();
+        calculatedColumns.add(new ColumnCalculator(HISTORY_STOCK_SYMBOL));
+ 		channelFactory.setCalculatedColumns(HISTORY_TOPIC, HISTORY_STORE_NAME, calculatedColumns);
         return channelFactory;
     }
 
@@ -105,8 +132,11 @@ public class SourceConfig {
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
         //csv
+
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-//		csvChannels.add(csvChannelFactory().createChannel(topic, datastore));
+		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTOR_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {

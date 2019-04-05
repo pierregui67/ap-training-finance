@@ -12,6 +12,7 @@ import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
 import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
+import com.qfs.literal.ILiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
 import com.qfs.store.IDatastore;
 import com.qfs.store.build.impl.DatastoreBuilder;
@@ -61,7 +62,6 @@ public class DatastoreConfig implements IDatastoreConfig {
     //History Store fields
     private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
     private static final String HISTORY_DATE = "HistoryDate";
-    private static final String DATE_HISTORY = "Date";
     private static final String OPEN = "Open";
     private static final String HIGH = "High";
     private static final String LOW = "Low";
@@ -95,7 +95,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(BASE_STORE_NAME)
                 .withField(STOCK_SYMBOL).asKeyField()
-                .withField(DATE).asKeyField()
+                .withField(DATE, ILiteralType.DATE).asKeyField()
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -114,10 +114,10 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription portfoliosStore() {
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
-                .withField(PORTFOLIOS_STOCK_SYMBOL).asKeyField()
-                .withField(PORTFOLIOS_DATE).asKeyField()
+                .withField(PORTFOLIOS_DATE, ILiteralType.DATE).asKeyField()
                 .withField(PORTFOLIOS_TYPE)
-                .withField(STOCK_NUMBER)
+                .withField(STOCK_NUMBER,    ILiteralType.INT)
+                .withField(PORTFOLIOS_STOCK_SYMBOL).asKeyField()
                 .withField(POSITION_TYPE)
                 .build();
     }
@@ -126,13 +126,13 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(HISTORY_STORE_NAME)
                 .withField(HISTORY_STOCK_SYMBOL).asKeyField()
-                .withField(HISTORY_DATE).asKeyField()
-                .withField(OPEN)
-                .withField(HIGH)
-                .withField(LOW)
-                .withField(CLOSE)
-                .withField(VOLUME)
-                .withField(ADJ_CLOSE)
+                .withField(HISTORY_DATE,    ILiteralType.DATE).asKeyField()
+                .withField(OPEN,            ILiteralType.DOUBLE)
+                .withField(HIGH,            ILiteralType.DOUBLE)
+                .withField(LOW,             ILiteralType.DOUBLE)
+                .withField(CLOSE,           ILiteralType.DOUBLE)
+                .withField(VOLUME,          ILiteralType.DOUBLE)
+                .withField(ADJ_CLOSE,       ILiteralType.DOUBLE)
                 .build();
     }
 
