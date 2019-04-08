@@ -20,10 +20,11 @@ public class ColumnCalculator  implements IColumnCalculator<ILineReader> {
         String fileName = context.getContext().getCurrentFile().getName();
         String strBegin = "PriceHistory_";
         String strEnd = ".csv";
-        fileName.replace(strBegin, "");
-        fileName.replace(strEnd,"");
-        fileName.replace("-",".");
+        fileName = fileName.replace(strBegin, "");
+        fileName = fileName.replace(strEnd,"");
+        fileName = fileName.replace("-",".");
         return fileName;
+
     }
 
 }

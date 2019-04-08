@@ -17,6 +17,7 @@ import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
@@ -132,12 +133,15 @@ public class SourceConfig {
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
-        //csv
+
+        //Custom publisher that publish in BaseStore StockSymbol and Date from each store
+        ITuplePublisher historyPublisher = new CustomTuplePublisher(datastore,HISTORY_STORE_NAME);
+        ITuplePublisher portfoliosPublisher = new CustomTuplePublisher(datastore,PORTFOLIOS_STORE_NAME);
 
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
+		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME, historyPublisher));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTOR_STORE_NAME));
-        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME,portfoliosPublisher));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {

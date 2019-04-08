@@ -85,7 +85,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     //Reference names list
     private static final String BASE_TO_PORTFOLIOS_REF = "BaseToPortfolios";
     private static final String BASE_TO_HISTORY_REF = "BaseToHistory";
-    private static final String BASE_TO_SECTOR_REF = "BaseToSector";
+    private static final String PORTFOLIOS_TO_SECTOR = "PortfoliosToSector";
 
 
 
@@ -144,12 +144,6 @@ public class DatastoreConfig implements IDatastoreConfig {
         //Reference list
         references.add(ReferenceDescription.builder()
                 .fromStore(BASE_STORE_NAME)
-                .toStore(SECTOR_STORE_NAME)
-                .withName(BASE_TO_SECTOR_REF)
-                .withMapping(STOCK_SYMBOL, SECTOR_STOCK_SYMBOL)
-                .build());
-        references.add(ReferenceDescription.builder()
-                .fromStore(BASE_STORE_NAME)
                 .toStore(PORTFOLIOS_STORE_NAME)
                 .withName(BASE_TO_PORTFOLIOS_REF)
                 .withMapping(STOCK_SYMBOL, PORTFOLIOS_STOCK_SYMBOL)
@@ -161,6 +155,12 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withName(BASE_TO_HISTORY_REF)
                 .withMapping(STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
                 .withMapping(DATE,HISTORY_DATE)
+                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(SECTOR_STORE_NAME)
+                .withName(PORTFOLIOS_TO_SECTOR)
+                .withMapping(PORTFOLIOS_STOCK_SYMBOL, SECTOR_STOCK_SYMBOL)
                 .build());
 
         return references;
