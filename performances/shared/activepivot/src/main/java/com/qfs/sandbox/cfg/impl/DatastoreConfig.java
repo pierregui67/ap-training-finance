@@ -20,6 +20,7 @@ import com.qfs.store.log.ILogConfiguration;
 import com.qfs.store.log.ReplayException;
 import com.qfs.store.log.impl.LogConfiguration;
 import com.qfs.store.transaction.IDatastoreWithReplay;
+import com.quartetfs.biz.pivot.definitions.impl.ActivePivotDatastorePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -106,8 +107,8 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .withStoreName(SECTOR_STORE_NAME)
                 .withField(SECTOR_STOCK_SYMBOL).asKeyField()
                 .withField(COMPANY_NAME)
-                .withField(SECTOR)
-                .withField(INDUSTRY)
+                .withField(SECTOR).dictionarized()
+                .withField(INDUSTRY).dictionarized()
                 .build();
     }
 
@@ -171,7 +172,6 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IDatastore datastore() {
         String logFolder = System.getProperty("user.home");
         ILogConfiguration logConfiguration = new LogConfiguration(logFolder);//the transaction logs will sit in your home directory, feel free to change the folder
-
         IDatastoreWithReplay dwr = new DatastoreBuilder()
                 .setSchemaDescription(datastoreSchemaDescription())
                 .setLogConfiguration(logConfiguration)

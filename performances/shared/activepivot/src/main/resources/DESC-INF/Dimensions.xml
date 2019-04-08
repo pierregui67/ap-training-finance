@@ -4,9 +4,17 @@
 	xsi:schemaLocation="http://www.quartetfs.com ../activepivot-types.xsd">
 	
 	<!--Your dimensions here-->
-	<dimension name="StockDimension">
-		<hierarchy name="StockHierarchy">
-			<level name="StockLevel" property="StockSymbol"/>
+	<dimension name="StocksDimension">
+		<hierarchy name="StocksHierarchy">
+
+            <level name="Sector"        property="Sector"/>
+            <level name="Industry"      property="Industry"/>
+            <level name="StockSymbol"   property="StockSymbol"/>
+            <level name="CompanyName"   property="CompanyName"/>
+
 		</hierarchy>
+        <hierarchy name="DateHierarchy">
+            <level name="DateLevel" property="Date"/>
+        </hierarchy>
 	</dimension>
 </dimensions>
