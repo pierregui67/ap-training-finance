@@ -10,6 +10,8 @@ import javafx.util.Pair;
 
 import java.util.*;
 
+import static java.lang.Math.max;
+
 
 public class CustomTuplePublisher<I> implements ITuplePublisher<I> {
 
@@ -23,7 +25,7 @@ public class CustomTuplePublisher<I> implements ITuplePublisher<I> {
     private static final String HISTORY_DATE = "HistoryDate";
 
     private static final String PORTFOLIOS_DATE = "PortfoliosDate";
-    private static final String PORTFOLIOS_STOCK_SYMBOL = "Portfolios StockSymbol";
+    private static final String PORTFOLIOS_STOCK_SYMBOL = "PortfoliosStockSymbol";
 
     protected final IDatastore datastore;
     protected final Collection<String> stores;
@@ -80,7 +82,6 @@ public class CustomTuplePublisher<I> implements ITuplePublisher<I> {
                 basicStorePublisher(store, processedTuples); //publish stock and date in baseStore
             }
         }
-
     }
 
     private void basicStorePublisher(String store, Collection<Object[]> originalTuples) {
@@ -95,6 +96,8 @@ public class CustomTuplePublisher<I> implements ITuplePublisher<I> {
         Iterator<Object[]> iterator = originalTuples.iterator();
         while (iterator.hasNext()) {
             Object[] o = iterator.next();
+            //if (stockIndex == 3) {System.out.println(o[1]);}
+            //if (o.length >= max(stockIndex,dateIndex)) {}
             basicStoreTuples.add(new Object[]{o[stockIndex], o[dateIndex]});
         }
         this.datastore.getTransactionManager().addAll(BASE_STORE_NAME, basicStoreTuples);

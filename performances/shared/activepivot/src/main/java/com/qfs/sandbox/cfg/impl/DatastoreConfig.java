@@ -78,7 +78,7 @@ public class DatastoreConfig implements IDatastoreConfig {
 
     //Portfolios Store fields
     private static final String PORTFOLIOS_DATE = "PortfoliosDate";
-    private static final String PORTFOLIOS_STOCK_SYMBOL = "Portfolios StockSymbol";
+    private static final String PORTFOLIOS_STOCK_SYMBOL = "PortfoliosStockSymbol";
     private static final String PORTFOLIOS_TYPE = "PortfoliosType";
     private static final String STOCK_NUMBER = "StockNumber";
     private static final String POSITION_TYPE = "PositionType";
@@ -106,7 +106,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(SECTOR_STORE_NAME)
                 .withField(SECTOR_STOCK_SYMBOL).asKeyField()
-                .withField(COMPANY_NAME)
+                .withField(COMPANY_NAME).dictionarized()
                 .withField(SECTOR).dictionarized()
                 .withField(INDUSTRY).dictionarized()
                 .build();
@@ -116,7 +116,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
                 .withField(PORTFOLIOS_DATE, DATE +"[yyyy-MM-dd]").asKeyField()
-                .withField(PORTFOLIOS_TYPE)
+                .withField(PORTFOLIOS_TYPE).dictionarized()
                 .withField(STOCK_NUMBER,    ILiteralType.INT)
                 .withField(PORTFOLIOS_STOCK_SYMBOL).asKeyField()
                 .withField(POSITION_TYPE)

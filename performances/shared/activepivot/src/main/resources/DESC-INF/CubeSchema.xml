@@ -16,7 +16,7 @@
             <field name="AdjustedClose" expression="BaseToHistory/AdjustedClose" />
 
             <!-- Portfolios Store  -->
-            <field name="StockType"			expression="BaseToPortfolios/PortfoliosDate" />
+            <field name="PortfoliosType"			expression="BaseToPortfolios/PortfoliosType" />
             <field name="StockNumber"          expression="BaseToPortfolios/StockNumber" />
             <field name="PositionType"           expression="BaseToPortfolios/PositionType" />
 

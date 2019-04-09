@@ -6,13 +6,15 @@
 	<!--Your measures and postprocessors here-->
 
     <!-- Measures -->
+
 	<measure field="Open" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
 	<measure field="High" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
 	<measure field="Low" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
 	<measure field="Close" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
 	<measure field="Volume" 	 	formatter="DOUBLE[#,###.0000;-#,###.00]" />
 	<measure field="AdjustedClose" 	formatter="DOUBLE[#,###.0000;-#,###.00]" />
-    <measure field="PositionType" 	formatter="DOUBLE[#,###.0000;-#,###.00]" />
+    <measure field="StockNumber" 	formatter="INT" />
+
 
 
 
