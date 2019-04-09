@@ -105,6 +105,7 @@ public class SourceConfig {
     @Bean
     @DependsOn(value = "csvSource")
     public CSVMessageChannelFactory csvChannelFactory() {
+
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
         List<IColumnCalculator<ILineReader>> calculatedColumns = new ArrayList<>();
         calculatedColumns.add(new ColumnCalculator(HISTORY_STOCK_SYMBOL));
@@ -134,14 +135,11 @@ public class SourceConfig {
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
 
-        //Custom publisher that publish in BaseStore StockSymbol and Date from each store
-        ITuplePublisher historyPublisher = new CustomTuplePublisher(datastore,HISTORY_STORE_NAME);
-        ITuplePublisher portfoliosPublisher = new CustomTuplePublisher(datastore,PORTFOLIOS_STORE_NAME);
 
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME, historyPublisher));
+		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTOR_STORE_NAME));
-        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME,portfoliosPublisher));
+        csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {

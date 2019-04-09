@@ -15,7 +15,12 @@
     <dimension name = "Portfolios">
         <hierarchy name="Portfolios">
             <level name="PortfoliosType" property="PortfoliosType"/>
-            <level name="StockSymbol" property="StockSymbol"/>
+        </hierarchy>
+    </dimension>
+
+    <dimension name = "Stock">
+        <hierarchy name="Stock">
+            <level name="StockSymbol" property="PortfoliosStockSymbol"/>
         </hierarchy>
     </dimension>
 

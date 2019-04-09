@@ -20,7 +20,6 @@ import com.qfs.store.log.ILogConfiguration;
 import com.qfs.store.log.ReplayException;
 import com.qfs.store.log.impl.LogConfiguration;
 import com.qfs.store.transaction.IDatastoreWithReplay;
-import com.quartetfs.biz.pivot.definitions.impl.ActivePivotDatastorePostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,14 +50,10 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final Logger LOGGER = Logger.getLogger(DatastoreConfig.class.getSimpleName());
 
     //Store names
-    private static final String BASE_STORE_NAME = "BaseStore";
     private static final String HISTORY_STORE_NAME = "HistoryStore";
     private static final String SECTOR_STORE_NAME = "SectorStore";
     private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
 
-    //Base Store fields
-    private static final String STOCK_SYMBOL = "StockSymbol";
-    private static final String DATE = "Date";
 
     //History Store fields
     private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
@@ -77,29 +72,19 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final String INDUSTRY = "Industry";
 
     //Portfolios Store fields
-    private static final String PORTFOLIOS_DATE = "PortfoliosDate";
     private static final String PORTFOLIOS_STOCK_SYMBOL = "PortfoliosStockSymbol";
     private static final String PORTFOLIOS_TYPE = "PortfoliosType";
     private static final String STOCK_NUMBER = "StockNumber";
     private static final String POSITION_TYPE = "PositionType";
+    private static final String DATE = "Date";
 
     //Reference names list
-    private static final String BASE_TO_PORTFOLIOS_REF = "BaseToPortfolios";
     private static final String BASE_TO_HISTORY_REF = "BaseToHistory";
-    private static final String PORTFOLIOS_TO_SECTOR = "PortfoliosToSector";
+    private static final String BASE_TO_SECTOR = "BaseToSector";
 
 
 
     // DataStore List :
-
-    public IStoreDescription baseStore() {
-        return new StoreDescriptionBuilder()
-                .withStoreName(BASE_STORE_NAME)
-                .withField(STOCK_SYMBOL).asKeyField()
-                .withField(DATE, DATE +"[yyyy-MM-dd]").asKeyField()
-                .updateOnlyIfDifferent()
-                .build();
-    }
 
 
     public IStoreDescription sectorStore(){
@@ -115,11 +100,12 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription portfoliosStore() {
         return new StoreDescriptionBuilder()
                 .withStoreName(PORTFOLIOS_STORE_NAME)
-                .withField(PORTFOLIOS_DATE, DATE +"[yyyy-MM-dd]").asKeyField()
-                .withField(PORTFOLIOS_TYPE).dictionarized()
+                .withField(DATE, DATE +"[yyyy-MM-dd]").asKeyField()
+                .withField(PORTFOLIOS_TYPE).dictionarized().asKeyField()
                 .withField(STOCK_NUMBER,    ILiteralType.INT)
                 .withField(PORTFOLIOS_STOCK_SYMBOL).asKeyField()
                 .withField(POSITION_TYPE)
+                .updateOnlyIfDifferent()
                 .build();
     }
 
@@ -144,23 +130,16 @@ public class DatastoreConfig implements IDatastoreConfig {
 
         //Reference list
         references.add(ReferenceDescription.builder()
-                .fromStore(BASE_STORE_NAME)
-                .toStore(PORTFOLIOS_STORE_NAME)
-                .withName(BASE_TO_PORTFOLIOS_REF)
-                .withMapping(STOCK_SYMBOL, PORTFOLIOS_STOCK_SYMBOL)
-                .withMapping(DATE,PORTFOLIOS_DATE)
-                .build());
-        references.add(ReferenceDescription.builder()
-                .fromStore(BASE_STORE_NAME)
+                .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(HISTORY_STORE_NAME)
                 .withName(BASE_TO_HISTORY_REF)
-                .withMapping(STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
+                .withMapping(PORTFOLIOS_STOCK_SYMBOL, HISTORY_STOCK_SYMBOL)
                 .withMapping(DATE,HISTORY_DATE)
                 .build());
         references.add(ReferenceDescription.builder()
                 .fromStore(PORTFOLIOS_STORE_NAME)
                 .toStore(SECTOR_STORE_NAME)
-                .withName(PORTFOLIOS_TO_SECTOR)
+                .withName(BASE_TO_SECTOR)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, SECTOR_STOCK_SYMBOL)
                 .build());
 
@@ -207,9 +186,8 @@ public class DatastoreConfig implements IDatastoreConfig {
         final Collection<IStoreDescription> stores = new LinkedList<>();
 
         //Store List
-        stores.add(baseStore());
-        stores.add(sectorStore());
         stores.add(portfoliosStore());
+        stores.add(sectorStore());
         stores.add(historyStore());
         return new DatastoreSchemaDescription(stores, references());
     }
