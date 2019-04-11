@@ -6,21 +6,16 @@
 	<!--Your dimensions here-->
 	<dimension name="Sector">
 		<hierarchy name="Sector">
-            <level name="Industry"      property="Industry"/>
             <level name="Sector"        property="Sector"/>
+            <level name="Industry"      property="Industry"/>
             <level name="CompanyName"   property="CompanyName"/>
+            <level name="StockSymbol" property="PortfoliosStockSymbol"/>
 		</hierarchy>
     </dimension>
 
     <dimension name = "Portfolios">
         <hierarchy name="Portfolios">
             <level name="PortfoliosType" property="PortfoliosType"/>
-        </hierarchy>
-    </dimension>
-
-    <dimension name = "Stock">
-        <hierarchy name="Stock">
-            <level name="StockSymbol" property="PortfoliosStockSymbol"/>
         </hierarchy>
     </dimension>
 

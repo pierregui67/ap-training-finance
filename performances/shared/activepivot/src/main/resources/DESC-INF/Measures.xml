@@ -17,42 +17,42 @@
 
 	<postProcessor name="Open.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Open.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
 		<properties>
-			<entry key="hierarchyName" value="Stock"/>
+			<entry key="hierarchyName" value="Sector"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
 
     <postProcessor name="High.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="High.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
-            <entry key="hierarchyName" value="Stock"/>
+            <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
     <postProcessor name="Low.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Low.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
-            <entry key="hierarchyName" value="Stock"/>
+            <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
     <postProcessor name="Close.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Close.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
-            <entry key="hierarchyName" value="Stock"/>
+            <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
     <postProcessor name="AdjustedClose.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="AdjustedClose.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
-            <entry key="hierarchyName" value="Stock"/>
+            <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
     <postProcessor name="PortfoliosValues" pluginKey="PORTFOLIOS_VALUES" underlyingMeasures="Open.SUM, StockNumber.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" visible="false">
         <properties>
-            <entry key="leafLevels" value="PortfoliosType@Portfolios@Portfolios" />
+            <entry key="leafLevels" value="StockSymbol@Sector@Sector" />
             <entry key="aggregationFunction" value="SUM" />
         </properties>
     </postProcessor>
@@ -68,11 +68,11 @@
 
     <postProcessor name="Shift" pluginKey="SHIFT_WEIGHT" underlyingMeasures="PortfoliosValues">
         <properties>
-            <entry key="LevelToShift" value="Industry@Sector@Sector"/>
+            <entry key="LevelToShift" value="StockSymbol@Sector@Sector"/>
         </properties>
     </postProcessor>
 
-    <postProcessor name="Weight" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="PortfoliosValues,Shift"/>
+    <postProcessor name="Weight" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="PortfoliosValues,Shift" formatter="DOUBLE[#,###.0000;-#,###.00]"/>
 
 
 </measures>

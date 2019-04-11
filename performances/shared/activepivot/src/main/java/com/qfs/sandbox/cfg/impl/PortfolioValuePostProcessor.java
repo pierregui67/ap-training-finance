@@ -5,7 +5,8 @@ import com.quartetfs.biz.pivot.cube.hierarchy.measures.IPostProcessorCreationCon
 import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.impl.ADynamicAggregationPostProcessor;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
-import sun.rmi.rmic.iiop.Generator;
+
+
 
 @QuartetExtendedPluginValue(intf = IPostProcessor.class, key = PortfolioValuePostProcessor.PLUGIN_KEY)
 public class PortfolioValuePostProcessor extends ADynamicAggregationPostProcessor<Double> {

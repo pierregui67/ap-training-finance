@@ -25,8 +25,9 @@ public class WeightDividePostProcessor extends ABasicPostProcessor<Double> {
     @Override
     public Double evaluate(ILocation location, Object[] underlyingMeasures) {
         final double num = ((Number) underlyingMeasures[0]).doubleValue();
+        final double num_percent = num * 100.0;
         final double total = ((Number) underlyingMeasures[1]).doubleValue();
-        return Double.valueOf(num * 100/total);
+        return num_percent /total;
     }
 
     @Override
