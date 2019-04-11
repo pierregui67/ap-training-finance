@@ -7,16 +7,72 @@
 
     <!-- Measures -->
 
-	<measure field="Open" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
-	<measure field="High" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
-	<measure field="Low" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
-	<measure field="Close" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]" />
-	<measure field="Volume" 	 	formatter="DOUBLE[#,###.0000;-#,###.00]" />
-	<measure field="AdjustedClose" 	formatter="DOUBLE[#,###.0000;-#,###.00]" />
-    <measure field="StockNumber" 	formatter="INT" />
+	<measure field="Open" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
+	<measure field="High" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
+	<measure field="Low" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
+	<measure field="Close" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
+	<measure field="Volume" 	 	formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
+	<measure field="AdjustedClose" 	formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
+    <measure field="StockNumber" 	formatter="DOUBLE" />
+
+	<postProcessor name="Open.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Open.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+		<properties>
+			<entry key="hierarchyName" value="Stock"/>
+			<entry key="minimumDepth" value="1"/>
+		</properties>
+	</postProcessor>
+
+    <postProcessor name="High.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="High.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="hierarchyName" value="Stock"/>
+            <entry key="minimumDepth" value="1"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="Low.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Low.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="hierarchyName" value="Stock"/>
+            <entry key="minimumDepth" value="1"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="Close.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Close.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="hierarchyName" value="Stock"/>
+            <entry key="minimumDepth" value="1"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="AdjustedClose.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="AdjustedClose.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="hierarchyName" value="Stock"/>
+            <entry key="minimumDepth" value="1"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="PortfoliosValues" pluginKey="PORTFOLIOS_VALUES" underlyingMeasures="Open.SUM, StockNumber.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" visible="false">
+        <properties>
+            <entry key="leafLevels" value="PortfoliosType@Portfolios@Portfolios" />
+            <entry key="aggregationFunction" value="SUM" />
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="PortfoliosValues.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="PortfoliosValues" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="hierarchyName" value="Portfolios"/>
+            <entry key="minimumDepth" value="1"/>
+        </properties>
+    </postProcessor>
 
 
 
+    <postProcessor name="Shift" pluginKey="SHIFT_WEIGHT" underlyingMeasures="PortfoliosValues">
+        <properties>
+            <entry key="LevelToShift" value="Industry@Sector@Sector"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="Weight" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="PortfoliosValues,Shift"/>
 
 
 </measures>
