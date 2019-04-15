@@ -13,43 +13,46 @@
 	<measure field="Close" 	 		formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
 	<measure field="Volume" 	 	formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
 	<measure field="AdjustedClose" 	formatter="DOUBLE[#,###.0000;-#,###.00]"  visible="false"/>
-    <measure field="StockNumber" 	formatter="DOUBLE" />
+    <measure field="StockNumber" 	formatter="DOUBLE" visible="false" />
 
-	<postProcessor name="Open.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Open.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+    <!-- Raw Values with minimum depth in folder : "RawValues" -->
+	<postProcessor name="Open.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="RawValues" underlyingMeasures="Open.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
 		<properties>
 			<entry key="hierarchyName" value="Sector"/>
 			<entry key="minimumDepth" value="1"/>
 		</properties>
 	</postProcessor>
 
-    <postProcessor name="High.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="High.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+    <postProcessor name="High.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="RawValues" underlyingMeasures="High.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
             <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
-    <postProcessor name="Low.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Low.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+    <postProcessor name="Low.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="RawValues" underlyingMeasures="Low.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
             <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
-    <postProcessor name="Close.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Close.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+    <postProcessor name="Close.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="RawValues" underlyingMeasures="Close.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
             <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
-    <postProcessor name="AdjustedClose.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="AdjustedClose.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
+    <postProcessor name="AdjustedClose.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" folder="RawValues" underlyingMeasures="AdjustedClose.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" >
         <properties>
             <entry key="hierarchyName" value="Sector"/>
             <entry key="minimumDepth" value="1"/>
         </properties>
     </postProcessor>
 
+
+    <!-- Portfolios PP and min depth-->
     <postProcessor name="PortfoliosValues" pluginKey="PORTFOLIOS_VALUES" underlyingMeasures="Open.SUM, StockNumber.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" visible="false">
         <properties>
             <entry key="leafLevels" value="StockSymbol@Sector@Sector" />
@@ -65,14 +68,56 @@
     </postProcessor>
 
 
-
-    <postProcessor name="Shift" pluginKey="SHIFT_WEIGHT" underlyingMeasures="PortfoliosValues">
+    <!-- Weight PP -->
+    <postProcessor name="Shift" pluginKey="SHIFT_WEIGHT" underlyingMeasures="PortfoliosValues" visible="false" >
         <properties>
             <entry key="LevelToShift" value="StockSymbol@Sector@Sector"/>
         </properties>
     </postProcessor>
 
-    <postProcessor name="Weight" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="PortfoliosValues,Shift" formatter="DOUBLE[#,###.0000;-#,###.00]"/>
+    <postProcessor name="Weight" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="PortfoliosValues,Shift" visible="false"/>
+
+    <postProcessor name="Weight.MIN_DEPTH" pluginKey="MINIMUM_DEPTH" underlyingMeasures="Weight" formatter = "DOUBLE[#,###.00%;-#,###.00%]" >
+        <properties>
+            <entry key="hierarchyName" value="Portfolios"/>
+            <entry key="minimumDepth" value="1"/>
+        </properties>
+    </postProcessor>
+
+    <!-- Value Evolution PP -->
+    <postProcessor name="PortfoliosValue.NullWE" pluginKey="WE_NULL" underlyingMeasures="PortfoliosValues" visible="false"/>
+
+    <postProcessor name="PreviousValue" pluginKey="PreviousValue" formatter = "DOUBLE[#,###.0000;-#,###.00]" visible="true">
+        <properties>
+            <entry key="timeHierarchyName" value="Date"/>
+            <entry key="streamMeasureName" value="PortfoliosValue.NullWE"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="ValueEvolution" pluginKey="VALUE_EVOLUTION" underlyingMeasures="PortfoliosValues.MIN_DEPTH,PreviousValue" formatter = "DOUBLE[#,###.00%;-#,###.00%]" visible="true"/>
+
+
+    <!-- Cumulative Evolution -->
+
+    <postProcessor name="Delta" pluginKey="SoustractionPP" underlyingMeasures="PortfoliosValues.MIN_DEPTH, PreviousValue" visible="true"/>
+
+    <postProcessor name="CumulativeDelta" pluginKey="CUMULATIVE_EVOLUTION" formatter = "DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="timeHierarchyName" value="Date"/>
+            <entry key="streamMeasureName" value="Delta"/>
+            <entry key="positionType" value="CURRENT_STREAM"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="Original" pluginKey="ORIGINAL" formatter = "DOUBLE[#,###.0000;-#,###.00]" >
+        <properties>
+            <entry key="timeHierarchyName" value="Date"/>
+            <entry key="streamMeasureName" value="PortfoliosValue.NullWE"/>
+            <entry key="positionType" value="CURRENT_STREAM"/>
+        </properties>
+    </postProcessor>
+
+    <postProcessor name="Cumulative" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="CumulativeDelta, Original" formatter="DOUBLE[#,###.00%;-#,###.00%]" visible="true"/>
 
 
 </measures>

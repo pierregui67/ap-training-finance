@@ -6,31 +6,31 @@ import com.quartetfs.biz.pivot.postprocessing.IPostProcessor;
 import com.quartetfs.biz.pivot.postprocessing.impl.ABasicPostProcessor;
 import com.quartetfs.fwk.QuartetExtendedPluginValue;
 
-import javax.print.DocFlavor;
+@QuartetExtendedPluginValue(intf = IPostProcessor.class, key = ValueEvolutionPostProcessor.PLUGIN_KEY)
+public class ValueEvolutionPostProcessor extends ABasicPostProcessor<Double> {
 
-@QuartetExtendedPluginValue(intf = IPostProcessor.class, key = WeightDividePostProcessor.PLUGIN_KEY)
-public class WeightDividePostProcessor extends ABasicPostProcessor<Double> {
-
-    final static public String PLUGIN_KEY = "DIVIDE_WEIGHT";
+    public static final String PLUGIN_KEY = "VALUE_EVOLUTION";
     /**
      * Constructor
      *
      * @param name            The name of the post-processor
      * @param creationContext The {@link IPostProcessorCreationContext creation context} of this post-processor.
      */
-    public WeightDividePostProcessor(String name, IPostProcessorCreationContext creationContext) {
+    public ValueEvolutionPostProcessor(String name, IPostProcessorCreationContext creationContext) {
         super(name, creationContext);
     }
 
     @Override
     public Double evaluate(ILocation location, Object[] underlyingMeasures) {
-        if (underlyingMeasures[0] == null || underlyingMeasures[1] == null){
-            return null;
+        for (Object o : underlyingMeasures){
+            if (o == null){
+                return 0.0;
+            }
         }
-        final double num = ((Number) underlyingMeasures[0]).doubleValue();
-        final double num_percent = num;
-        final double total = ((Number) underlyingMeasures[1]).doubleValue();
-        return num_percent /total;
+        final double current = ((Number) underlyingMeasures[0]).doubleValue();
+        final double previous = ((Number) underlyingMeasures[1]).doubleValue();
+        if(current == 0.0){return 0.0;}
+        else return  (current - previous) /previous;
     }
 
     @Override

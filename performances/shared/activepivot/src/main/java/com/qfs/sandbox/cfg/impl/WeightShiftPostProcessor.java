@@ -44,7 +44,6 @@ public class WeightShiftPostProcessor extends ALocationShiftPostProcessor<Double
 
     @Override
     public ILocation shiftLocation(ILocation evaluationLocation) {
-        String test = ILevel.ALLMEMBER;
         return LocationUtil.createModifiedLocation(evaluationLocation, levelToShift.getHierarchyInfo(),new Object[] {ILevel.ALLMEMBER});
     }
 
