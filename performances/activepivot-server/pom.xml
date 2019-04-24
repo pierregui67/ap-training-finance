@@ -98,7 +98,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Connection pool. Scope test to use import it only when using Jetty Server.
+		<!-- Connection pool. Scope portfoliosHierarchy to use import it only when using Jetty Server.
 		Automatically provided when the application is deployed in a tomcat. -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>

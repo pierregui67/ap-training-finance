@@ -53,6 +53,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final String HISTORY_STORE_NAME = "HistoryStore";
     private static final String SECTOR_STORE_NAME = "SectorStore";
     private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
+    private static final String INDEX_STORE_NAME = "IndexStore";
 
 
     //History Store fields
@@ -78,10 +79,18 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final String POSITION_TYPE = "PositionType";
     private static final String DATE = "Date";
 
+    //Index Store fields
+    private static final String INDEX_STOCK_SYMBOL = "IndexStockSymbol";
+    private static final String INDEX_COMPANY_NAME = "IndexCompanyName";
+    private static final String INDEX_STOCK_VALUE = "IndexStockValue";
+    private static final String INDEX_NAME = "IndexName";
+    private static final String INDEX_DATE = "IndexDate";
+    private static final String INDEX_POSITION_TYPE = "PositionType";
+
     //Reference names list
     private static final String BASE_TO_HISTORY_REF = "BaseToHistory";
     private static final String BASE_TO_SECTOR = "BaseToSector";
-
+    private static final String BASE_TO_INDEX = "BaseToIndex";
 
 
     // DataStore List :
@@ -123,6 +132,18 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .build();
     }
 
+    public IStoreDescription indexStore(){
+        return new StoreDescriptionBuilder()
+                .withStoreName(INDEX_STORE_NAME)
+                .withField(INDEX_DATE,          DATE + "[yyyy-MM-dd]")
+                .withField(INDEX_COMPANY_NAME).dictionarized()
+                .withField(INDEX_NAME).dictionarized()
+                .withField(INDEX_POSITION_TYPE).dictionarized()
+                .withField(INDEX_STOCK_VALUE, ILiteralType.DOUBLE)
+                .withField(INDEX_STOCK_SYMBOL).asKeyField()
+                .build();
+
+    }
 
 
     public Collection<IReferenceDescription> references() {
@@ -141,6 +162,13 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .toStore(SECTOR_STORE_NAME)
                 .withName(BASE_TO_SECTOR)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, SECTOR_STOCK_SYMBOL)
+                .build());
+
+        references.add(ReferenceDescription.builder()
+                .fromStore(PORTFOLIOS_STORE_NAME)
+                .toStore(INDEX_STORE_NAME)
+                .withName(BASE_TO_INDEX)
+                .withMapping(PORTFOLIOS_STOCK_SYMBOL, INDEX_STOCK_SYMBOL)
                 .build());
 
         return references;
@@ -189,6 +217,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(portfoliosStore());
         stores.add(sectorStore());
         stores.add(historyStore());
+        stores.add(indexStore());
         return new DatastoreSchemaDescription(stores, references());
     }
 }

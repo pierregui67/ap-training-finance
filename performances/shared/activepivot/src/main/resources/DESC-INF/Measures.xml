@@ -119,5 +119,5 @@
 
     <postProcessor name="Cumulative" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="CumulativeDelta, Original" formatter="DOUBLE[#,###.00%;-#,###.00%]" visible="true"/>
 
-
+    <postProcessor name="PortfoliosDelta" pluginKey="COMPARISON" underlyingMeasures="PortfoliosValues" formatter="DOUBLE[#,###.0000;-#,###.00]" visible="true"/>
 </measures>
