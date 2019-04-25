@@ -6,46 +6,46 @@ import com.qfs.store.IDatastore;
 import com.qfs.store.impl.StoreUtils;
 import com.qfs.store.transaction.DatastoreTransactionException;
 import com.quartetfs.fwk.QuartetRuntimeException;
-import javafx.util.Pair;
 
 import java.util.*;
 
 import static java.lang.Math.max;
 
 
-public class CustomTuplePublisher<I> implements ITuplePublisher<I> {
+public class IndexTuplePublisher<I> implements ITuplePublisher<I> {
 
     //STORE NAME
-
-    private static final String HISTORY_STORE_NAME = "HistoryStore";
-    private static final String BASE_STORE_NAME = "BaseStore";
+    private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
 
     //STORE FIELD
-    private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
-    private static final String HISTORY_DATE = "HistoryDate";
-
-    private static final String PORTFOLIOS_DATE = "PortfoliosDate";
-    private static final String PORTFOLIOS_STOCK_SYMBOL = "PortfoliosStockSymbol";
+    private static final String INDEX_STOCK_SYMBOL = "IndexStockSymbol";
+    private static final String INDEX_COMPANY_NAME = "IndexCompanyName";
+    private static final String INDEX_STOCK_VALUE = "IndexStockValue";
+    private static final String INDEX_NAME = "IndexName";
+    private static final String INDEX_DATE = "IndexDate";
+    private static final String INDEX_POSITION_TYPE = "PositionType";
+    private static final String INDEX_ID = "IndexId";
+    private static final String INDEX_NUMBER = "IndexNumber";
 
     protected final IDatastore datastore;
     protected final Collection<String> stores;
     protected final boolean removal;
 
-    public CustomTuplePublisher(IDatastore datastore, Collection<String> stores) {
+    public IndexTuplePublisher(IDatastore datastore, Collection<String> stores) {
         this(datastore, stores, false);
     }
 
-    public CustomTuplePublisher(IDatastore datastore, String store) {
+    public IndexTuplePublisher(IDatastore datastore, String store) {
         this(datastore, (Collection) Collections.singleton(store), false);
     }
 
-    public CustomTuplePublisher(IDatastore datastore, String store, boolean removal) {
+    public IndexTuplePublisher(IDatastore datastore, String store, boolean removal) {
         this.datastore = datastore;
         this.stores = Collections.singleton(store);
         this.removal = removal;
     }
 
-    public CustomTuplePublisher(IDatastore datastore, Collection<String> stores, boolean removal) {
+    public IndexTuplePublisher(IDatastore datastore, Collection<String> stores, boolean removal) {
         this.datastore = datastore;
         this.stores = stores;
         this.removal = removal;
@@ -86,21 +86,17 @@ public class CustomTuplePublisher<I> implements ITuplePublisher<I> {
 
     private void basicStorePublisher(String store, Collection<Object[]> originalTuples) {
         Collection<Object[]> basicStoreTuples = new ArrayList<>();
-        int stockIndex = (store == HISTORY_STORE_NAME) ?
-                datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(HISTORY_STOCK_SYMBOL)
-                : datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(PORTFOLIOS_STOCK_SYMBOL);
-        int dateIndex = (store == HISTORY_STORE_NAME) ?
-                datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(HISTORY_DATE)
-                : datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(PORTFOLIOS_DATE);
-
+        int stockIndex = datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(INDEX_STOCK_SYMBOL);
+        int dateIndex =  datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(INDEX_DATE);
+        int numberIndex = datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(INDEX_NUMBER);
+        int nameIndex =  datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(INDEX_NAME);
+        int typeIndex =  datastore.getSchemaMetadata().getStoreMetadata(store).getStoreFormat().getRecordFormat().getFieldIndex(INDEX_POSITION_TYPE);
         Iterator<Object[]> iterator = originalTuples.iterator();
         while (iterator.hasNext()) {
             Object[] o = iterator.next();
-            //if (stockIndex == 3) {System.out.println(o[1]);}
-            //if (o.length >= max(stockIndex,dateIndex)) {}
-            basicStoreTuples.add(new Object[]{o[stockIndex], o[dateIndex]});
+            basicStoreTuples.add(new Object[]{o[dateIndex], o[nameIndex], o[numberIndex], o[stockIndex], o[typeIndex]});
         }
-        this.datastore.getTransactionManager().addAll(BASE_STORE_NAME, basicStoreTuples);
+        this.datastore.getTransactionManager().addAll(PORTFOLIOS_STORE_NAME, basicStoreTuples);
     }
 
 

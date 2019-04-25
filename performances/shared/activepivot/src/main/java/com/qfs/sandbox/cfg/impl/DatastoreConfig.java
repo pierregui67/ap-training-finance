@@ -86,11 +86,13 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final String INDEX_NAME = "IndexName";
     private static final String INDEX_DATE = "IndexDate";
     private static final String INDEX_POSITION_TYPE = "PositionType";
-
+    private static final String INDEX_ID = "IndexId";
+    private static final String INDEX_NUMBER = "IndexNumber";
     //Reference names list
     private static final String BASE_TO_HISTORY_REF = "BaseToHistory";
     private static final String BASE_TO_SECTOR = "BaseToSector";
     private static final String BASE_TO_INDEX = "BaseToIndex";
+
 
 
     // DataStore List :
@@ -135,12 +137,14 @@ public class DatastoreConfig implements IDatastoreConfig {
     public IStoreDescription indexStore(){
         return new StoreDescriptionBuilder()
                 .withStoreName(INDEX_STORE_NAME)
-                .withField(INDEX_DATE,          DATE + "[yyyy-MM-dd]")
-                .withField(INDEX_COMPANY_NAME).dictionarized()
                 .withField(INDEX_NAME).dictionarized()
-                .withField(INDEX_POSITION_TYPE).dictionarized()
-                .withField(INDEX_STOCK_VALUE, ILiteralType.DOUBLE)
+                .withField(INDEX_COMPANY_NAME).dictionarized()
+                .withField(INDEX_STOCK_VALUE,   ILiteralType.DOUBLE)
                 .withField(INDEX_STOCK_SYMBOL).asKeyField()
+                .withField(INDEX_ID,            ILiteralType.INT)
+                .withField(INDEX_POSITION_TYPE).dictionarized()
+                .withField(INDEX_DATE,          DATE + "[yyyy-MM-dd]").asKeyField()
+                .withField(INDEX_NUMBER,        ILiteralType.INT)
                 .build();
 
     }
@@ -169,6 +173,7 @@ public class DatastoreConfig implements IDatastoreConfig {
                 .toStore(INDEX_STORE_NAME)
                 .withName(BASE_TO_INDEX)
                 .withMapping(PORTFOLIOS_STOCK_SYMBOL, INDEX_STOCK_SYMBOL)
+                .withMapping(DATE, INDEX_DATE)
                 .build());
 
         return references;

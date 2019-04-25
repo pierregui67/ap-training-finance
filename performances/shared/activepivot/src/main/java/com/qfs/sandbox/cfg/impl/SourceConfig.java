@@ -17,7 +17,6 @@ import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
 import com.qfs.msg.impl.WatcherService;
-import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
@@ -60,11 +59,13 @@ public class SourceConfig {
     private static final String HISTORY_STORE_NAME = "HistoryStore";
     private static final String SECTOR_STORE_NAME = "SectorStore";
     private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
+    private static final String INDEX_STORE_NAME = "IndexStore";
 
     //Topic List
     private static final String HISTORY_TOPIC = "HistoryTopic";
     private static final String SECTOR_TOPIC = "SectorTopic";
     private static final String PORTFOLIOS_TOPIC = "PortfoliosTopic";
+    private static final String INDEX_TOPIC = "IndexTopic";
 
     //Calculated Column
     private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
@@ -95,6 +96,10 @@ public class SourceConfig {
         DirectoryCSVTopic portfolios = createDirectoryTopic(PORTFOLIOS_TOPIC, env.getProperty("dir.portfolios"), 5, "**", false);
         portfolios.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(portfolios);
+
+        DirectoryCSVTopic index = createDirectoryTopic(INDEX_TOPIC, env.getProperty("dir.index"),8,"**", false);
+        index.getParserConfiguration().setSeparator('|');
+        csvSource.addTopic(index);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -135,11 +140,12 @@ public class SourceConfig {
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
 
-
+        IndexTuplePublisher test = new IndexTuplePublisher(datastore,INDEX_STORE_NAME);
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
 		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTOR_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
+        csvChannels.add(csvChannelFactory().createChannel(INDEX_TOPIC, INDEX_STORE_NAME,test));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {

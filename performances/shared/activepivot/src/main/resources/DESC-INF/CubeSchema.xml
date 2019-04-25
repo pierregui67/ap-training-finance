@@ -27,18 +27,12 @@
             <field name="Sector"        expression="BaseToSector/Sector" />
             <field name="Industry"      expression="BaseToSector/Industry" />
 
-            private static final String INDEX_STOCK_SYMBOL = "IndexStockSymbol";
-            private static final String INDEX_COMPANY_NAME = "IndexCompanyName";
-            private static final String INDEX_STOCK_VALUE = "IndexStockValue";
-            private static final String INDEX_NAME = "IndexName";
-            private static final String INDEX_DATE = "IndexDate";
-            private static final String INDEX_POSITION_TYPE = "PositionType";
 
             <!-- Index Store -->
             <field name="IndexCompanyName"	expression="BaseToIndex/IndexCompanyName"/>
             <field name="IndexStockValue"	expression="BaseToIndex/IndexStockValue" />
             <field name="IndexName"	        expression="BaseToIndex/IndexName" />
-
+            <field name="IndexPositionType" expression="BaseToIndex/PositionType"/>
 
         </fields>
 
