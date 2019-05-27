@@ -13,4 +13,5 @@
 	<entry key="ActivePivot-Streaming">pivot.streaming-jaxb-mapping.xml</entry>
 	<entry key="ActivePivot-Sandbox">sandbox-jaxb-mapping.xml</entry>
 	<entry key="ActiveMonitor">sentinel.context-jaxb-mapping.xml</entry>
+	<entry key="ActivePivot-Custom-CurrencyContext">pivot.currencycontextvalue-jaxb-mapping.xml</entry>
 </properties>

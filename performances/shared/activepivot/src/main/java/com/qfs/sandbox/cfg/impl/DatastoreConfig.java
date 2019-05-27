@@ -54,7 +54,7 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final String SECTOR_STORE_NAME = "SectorStore";
     private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
     private static final String INDEX_STORE_NAME = "IndexStore";
-
+    private static final String FOREX_STORE_NAME = "ForexStore";
 
     //History Store fields
     private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
@@ -88,6 +88,13 @@ public class DatastoreConfig implements IDatastoreConfig {
     private static final String INDEX_POSITION_TYPE = "PositionType";
     private static final String INDEX_ID = "IndexId";
     private static final String INDEX_NUMBER = "IndexNumber";
+
+    //Forex Store fields
+
+    private static final String FOREX_CURRENCY_PAIR = "CurrencyPair";
+    private static final String FOREX_DATE = "ForexDate";
+    private static final String FOREX_RATE = "ForexRate";
+
     //Reference names list
     private static final String BASE_TO_HISTORY_REF = "BaseToHistory";
     private static final String BASE_TO_SECTOR = "BaseToSector";
@@ -149,6 +156,14 @@ public class DatastoreConfig implements IDatastoreConfig {
 
     }
 
+    public IStoreDescription forexStore(){
+        return new StoreDescriptionBuilder()
+                .withStoreName(FOREX_STORE_NAME)
+                .withField(FOREX_CURRENCY_PAIR).dictionarized().asKeyField()
+                .withField(FOREX_DATE, DATE + "[yyyy-MM-dd]").asKeyField()
+                .withField(FOREX_RATE,  ILiteralType.DOUBLE)
+                .build();
+    }
 
     public Collection<IReferenceDescription> references() {
         final Collection<IReferenceDescription> references = new LinkedList<>();
@@ -223,6 +238,7 @@ public class DatastoreConfig implements IDatastoreConfig {
         stores.add(sectorStore());
         stores.add(historyStore());
         stores.add(indexStore());
+        stores.add(forexStore());
         return new DatastoreSchemaDescription(stores, references());
     }
 }

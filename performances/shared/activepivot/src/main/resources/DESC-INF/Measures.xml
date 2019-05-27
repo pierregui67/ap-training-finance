@@ -120,4 +120,12 @@
     <postProcessor name="Cumulative" pluginKey="DIVIDE_WEIGHT" underlyingMeasures="CumulativeDelta, Original" formatter="DOUBLE[#,###.00%;-#,###.00%]" visible="true"/>
 
     <postProcessor name="PortfoliosDelta" pluginKey="COMPARISON" underlyingMeasures="PortfoliosValues" formatter="DOUBLE[#,###.0000;-#,###.00]" visible="true"/>
+
+    <postProcessor name="OpenForex" pluginKey="ForexPP" underlyingMeasures="Open.SUM" formatter="DOUBLE[#,###.0000;-#,###.00]" visible="true">
+        <properties>
+            <entry key="leafLevels" value="StockSymbol@Sector@Sector" />
+            <entry key="aggregationFunction" value="SUM" />
+        </properties>
+    </postProcessor>
+
 </measures>

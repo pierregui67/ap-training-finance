@@ -1,0 +1,10 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<jaxb-intros xmlns="http://www.jboss.org/xsd/jaxb/intros" >
+    <XmlSchema namespace="http://www.quartetfs.com" elementFormDefault="QUALIFIED" />
+    <Class name="com.qfs.sandbox.cfg.impl.CurrencyContextValue">
+        <XmlRootElement name="CurrencyContextValue" />
+        <Method name="getCurrency">
+            <XmlAttribute name="currency" required="true" />
+        </Method>
+    </Class>
+</jaxb-intros>

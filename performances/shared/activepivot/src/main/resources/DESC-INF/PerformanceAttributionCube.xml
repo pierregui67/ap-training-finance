@@ -3,6 +3,7 @@
                   xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://www.quartetfs.com activepivot-types.xsd">
 
+
     <!-- Selection of the aggregate provider -->
     <aggregateProvider pluginKey="BITMAP"/>
 
@@ -23,7 +24,7 @@
     <sharedContexts>
         <!-- Query maximum execution time (before timeout cancellation) -->
         <queriesTimeLimit seconds="60"/>
-
+        <CurrencyContextValue currency="USD"/>
         <!-- Contextual configuration of the MDX engine -->
         <mdxContext>
             <formatters>

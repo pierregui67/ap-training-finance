@@ -54,11 +54,14 @@ public class PortfolioComparisonPostProcessor extends AAdvancedPostProcessor<Dou
             @Override
             public boolean execute(IPointLocationReader iPointLocationReader, int pointId) {
                 ILocation shift = LocationUtil.createModifiedLocation(iPointLocationReader, portfoliosHierarchy.getHierarchyInfo(),  new Object[] {ILevel.ALLMEMBER, "benchmark"});
-                int shiftID = aggregats.getRow(shift);
-                Double shiftValue = aggregats.readDouble(shiftID, measureId);
-                Double value = aggregats.readDouble(pointId, measureId);
-                Double delta = value - shiftValue;
-
+                Double delta;
+                try{
+                    int shiftID = aggregats.getRow(shift);
+                    Double shiftValue = aggregats.readDouble(shiftID, measureId);
+                    Double value = aggregats.readDouble(pointId, measureId);
+                    delta = value - shiftValue;}
+                catch(Exception e) {
+                    delta = null;}
                 //no filter case
                 if (iLocation.getCoordinate(1,1) == null) {
                     if(!(iPointLocationReader.getCoordinate(1, 1).toString().equalsIgnoreCase("benchmark"))) {

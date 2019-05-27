@@ -60,12 +60,14 @@ public class SourceConfig {
     private static final String SECTOR_STORE_NAME = "SectorStore";
     private static final String PORTFOLIOS_STORE_NAME ="PortfoliosStore";
     private static final String INDEX_STORE_NAME = "IndexStore";
+    private static final String FOREX_STORE_NAME = "ForexStore";
 
     //Topic List
     private static final String HISTORY_TOPIC = "HistoryTopic";
     private static final String SECTOR_TOPIC = "SectorTopic";
     private static final String PORTFOLIOS_TOPIC = "PortfoliosTopic";
     private static final String INDEX_TOPIC = "IndexTopic";
+    private static final String FOREX_TOPIC = "ForexTopic";
 
     //Calculated Column
     private static final String HISTORY_STOCK_SYMBOL = "HistoryStockSymbol";
@@ -100,6 +102,10 @@ public class SourceConfig {
         DirectoryCSVTopic index = createDirectoryTopic(INDEX_TOPIC, env.getProperty("dir.index"),8,"**", false);
         index.getParserConfiguration().setSeparator('|');
         csvSource.addTopic(index);
+
+        DirectoryCSVTopic forex = createDirectoryTopic(FOREX_TOPIC, env.getProperty("dir.forex"), 3, "**", true);
+        history.getParserConfiguration().setSeparator(',');
+        csvSource.addTopic(forex);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -140,12 +146,13 @@ public class SourceConfig {
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
 
-        IndexTuplePublisher test = new IndexTuplePublisher(datastore,INDEX_STORE_NAME);
+        IndexTuplePublisher indexTuplePublisher = new IndexTuplePublisher(datastore,INDEX_STORE_NAME);
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
 		csvChannels.add(csvChannelFactory().createChannel(HISTORY_TOPIC, HISTORY_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(SECTOR_TOPIC, SECTOR_STORE_NAME));
         csvChannels.add(csvChannelFactory().createChannel(PORTFOLIOS_TOPIC, PORTFOLIOS_STORE_NAME));
-        csvChannels.add(csvChannelFactory().createChannel(INDEX_TOPIC, INDEX_STORE_NAME,test));
+        csvChannels.add(csvChannelFactory().createChannel(INDEX_TOPIC, INDEX_STORE_NAME, indexTuplePublisher));
+        csvChannels.add(csvChannelFactory().createChannel(FOREX_TOPIC, FOREX_STORE_NAME));
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
