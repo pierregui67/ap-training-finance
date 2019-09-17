@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contexts xmlns="http://www.quartetfs.com"
+          xmlns:xs="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.quartetfs.com ../../activepivot-types.xsd">
+
+    <subCubeProperties isAccessGranted="true">
+        <grantedMeasures>
+            <measure>Close Price Sum</measure>
+            <measure>Number of stocks</measure>
+            <measure>portfolio value</measure>
+            <measure>period return</measure>
+            <measure>cumulative return</measure>
+        </grantedMeasures>
+        <hierarchyRestrictions>
+            <hierarchy name="Portfolio Type">
+                <allowedMember>
+                    <memberPathPart xsi:type="xs:string" >AllMember\benchmark</memberPathPart>
+                    <memberPathPart xsi:type="xs:string" >AllMember\GDAXI</memberPathPart>
+                </allowedMember>
+            </hierarchy>
+        </hierarchyRestrictions>
+    </subCubeProperties>
+</contexts>

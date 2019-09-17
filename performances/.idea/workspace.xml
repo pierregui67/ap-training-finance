@@ -1,0 +1,1548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Measures.xml" line="25" mnemonic="7" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="61651e2c-2dea-428c-8868-b5434c642d8b" name="Default Changelist" comment="Cube + Dimensions + Measures + PostPro">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/BasicAllMemberHide.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPeformance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioGlobalValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioWeight.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicShiftToPortfolio.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/LocationShiftPrefetcher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/PassthroughPostProcessor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/src/main/resources/directories.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/META-INF/sandbox-activepivot-server.kotlin_module" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerWebAppInitializer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/cfg/impl/LocalContentServiceConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/BasicAllMemberHide.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/DynamicPeformance$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/DynamicPeformance.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/DynamicPortfolioGlobalValue.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/DynamicPortfolioValue.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/DynamicPortfolioWeight.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/DynamicShiftToPortfolio.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/LocationShiftPrefetcher.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/PassthroughPostProcessor$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/com/qfs/sandbox/postprocessors/PassthroughPostProcessor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/content.service.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/directories.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/classes/logging.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/dependency-maven-plugin-markers/com.activeviam.sandbox-sandbox-activepivot-jar-5.5.10-1240878060" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/dependency-maven-plugin-markers/com.activeviam.sandbox-sandbox-common-jar-5.5.10-854930057" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10.war" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/DESC-INF/ActivePivotManager.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/DESC-INF/CubeSchema.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/DESC-INF/Dimensions.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/DESC-INF/Measures.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/DESC-INF/PerformanceAttributionCube.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerWebAppInitializer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/com/qfs/sandbox/cfg/impl/LocalContentServiceConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/content.service.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/hibernate.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/jwt.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/classes/logging.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/ST4-4.0.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activemonitor-activepivot-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activemonitor-activepivot-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activemonitor-common-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activemonitor-server-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-dist-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-ext-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-mdx-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-mdx-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-server-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-server-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-server-json-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activepivot-server-spring-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activeviam-web-core-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/activeviam-web-spring-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/antlr-2.7.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/antlr-3.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/antlr-runtime-3.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/aopalliance-1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/asm-5.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/bcprov-jdk15on-1.51.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/classmate-1.3.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/collections-generic-4.01.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/colt-1.2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/commons-codec-1.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/commons-io-2.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/commons-logging-1.1.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/composer-api-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/composer-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/composer-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/concurrent-1.3.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/content-server-rest-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/content-server-spring-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/content-server-storage-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/csv-source-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-core-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-bindings-soap-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-bindings-xml-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-databinding-jaxb-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-frontend-jaxrs-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-frontend-jaxws-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-frontend-simple-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-rs-client-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-rs-security-cors-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-rs-service-description-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-transports-http-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-ws-addr-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-ws-policy-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/cxf-rt-wsdl-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/datastore-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/dom4j-1.6.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/hibernate-commons-annotations-5.0.1.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/hibernate-core-5.2.7.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/httpclient-4.3.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/httpcore-4.3.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/i18nlog-1.0.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jackson-annotations-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jackson-core-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jackson-databind-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jackson-jaxrs-base-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jackson-jaxrs-json-provider-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jackson-module-jaxb-annotations-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jandex-2.0.3.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/javassist-3.19.0-GA.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/javax.annotation-api-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/javax.ws.rs-api-2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/javolution-core-java-6.0.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jaxb-core-2.2.11.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jaxb-impl-2.2.11.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jaxb-xjc-2.2.11.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jboss-jaxb-intros-2.3.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jboss-logging-3.3.0.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jcip-annotations-1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jdbc-source-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jgroups-3.6.11.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jna-4.2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jna-platform-4.2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/json-smart-1.1.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jung-algorithms-2.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jung-api-2.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jung-graph-impl-2.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/jung-visualization-2.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/key-value-source-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/neethi-3.0.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/netty-all-4.1.6.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/nimbus-jose-jwt-3.8.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/numalib-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/org.osgi.compendium-4.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/org.osgi.core-4.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/perf4j-0.9.16.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/repository-activepivot-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/repository-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/sandbox-activepivot-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/sandbox-common-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/serialization-jackson-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/serialization-jaxb-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-aop-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-beans-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-context-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-context-support-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-core-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-expression-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-security-config-4.0.4.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-security-core-4.0.4.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-security-web-4.0.4.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-tx-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-web-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-webmvc-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/spring-websocket-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/stax2-api-3.1.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/streaming-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/streaming-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/stringtemplate-3.2.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/trove4j-3.0.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/woodstox-core-asl-4.4.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/wsdl4j-1.6.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xercesImpl-2.11.0.SP1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xml-apis-1.4.01.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xml-resolver-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xmla-binary-xml-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xmla-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xmla-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xmla-pivot-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/sandbox-activepivot-server-5.5.10/WEB-INF/lib/xmlschema-core-2.2.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/test-classes/com/qfs/sandbox/server/ActivePivotServer$JettyAnnotationConfiguration.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activepivot-server/target/test-classes/com/qfs/sandbox/server/ActivePivotServer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/antrun/build-main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$ActiveUISecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$ContentServerSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$JwtSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$VersionSecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/classes/com/qfs/contentserver/cfg/impl/ContentServerWebAppInitializer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/dependency-maven-plugin-markers/com.activeviam.sandbox-sandbox-common-jar-5.5.10-854930057" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10.war" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$ActiveUISecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$ContentServerSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$JwtSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig$VersionSecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerSecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/com/qfs/contentserver/cfg/impl/ContentServerWebAppInitializer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/hibernate.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/classes/jwt.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/FastInfoset-1.2.15.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/activeui-4.1.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/activeviam-web-core-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/activeviam-web-spring-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/antlr-2.7.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/aopalliance-1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/asm-5.0.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/bcprov-jdk15on-1.51.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/byte-buddy-1.9.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/classmate-1.3.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/commons-io-2.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/commons-logging-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/composer-api-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/composer-impl-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/composer-intf-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/content-server-rest-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/content-server-spring-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/content-server-storage-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-core-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-bindings-soap-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-bindings-xml-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-databinding-jaxb-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-frontend-jaxrs-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-frontend-jaxws-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-frontend-simple-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-rs-client-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-rs-security-cors-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-transports-http-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-ws-addr-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-ws-policy-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/cxf-rt-wsdl-3.1.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/dom4j-2.1.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/h2-1.4.192.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/hibernate-commons-annotations-5.1.0.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/hibernate-core-5.4.0.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/i18nlog-1.0.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/istack-commons-runtime-3.0.7.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jackson-annotations-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jackson-core-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jackson-databind-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jackson-jaxrs-base-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jackson-jaxrs-json-provider-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jackson-module-jaxb-annotations-2.8.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jandex-2.0.5.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/javassist-3.19.0-GA.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/javax.activation-api-1.2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/javax.annotation-api-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/javax.persistence-api-2.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/javax.ws.rs-api-2.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/javolution-core-java-6.0.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jaxb-api-2.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jaxb-core-2.2.11.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jaxb-runtime-2.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jboss-logging-3.3.2.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/jcip-annotations-1.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/json-smart-1.1.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/neethi-3.0.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/nimbus-jose-jwt-3.8.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/org.osgi.compendium-4.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/org.osgi.core-4.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/sandbox-common-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/sandbox-contentservice-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/serialization-jackson-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-aop-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-beans-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-context-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-context-support-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-core-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-expression-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-security-config-4.0.4.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-security-core-4.0.4.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-security-web-4.0.4.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-tx-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-web-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-webmvc-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/spring-websocket-4.2.9.RELEASE.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/stax-ex-1.8.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/stax2-api-3.1.4.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/txw2-2.3.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/woodstox-core-asl-4.4.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/wsdl4j-1.6.3.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/xercesImpl-2.11.0.SP1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/xml-apis-1.4.01.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/xml-resolver-1.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/WEB-INF/lib/xmlschema-core-2.2.1.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/ActivePivotLiveDesktop.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/ActivePivotLiveEmbedded.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/fonts/arsenal-bold-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/fonts/arsenal-bolditalic-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/fonts/arsenal-italic-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/fonts/arsenal-regular-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/sandbox-content-server-5.5.10/activeui/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/test-classes/com/qfs/sandbox/server/ContentServer$JettyAnnotationConfiguration.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/content-server/target/test-classes/com/qfs/sandbox/server/ContentServer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/ImportIndexTuplePublisher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_DESK_A/PerformanceAttributionCube.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_USER/PerformanceAttributionCube.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/antrun/build-main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/DESC-INF/ActivePivotManager.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/DESC-INF/CubeSchema.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/DESC-INF/Dimensions.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/DESC-INF/Measures.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/DESC-INF/PerformanceAttributionCube.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/ROLE-INF/ROLE_DESK_A/PerformanceAttributionCube.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/ROLE-INF/ROLE_USER/PerformanceAttributionCube.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/activepivot-types.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/AContentServiceConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerSecurityConfig$ActivePivotSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerSecurityConfig$ContentServerSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerSecurityConfig$VersionSecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/ActivePivotServerSecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/DatastoreConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/ImportIndexTuplePublisher.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/SandboxConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/SourceConfig$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/com/qfs/sandbox/cfg/impl/SourceConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/classes/serializer.jaxb.cfg.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/sandbox-activepivot-5.5.10-tests.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/activepivot/target/sandbox-activepivot-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ASanboxServerWebAppInitializer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ASecurityConfig$AActiveUISecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ASecurityConfig$AJwtSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ASecurityConfig$AVersionSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ASecurityConfig$AWebSecurityConfigurer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ASecurityConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ActiveUIResourceServerConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/ContentServerUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/cfg/impl/SandboxCorsFilterConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/security/impl/CookieUtil.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/com/qfs/sandbox/security/impl/InMemoryUserDetailsManagerBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/hibernate.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/classes/jwt.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/sandbox-common-5.5.10-sources.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/common/target/sandbox-common-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/contentservice/target/antrun/build-main.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/contentservice/target/maven-archiver/pom.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/contentservice/target/sandbox-contentservice-5.5.10-tests.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shared/contentservice/target/sandbox-contentservice-5.5.10.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/Initial/exemple.csv" beforeDir="false" afterPath="$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/Initial/exemple.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/content-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/content-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/DatastoreConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/DatastoreConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SourceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/CubeSchema.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/CubeSchema.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Dimensions.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Dimensions.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Measures.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Measures.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/PerformanceAttributionCube.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/PerformanceAttributionCube.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ASecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ASecurityConfig.java" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/shared/contentservice/target/" />
+    <ignored path="$PROJECT_DIR$/shared/activepivot/target/" />
+    <ignored path="$PROJECT_DIR$/content-server/target/" />
+    <ignored path="$PROJECT_DIR$/shared/common/target/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/activepivot-server/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ASecurityConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1207">
+              <caret line="110" column="32" selection-start-line="110" selection-start-column="27" selection-end-line="110" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_DESK_A/PerformanceAttributionCube.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SourceConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1921">
+              <caret line="154" column="117" selection-start-line="154" selection-start-column="117" selection-end-line="154" selection-end-column="117" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/ImportIndexTuplePublisher.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="17" selection-start-line="17" selection-end-line="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/impl/TuplePublisher.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="50" column="21" lean-forward="true" selection-start-line="50" selection-start-column="21" selection-end-line="50" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/impl/StoreMessage.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="731">
+              <caret line="63" selection-start-line="63" selection-end-line="63" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Measures.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1054">
+              <caret line="62" column="38" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Dimensions.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="31" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>locationExemple</find>
+      <find>computeL</find>
+      <find>prefetch</find>
+      <find>EVALUATE_FOR_MEASURES_PROPERTY</find>
+      <find>prefe</find>
+      <find>prefetcher</find>
+      <find>getTargetMeasures</find>
+      <find>LocationShiftPrefetcher</find>
+      <find>exem</find>
+      <find>prefetchers</find>
+      <find>period</find>
+      <find>datastorec</find>
+      <find>admin</find>
+      <find>useA</find>
+      <find>dataStore</find>
+      <find>channel</find>
+      <find>tuple</find>
+      <find>csvch</find>
+      <find>top</find>
+      <find>topic</find>
+      <find>c</find>
+      <find>init</find>
+      <find>topi</find>
+      <find>Publish</find>
+      <find>ROLE-INF</find>
+      <find>ISubCubeProperties</find>
+      <find>channelFact</find>
+      <find>channelF</find>
+      <find>user1</find>
+      <find>CSVMessageChannelFactory</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/activepivot-server/src/test/java/com/qfs/sandbox/server/ActivePivotServer.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/resources/directories.properties" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/Initial/exemple.csv" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/AllMemberHide.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicForex.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/BasicPortfiolioValue.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/BasicAllMemberHide.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPPTest.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicRatio.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/TimeLinePrevious.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioWeight.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioValue.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicShiftToPortfolio.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/PassthroughPostProcessor.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioGlobalValue.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPeformance.java" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/LocationShiftPrefetcher.java" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/DatastoreConfig.java" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Dimensions.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/ActivePivotManager.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/CubeSchema.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/PerformanceAttributionCube.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_MANAGER/global.fxml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_MANAGER/global.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_USER/global.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_ADMIN/global.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_MANAGER/restriction.xml" />
+        <option value="$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ASecurityConfig.java" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_USER/PerformanceAttributionCube.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Measures.xml" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_DESK_A/PerformanceAttributionCube.xml" />
+        <option value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/TuplePublisher/ImportIndex.java" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/ImportindexTuplePublisher.java" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/ImportIndexTuplePublisher.java" />
+        <option value="$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SourceConfig.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="Sandbox ActiveViam" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/compiler.xml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/encodings.xml" />
+        <option value="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+        <option value="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-11" />
+    <option name="width" value="980" />
+    <option name="height" value="1031" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot" type="616d4139:PackageViewModuleNode" />
+              <item name="com.qfs.sandbox.cfg.impl" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot" type="616d4139:PackageViewModuleNode" />
+              <item name="DESC-INF" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="com.qfs.sandbox" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="com.qfs.sandbox" type="1f31426a:PackageElementNode" />
+              <item name="cfg.impl" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="com.qfs.sandbox" type="1f31426a:PackageElementNode" />
+              <item name="postprocessors" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="com.qfs.sandbox" type="1f31426a:PackageElementNode" />
+              <item name="server" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="data" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="data" type="1f31426a:PackageElementNode" />
+              <item name="Index" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="data" type="1f31426a:PackageElementNode" />
+              <item name="Portfolios" type="1f31426a:PackageElementNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="58d84e3e:PackageViewProjectNode" />
+              <item name="sandbox-activepivot-server" type="616d4139:PackageViewModuleNode" />
+              <item name="data" type="1f31426a:PackageElementNode" />
+              <item name="Portfolios" type="1f31426a:PackageElementNode" />
+              <item name="Initial" type="1f31426a:PackageElementNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot-server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot-server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="sandbox" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="DESC-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="ROLE-INF" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="sandbox-activeviam" type="b2602c69:ProjectViewProjectNode" />
+              <item name="performances" type="462c0819:PsiDirectoryNode" />
+              <item name="shared" type="462c0819:PsiDirectoryNode" />
+              <item name="activepivot" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="ROLE-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="ROLE_USER" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_directory_selection" value="$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.qfs.sandbox.cfg.impl" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Mircea-GMS\Desktop\Pro\ap-training-finance\performances\shared\activepivot\src\main\resources\ROLE-INF\ROLE_DESK_A" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.qfs.sandbox.postprocessors" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Mircea-GMS\Desktop\Pro\ap-training-finance\performances\shared\activepivot\src\main\resources\ROLE-INF\ROLE_USER" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.ActivePivotServer">
+    <configuration name="ActivePivotServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.qfs.sandbox.server.ActivePivotServer" />
+      <module name="sandbox-activepivot-server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.qfs.sandbox.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ContentServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.qfs.sandbox.server.ContentServer" />
+      <module name="sandbox-content-server" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/content-server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.qfs.sandbox.server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="clean install no test" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="delegateBuildToMaven" value="false" />
+            <option name="environmentProperties">
+              <map />
+            </option>
+            <option name="jreName" value="#USE_PROJECT_JDK" />
+            <option name="mavenProperties">
+              <map />
+            </option>
+            <option name="passParentEnv" value="true" />
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="true" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="sandbox cleanInstall" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+                <option value="-DskipTests" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="sandbox-activeviam [install]" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+                <option value="-DskipTests" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Application.ActivePivotServer" />
+      <item itemvalue="Application.ContentServer" />
+      <item itemvalue="Maven.clean install no test" />
+      <item itemvalue="Maven.sandbox cleanInstall" />
+      <item itemvalue="Maven.sandbox-activeviam [install]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ActivePivotServer" />
+        <item itemvalue="Application.ContentServer" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="61651e2c-2dea-428c-8868-b5434c642d8b" name="Default Changelist" comment="" />
+      <created>1562062812752</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1562062812752</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49798387" visible="true" weight="0.11983806" />
+      <window_info id="Structure" order="1" sideWeight="0.5020161" side_tool="true" weight="0.12313433" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32936078" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.33333334" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.4989339" weight="0.20781527" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="6" sideWeight="0.49946696" weight="0.330373" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.3285968" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.3285968" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5010661" side_tool="true" weight="0.4626219" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.43516874" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3285968" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.24945295" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.12153518" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Maven" order="5" weight="0.13745704" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29957357" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Dependency Viewer" order="0" weight="0.32936078" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" visible="true" weight="0.33044422" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.40303358" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32936078" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.43661973" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32995737" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" visible="true" weight="0.12153518" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Maven" order="5" weight="0.13745704" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+    </layout-to-restore>
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.csv" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Cube + Dimensions + Measures + PostPro" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cube + Dimensions + Measures + PostPro" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioWeight.java</url>
+          <line>28</line>
+          <properties />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/PassthroughPostProcessor.java</url>
+          <line>45</line>
+          <properties />
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPeformance.java</url>
+          <line>65</line>
+          <properties />
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPeformance.java</url>
+          <line>68</line>
+          <properties />
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ASecurityConfig.java</url>
+          <line>226</line>
+          <properties />
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SourceConfig.java</url>
+          <line>154</line>
+          <properties />
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/impl/TuplePublisher.class</url>
+          <line>48</line>
+          <properties />
+          <option name="timeStamp" value="79" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="env.getProperty(&quot;user.dir&quot;)" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/sandbox_activeviam$ActivePivotServer.ic" NAME="ActivePivotServer Coverage Results" MODIFIED="1562773865411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.qfs.sandbox.server.*</FILTER>
+    </SUITE>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>env.getProperty(&quot;user.dir&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;user.dir.activepivot-server&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;user.dir.activepivot-server.src.main.resources.data&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;user.dir.activepivot-server.scr.main.resources.data&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;user.dir.activepivot-server.scr.main.resources.data.history&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;user.dir.data&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;dir&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;dir.data&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>env.getProperty(&quot;dir.History&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>aggregats.getRow(pointLocation)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>pointId</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>aggregats.getRow()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>aggregats.getRow();</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>this.underlyingMeasures</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>underlyingMeasures</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>LocationUtil.createModifiedLocation(evaluationLocation, levelToShift, new Object[] {ILevel.ALLMEMBER});</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fileName.split(&quot;\\.&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>fileName.split(&quot;.&quot;)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/chunk/ITable.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-intf/5.5.10/activepivot-intf-5.5.10.jar!/com/quartetfs/biz/pivot/cellset/IAggregatesRetrievalResult.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-intf/5.5.10/activepivot-intf-5.5.10.jar!/com/quartetfs/biz/pivot/query/aggregates/IAdvancedAggregatesRetriever.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/composer-api/5.5.10/composer-api-5.5.10.jar!/com/qfs/concurrent/cancellable/impl/MultiCancellableCountedCompleter.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/composer-api/5.5.10/composer-api-5.5.10.jar!/com/qfs/concurrent/cancellable/impl/CancellableCountedCompleter.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/chunk/impl/AWritableArray.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-impl/5.5.10/activepivot-impl-5.5.10.jar!/com/quartetfs/biz/pivot/impl/PointLocationList.class" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-impl/5.5.10/activepivot-impl-5.5.10.jar!/com/quartetfs/biz/pivot/query/aggregates/impl/PostProcessedAggregatesRetrieval.class" />
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/RT/testFoF.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/RT/testFoFRec.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/RT/testFoFRecRec.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="24" selection-start-line="1" selection-start-column="11" selection-end-line="1" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/PassthroughPostProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-ext/5.5.10/activepivot-ext-5.5.10-sources.jar!/com/quartetfs/biz/pivot/postprocessing/impl/AUnderlyingMeasuresPrefetcher.java" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-ext/5.5.10/activepivot-ext-5.5.10-sources.jar!/com/quartetfs/biz/pivot/postprocessing/impl/AAdvancedPostProcessor.java" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-ext/5.5.10/activepivot-ext-5.5.10-sources.jar!/com/quartetfs/biz/pivot/postprocessing/impl/ALocationShiftPostProcessor.java" />
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/History/PriceHistory_DTE-DE.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPortfolioGlobalValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="36" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/activepivot/activepivot-ext/5.5.10/activepivot-ext-5.5.10-sources.jar!/com/quartetfs/biz/pivot/postprocessing/impl/UnderlyingMeasuresPrefetcher.java" />
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/LocationShiftPrefetcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="13" column="36" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/composer-impl/5.5.10/composer-impl-5.5.10.jar!/com/qfs/msg/impl/WatcherService.class" />
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/ActivePivotServerSecurityConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="54" column="27" selection-start-line="54" selection-start-column="27" selection-end-line="54" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/AContentServiceConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-436">
+          <caret line="22" column="22" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/postprocessors/DynamicPeformance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="48" column="73" selection-start-line="48" selection-start-column="73" selection-end-line="48" selection-end-column="73" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/PerformanceAttributionCube.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/ActivePivotManager.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/DatastoreConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="65" column="43" selection-start-line="65" selection-start-column="43" selection-end-line="65" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SandboxConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="73" column="13" selection-start-line="73" selection-start-column="13" selection-end-line="73" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/impl/AMessageChannelFactory.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="41" column="71" selection-start-line="41" selection-start-column="67" selection-end-line="41" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ContentServerUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-17">
+          <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/Initial/benchmark.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" column="40" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/Portfolios/Initial/exemple.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2805">
+          <caret column="22" selection-start-column="19" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/resources/data/Index/GDAXI.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="83" selection-start-line="1" selection-start-column="77" selection-end-line="1" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_ADMIN/ROLE_USER/global.xml" />
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/test.txt" />
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_MANAGER/global.fxml" />
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_ADMIN/global.xml" />
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/CubeSchema.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="21" column="32" selection-start-line="21" selection-start-column="25" selection-end-line="21" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_USER/global.xml" />
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_KPI/global.xml" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/ITuplePublisher.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/activepivot-server/src/main/java/com/qfs/sandbox/TuplePublisher/ImportIndexTuplePublisher.java" />
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/source/csv-source/5.5.10/csv-source-5.5.10.jar!/com/qfs/msg/csv/impl/Parser.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="110" selection-start-line="110" selection-end-line="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_USER/PerformanceAttributionCube.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="46" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/common/src/main/java/com/qfs/sandbox/cfg/impl/ASecurityConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1207">
+          <caret line="110" column="32" selection-start-line="110" selection-start-column="27" selection-end-line="110" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/ROLE-INF/ROLE_DESK_A/PerformanceAttributionCube.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/SourceConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1921">
+          <caret line="154" column="117" selection-start-line="154" selection-start-column="117" selection-end-line="154" selection-end-column="117" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/java/com/qfs/sandbox/cfg/impl/ImportIndexTuplePublisher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/impl/StoreMessage.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="63" selection-start-line="63" selection-end-line="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Measures.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1054">
+          <caret line="62" column="38" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shared/activepivot/src/main/resources/DESC-INF/Dimensions.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/activeviam/tech/datastore/5.5.10/datastore-5.5.10.jar!/com/qfs/source/impl/TuplePublisher.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="50" column="21" lean-forward="true" selection-start-line="50" selection-start-column="21" selection-end-line="50" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>sandbox-activeviam</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

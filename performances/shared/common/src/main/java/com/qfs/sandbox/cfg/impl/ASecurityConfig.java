@@ -70,10 +70,10 @@ public class ASecurityConfig {
 	public static final String COOKIE_NAME = "AP_JSESSIONID";
 
 	/**
-	 * ROLE_KPI is added to users, to give them permission
+	 * ROLE_DESK_A is added to users, to give them permission
 	 * to read kpis created by other users in the content server
 	 * In order to "share" kpis created in the content server, the kpi
-	 * reader role is set to : ROLE_KPI
+	 * reader role is set to : ROLE_DESK_A
 	 */
 	public static final String ROLE_KPI = "ROLE_KPI";
 

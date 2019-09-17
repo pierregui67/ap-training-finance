@@ -10,6 +10,7 @@ import com.qfs.desc.IDatastoreSchemaDescription;
 import com.qfs.desc.IReferenceDescription;
 import com.qfs.desc.IStoreDescription;
 import com.qfs.desc.impl.DatastoreSchemaDescription;
+import com.qfs.desc.impl.ReferenceDescription;
 import com.qfs.desc.impl.StoreDescriptionBuilder;
 import com.qfs.literal.ILiteralType;
 import com.qfs.server.cfg.IDatastoreConfig;
@@ -45,13 +46,55 @@ public class DatastoreConfig implements IDatastoreConfig {
     private Environment env;
 
     private static final Logger LOGGER = Logger.getLogger(DatastoreConfig.class.getSimpleName());
-
     // Define you datastores here:
 
     @Bean
-    public IStoreDescription baseStore() {
-        return new StoreDescriptionBuilder().withStoreName("BaseStore")
-                .withField(SAMPLE_FIELD, ILiteralType.STRING).asKeyField()
+    public IStoreDescription HistoryDataStore() {
+        return new StoreDescriptionBuilder().withStoreName("History")
+                .withField("Date", "date[yyyy-MM-dd]").asKeyField()
+                .withField("Open", ILiteralType.DOUBLE)
+                .withField("High", ILiteralType.DOUBLE)
+                .withField("Low", ILiteralType.DOUBLE)
+                .withField("Close", ILiteralType.DOUBLE).dictionarized()
+                .withField("Volume", ILiteralType.DOUBLE)
+                .withField("Adj Close", ILiteralType.DOUBLE)
+                .withField("Stock Symbol", ILiteralType.STRING).dictionarized().asKeyField()
+                .updateOnlyIfDifferent()
+                .build();
+    }
+    @Bean
+    public IStoreDescription IndicesDataStore() {
+        return new StoreDescriptionBuilder().withStoreName("Indices")
+                .withField("Index Name", ILiteralType.STRING).dictionarized()
+                .withField("Counterparty", ILiteralType.STRING).dictionarized()
+                .withField("Num", ILiteralType.DOUBLE)
+                .withField("Stock Symbol", ILiteralType.STRING).dictionarized().asKeyField()
+                .withField("Quantity", ILiteralType.INT)
+                .withField("Trade Type", ILiteralType.STRING).dictionarized()
+                .withField("Date",  "date[yyyy-MM-dd]")
+                .withField("Value", ILiteralType.INT)
+                .updateOnlyIfDifferent()
+                .build();
+    }
+    @Bean
+    public IStoreDescription SectorDataStore() {
+        return new StoreDescriptionBuilder().withStoreName("Sector")
+                .withField("Stock Symbol", ILiteralType.STRING).dictionarized().asKeyField()
+                .withField("Compagny Name", ILiteralType.STRING).dictionarized()
+                .withField("Sector", ILiteralType.STRING).dictionarized()
+                .withField("Industry", ILiteralType.STRING).dictionarized()
+                .updateOnlyIfDifferent()
+                .build();
+    }
+    @Bean
+    public IStoreDescription PortfoliosDataStore() {
+        return new StoreDescriptionBuilder().withStoreName("Portfolios")
+                .withField("Date",  "date[yyyy-MM-dd]").asKeyField()
+                .withField("Portfolio type", ILiteralType.STRING).dictionarized().asKeyField()
+                .withField("Number of stocks", ILiteralType.INT)
+                .withField("Stock Symbol", ILiteralType.STRING).dictionarized().asKeyField()
+                .withField("Position Type", ILiteralType.STRING).dictionarized()
+                .withPartitioning("hash8(Date)")
                 .updateOnlyIfDifferent()
                 .build();
     }
@@ -62,12 +105,27 @@ public class DatastoreConfig implements IDatastoreConfig {
     public Collection<IReferenceDescription> references() {
         final Collection<IReferenceDescription> references = new LinkedList<>();
 
-//        references.add(ReferenceDescription.builder()
-//                .fromStore(...)
-//                .toStore(...)
-//                .withName(...)
-//                .withMapping(...)
-//                .build());
+        references.add(ReferenceDescription.builder()
+                .fromStore("Portfolios")
+                .toStore("Indices")
+                .withName("PortfoliosToIndices")
+                .withMapping("Stock Symbol", "Stock Symbol")
+                .build());
+
+        references.add(ReferenceDescription.builder()
+                .fromStore("Portfolios")
+                .toStore("Sector")
+                .withName("PortfoliosToSector")
+                .withMapping("Stock Symbol", "Stock Symbol")
+                .build());
+
+        references.add(ReferenceDescription.builder()
+                .fromStore("Portfolios")
+                .toStore("History")
+                .withName("PortfoliosToHistory")
+                .withMapping("Date", "Date")
+                .withMapping("Stock Symbol", "Stock Symbol")
+                .build());
 
         return references;
     }
@@ -113,7 +171,10 @@ public class DatastoreConfig implements IDatastoreConfig {
 
 //      Add all you stores here
 
-        stores.add(baseStore());
+        stores.add(HistoryDataStore());
+        stores.add(IndicesDataStore());
+        stores.add(SectorDataStore());
+        stores.add(PortfoliosDataStore());
 
         return new DatastoreSchemaDescription(stores, references());
     }

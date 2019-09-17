@@ -1,0 +1,7 @@
+com\qfs\contentserver\cfg\impl\ContentServerConfig.class
+com\qfs\contentserver\cfg\impl\ContentServerSecurityConfig$ContentServerSecurityConfigurer.class
+com\qfs\contentserver\cfg\impl\ContentServerSecurityConfig$ActiveUISecurityConfigurer.class
+com\qfs\contentserver\cfg\impl\ContentServerSecurityConfig.class
+com\qfs\contentserver\cfg\impl\ContentServerSecurityConfig$VersionSecurityConfig.class
+com\qfs\contentserver\cfg\impl\ContentServerWebAppInitializer.class
+com\qfs\contentserver\cfg\impl\ContentServerSecurityConfig$JwtSecurityConfigurer.class

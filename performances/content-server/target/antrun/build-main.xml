@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <taskdef classname="mazz.i18n.ant.I18NAntTask" name="i18n" classpathref="maven.compile.classpath"/>
+  <i18n outputdir="C:\Users\Erik\Documents\GitHub\ap-training-finance\performances\content-server\target\classes" verify="true" defaultlocale="en" verbose="false">
+    <classpath refid="maven.compile.classpath"/>
+    <classfileset dir="C:\Users\Erik\Documents\GitHub\ap-training-finance\performances\content-server\target\classes">
+      <include name="**/*.class"/>
+    </classfileset>
+  </i18n>
+</target>
+</project>

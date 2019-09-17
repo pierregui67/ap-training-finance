@@ -1,0 +1,8 @@
+com\qfs\sandbox\cfg\impl\AContentServiceConfig.class
+com\qfs\sandbox\cfg\impl\DatastoreConfig.class
+com\qfs\sandbox\cfg\impl\ActivePivotServerSecurityConfig.class
+com\qfs\sandbox\cfg\impl\ActivePivotServerSecurityConfig$ContentServerSecurityConfigurer.class
+com\qfs\sandbox\cfg\impl\SandboxConfig.class
+com\qfs\sandbox\cfg\impl\ActivePivotServerSecurityConfig$ActivePivotSecurityConfigurer.class
+com\qfs\sandbox\cfg\impl\SourceConfig.class
+com\qfs\sandbox\cfg\impl\ActivePivotServerSecurityConfig$VersionSecurityConfig.class

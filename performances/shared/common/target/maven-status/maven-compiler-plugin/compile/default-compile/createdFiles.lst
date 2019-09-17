@@ -1,0 +1,11 @@
+com\qfs\sandbox\cfg\impl\ASecurityConfig$AWebSecurityConfigurer.class
+com\qfs\sandbox\cfg\impl\ASecurityConfig$AVersionSecurityConfigurer.class
+com\qfs\sandbox\cfg\impl\ASecurityConfig$AJwtSecurityConfigurer.class
+com\qfs\sandbox\cfg\impl\ASanboxServerWebAppInitializer.class
+com\qfs\sandbox\cfg\impl\ActiveUIResourceServerConfig.class
+com\qfs\sandbox\cfg\impl\ASecurityConfig$AActiveUISecurityConfigurer.class
+com\qfs\sandbox\cfg\impl\SandboxCorsFilterConfig.class
+com\qfs\sandbox\security\impl\CookieUtil.class
+com\qfs\sandbox\cfg\impl\ContentServerUtil.class
+com\qfs\sandbox\cfg\impl\ASecurityConfig.class
+com\qfs\sandbox\security\impl\InMemoryUserDetailsManagerBuilder.class

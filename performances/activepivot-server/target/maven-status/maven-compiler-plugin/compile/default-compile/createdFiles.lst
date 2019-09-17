@@ -1,0 +1,3 @@
+com\qfs\sandbox\cfg\impl\LocalContentServiceConfig.class
+com\qfs\sandbox\cfg\impl\ActivePivotServerConfig.class
+com\qfs\sandbox\cfg\impl\ActivePivotServerWebAppInitializer.class

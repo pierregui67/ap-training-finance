@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <echo>Generate ActivePivot XSD files</echo>
+  <java classname="com.quartetfs.biz.pivot.server.impl.XmlSchemaGenerator" failonerror="true" classpathref="maven.compile.classpath">
+    <arg value="C:\Users\Erik\Documents\GitHub\ap-training-finance\performances\shared\activepivot/src/main/resources/"/>
+  </java>
+</target>
+</project>

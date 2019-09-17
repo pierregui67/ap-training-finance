@@ -7,16 +7,21 @@
 package com.qfs.sandbox.cfg.impl;
 
 import com.qfs.gui.impl.JungSchemaPrinter;
+import com.qfs.msg.IColumnCalculator;
 import com.qfs.msg.IMessageChannel;
 import com.qfs.msg.IWatcherService;
 import com.qfs.msg.csv.ICSVSourceConfiguration;
 import com.qfs.msg.csv.IFileInfo;
 import com.qfs.msg.csv.ILineReader;
 import com.qfs.msg.csv.filesystem.impl.DirectoryCSVTopic;
+import com.qfs.msg.csv.impl.CSVColumnParser;
 import com.qfs.msg.csv.impl.CSVParserConfiguration;
 import com.qfs.msg.csv.impl.CSVSource;
+import com.qfs.msg.csv.translator.impl.AColumnCalculator;
 import com.qfs.msg.impl.WatcherService;
+import com.qfs.source.ITuplePublisher;
 import com.qfs.source.impl.CSVMessageChannelFactory;
+import com.qfs.source.impl.TuplePublisher;
 import com.qfs.store.IDatastore;
 import com.qfs.store.impl.SchemaPrinter;
 import com.qfs.store.transaction.ITransactionManager;
@@ -28,10 +33,13 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
+import java.net.URL;
 import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -41,6 +49,8 @@ import java.util.Properties;
  *
  * @author Quartet FS
  */
+
+@PropertySource(value = { "classpath:directories.properties" })
 @Configuration
 public class SourceConfig {
 
@@ -61,9 +71,25 @@ public class SourceConfig {
         CSVSource csvSource = new CSVSource();
 
         // Add topics here, eg.
-//		DirectoryCSVTopic history = createDirectoryTopic(HISTORY_TOPIC, env.getProperty("dir.history"), 7, "**PriceHistory_*.csv", true);
-//		history.getParserConfiguration().setSeparator(',');
-//		csvSource.addTopic(history);
+        //History
+		DirectoryCSVTopic history = createDirectoryTopic("History Topic", env.getProperty("dir.history"), 8, "**PriceHistory_**.csv", true);
+		history.getParserConfiguration().setSeparator(',');
+		csvSource.addTopic(history);
+
+		//Sector
+		DirectoryCSVTopic sector = createDirectoryTopic("Sector Topic", env.getProperty("dir.sectors"), 4, "**.csv", true);
+		sector.getParserConfiguration().setSeparator('|');
+		csvSource.addTopic(sector);
+
+		//Indices
+		DirectoryCSVTopic indices = createDirectoryTopic("Indices Topic", env.getProperty("dir.indices"), 8, "**.csv", false);
+        indices.getParserConfiguration().setSeparator('|');
+		csvSource.addTopic(indices);
+
+		//Portfolios
+		DirectoryCSVTopic portfolios = createDirectoryTopic("Portfolios Topic", env.getProperty("dir.portfolios"), 6, "**.csv", false);
+        portfolios.getParserConfiguration().setSeparator('|');
+		csvSource.addTopic(portfolios);
 
         Properties sourceProps = new Properties();
         sourceProps.put(ICSVSourceConfiguration.PARSER_THREAD_PROPERTY, "4");
@@ -76,9 +102,22 @@ public class SourceConfig {
     public CSVMessageChannelFactory csvChannelFactory() {
         CSVMessageChannelFactory channelFactory = new CSVMessageChannelFactory(csvSource(), datastore);
 
-        // Add calculated columns here
+        List<IColumnCalculator<ILineReader>> csvCalculatedColumns = new ArrayList<>();
+        csvCalculatedColumns.add(new AColumnCalculator<ILineReader>("Stock Symbol"){
 
-// 		channelFactory.setCalculatedColumns(topic, store, calculatedColumns);
+            @Override
+            public Object compute(IColumnCalculationContext<ILineReader> iColumnCalculationContext) {
+
+                String fileName = iColumnCalculationContext.getContext().getCurrentFile().getName();
+                String stockName = fileName.split("\\.")[0];
+                stockName = stockName.split("_")[1];
+                stockName = stockName.replace("-",".");
+                return stockName;
+            }
+        });
+
+        // Add calculated columns here
+ 		channelFactory.setCalculatedColumns("History Topic", "History", csvCalculatedColumns);
 
         return channelFactory;
     }
@@ -104,9 +143,17 @@ public class SourceConfig {
     @Bean
     @DependsOn(value = "startManager")
     public Void initialLoad() throws Exception {
+
         //csv
         Collection<IMessageChannel<IFileInfo, ILineReader>> csvChannels = new ArrayList<>();
-//		csvChannels.add(csvChannelFactory().createChannel(topic, datastore));
+		csvChannels.add(csvChannelFactory().createChannel("Portfolios Topic", "Portfolios"));
+		csvChannels.add(csvChannelFactory().createChannel("History Topic", "History"));
+		csvChannels.add(csvChannelFactory().createChannel("Sector Topic", "Sector"));
+		//csvChannels.add(csvChannelFactory().createChannel("Indices Topic", "Indices"));
+
+		csvChannels.add(
+                csvChannelFactory().createChannel("Indices Topic", "Indices").withPublisher(new /*ImportIndex*/ TuplePublisher(datastore, "Indices"))
+        );
 
         long before = System.nanoTime();
         if (!Boolean.parseBoolean(env.getProperty("training.replay"))) {
